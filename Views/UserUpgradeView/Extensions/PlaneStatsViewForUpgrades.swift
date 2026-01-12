@@ -29,12 +29,12 @@ extension UserUpgradeView {
                     .fontWidth(.condensed)
                     .multilineTextAlignment(.trailing)
             }
-            Text("\(Int(plane.hoursFlown.wrappedValue).withCommas)h flown - \(plane.isAirborne.wrappedValue ? "currently flying" : plane.currentAirportLocation.wrappedValue.map { "at \($0.reportCorrectCodeForUserData(userData))" } ?? "unknown location")")
+            Text("\(Int(plane.hoursFlown.wrappedValue).withCommas)h flown - \(plane.isAirborne.wrappedValue ? "currently flying" : plane.currentAirportLocation.wrappedValue.map { "at \($0.reportCorrectCodeForUserData(userData.wrappedValue))" } ?? "unknown location")")
                 .font(.caption)
                 .fontWidth(.condensed)
         }
-        .padding()
-        .frame(width: 200, height: 210)
+        .padding(5)
+        .frame(width: 150, height: 160)
         .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 10.0))
     }
@@ -48,8 +48,8 @@ extension UserUpgradeView {
             }
             ScrollView(.horizontal) {
                 HStack {
-                    ForEach($userData.planes, id: \.id) { $plane in
-                        planeItemView($plane)
+                    ForEach(userData.planes, id: \.id) { plane in
+                        planeItemView(plane)
                     }
                 }
             }

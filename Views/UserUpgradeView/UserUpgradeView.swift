@@ -8,28 +8,6 @@
 import SwiftUI
 import SwiftData
 
-extension View {
-    @ViewBuilder
-    func adaptiveProminentButtonStyle() -> some View {
-        if #available(iOS 26.0, *) {
-            self.buttonStyle(.glassProminent)
-        } else {
-            self.buttonStyle(.borderedProminent)
-        }
-    }
-}
-
-extension View {
-    @ViewBuilder
-    func adaptiveButtonStyle() -> some View {
-        if #available(iOS 26.0, *) {
-            self.buttonStyle(.glass)
-        } else {
-            self.buttonStyle(.bordered)
-        }
-    }
-}
-
 struct UserUpgradeView: View {
     @State var showAirportPickerView: Bool = true
     @State var selectedAirport: Airport = Airport(
@@ -46,9 +24,179 @@ struct UserUpgradeView: View {
         demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 9.0, businessTravelRatio: 0.78, tourismBoost: 0.88),
         facilities: AirportFacilities(terminalCapacity: 230000, cargoCapacity: 4800, gatesAvailable: 120, slotEfficiency: 0.94)
     )
+    @Query var swiftDataUserData: [UserData]
     @Environment(\.modelContext) var modelContext
-    @Binding var userData: UserData
-    @Environment(\.dismiss) var dismiss
+    var userData: Binding<UserData> {
+        Binding {
+            return swiftDataUserData.first ?? UserData(name: "Advait",
+                                                       airlineName: "IndiGo Atlantic",
+                                                       airlineIataCode: "6E",
+                                                       planes: [
+                                                           FleetItem(aircraftID: "IL96-400M",
+                                                                     aircraftname: "Suka Blyat",
+                                                                     registration: "VT-SBL",
+                                                                     hoursFlown: 3,
+                                                                     assignedRoute: Route(originAirport: Airport(
+                                                                       name: "Adolfo Suárez Madrid-Barajas Airport",
+                                                                       city: "Madrid",
+                                                                       country: "Spain",
+                                                                       iata: "MAD",
+                                                                       icao: "LEMD",
+                                                                       region: .europe,
+                                                                       latitude: 40.4719,
+                                                                       longitude: -3.5626,
+                                                                       runwayLength: 4179,
+                                                                       elevation: 610,
+                                                                       demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
+                                                                       facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+                                                                     ), arrivalAirport: Airport(
+                                                                       name: "London Heathrow Airport",
+                                                                       city: "London",
+                                                                       country: "United Kingdom",
+                                                                       iata: "LHR",
+                                                                       icao: "EGLL",
+                                                                       region: .europe,
+                                                                       latitude: 51.4700,
+                                                                       longitude: -0.4543,
+                                                                       runwayLength: 3902,
+                                                                       elevation: 25,
+                                                                       demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 8.8, businessTravelRatio: 0.80, tourismBoost: 0.85),
+                                                                       facilities: AirportFacilities(terminalCapacity: 225000, cargoCapacity: 3800, gatesAvailable: 115, slotEfficiency: 0.93)
+                                                                     )),
+                                                                     seatingLayout: SeatingConfig(economy: 258, premiumEconomy: 54, business: 28, first: 6),
+                                                                     kilometersTravelledSinceLastMaintainence: 3200,
+                                                                     currentAirportLocation: Airport(
+                                                                       name: "Adolfo Suárez Madrid-Barajas Airport",
+                                                                       city: "Madrid",
+                                                                       country: "Spain",
+                                                                       iata: "MAD",
+                                                                       icao: "LEMD",
+                                                                       region: .europe,
+                                                                       latitude: 40.4719,
+                                                                       longitude: -3.5626,
+                                                                       runwayLength: 4179,
+                                                                       elevation: 610,
+                                                                       demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
+                                                                       facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+                                                                     )),
+                                                           FleetItem(aircraftID: "IL96-400M",
+                                                                     aircraftname: "Babushka",
+                                                                     registration: "VT-SBT",
+                                                                     hoursFlown: 3,
+                                                                     seatingLayout: SeatingConfig(economy: 258, premiumEconomy: 54, business: 28, first: 6),
+                                                                     kilometersTravelledSinceLastMaintainence: 3200,
+                                                                     currentAirportLocation: Airport(
+                                                                       name: "Adolfo Suárez Madrid-Barajas Airport",
+                                                                       city: "Madrid",
+                                                                       country: "Spain",
+                                                                       iata: "MAD",
+                                                                       icao: "LEMD",
+                                                                       region: .europe,
+                                                                       latitude: 40.4719,
+                                                                       longitude: -3.5626,
+                                                                       runwayLength: 4179,
+                                                                       elevation: 610,
+                                                                       demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
+                                                                       facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+                                                                     )),
+                                                           FleetItem(aircraftID: "IL96-400M",
+                                                                     aircraftname: "Karthoshka",
+                                                                     registration: "VT-SVT",
+                                                                     hoursFlown: 3,
+                                                                     seatingLayout: SeatingConfig(economy: 258, premiumEconomy: 54, business: 28, first: 6),
+                                                                     kilometersTravelledSinceLastMaintainence: 3200,
+                                                                     currentAirportLocation: Airport(
+                                                                       name: "Stockholm Arlanda Airport",
+                                                                       city: "Stockholm",
+                                                                       country: "Sweden",
+                                                                       iata: "ARN",
+                                                                       icao: "ESSA",
+                                                                       region: .europe,
+                                                                       latitude: 59.6498,
+                                                                       longitude: 17.9238,
+                                                                       runwayLength: 3301,
+                                                                       elevation: 42,
+                                                                       demand: AirportDemand(passengerDemand: 8.4, cargoDemand: 7.5, businessTravelRatio: 0.70, tourismBoost: 0.78),
+                                                                       facilities: AirportFacilities(terminalCapacity: 155000, cargoCapacity: 2800, gatesAvailable: 75, slotEfficiency: 0.89)
+                                                                     ))
+                                                       ],
+                                                       xp: 250,
+                                                       xpPoints: 8,
+                                                       levels: 8,
+                                                       airlineReputation: 0.8,
+                                                       reliabilityIndex: 0.76,
+                                                       fuelDiscountMultiplier: 0.99,
+                                                       lastFuelPrice: 900,
+                                                       pilots: 9,
+                                                       flightAttendents: 27,
+                                                       maintainanceCrew: 12,
+                                                       currentlyHoldingFuel: 3_000_000,
+                                                       maxFuelHoldable: 5_000_000,
+                                                       weeklyPilotSalary: 500,
+                                                       weeklyFlightAttendentSalary: 400,
+                                                       weeklyFlightMaintainanceCrewSalary: 350,
+                                                       pilotHappiness: 0.98,
+                                                       flightAttendentHappiness: 0.97,
+                                                       maintainanceCrewHappiness: 0.96,
+                                                       campaignRunning: false,
+                                                       deliveryHubs: [
+                                                           Airport(
+                                                               name: "Stockholm Arlanda Airport",
+                                                               city: "Stockholm",
+                                                               country: "Sweden",
+                                                               iata: "ARN",
+                                                               icao: "ESSA",
+                                                               region: .europe,
+                                                               latitude: 59.6498,
+                                                               longitude: 17.9238,
+                                                               runwayLength: 3301,
+                                                               elevation: 42,
+                                                               demand: AirportDemand(passengerDemand: 8.4, cargoDemand: 7.5, businessTravelRatio: 0.70, tourismBoost: 0.78),
+                                                               facilities: AirportFacilities(terminalCapacity: 155000, cargoCapacity: 2800, gatesAvailable: 75, slotEfficiency: 0.89)
+                                                           ),
+                                                           Airport(
+                                                               name: "Adolfo Suárez Madrid-Barajas Airport",
+                                                               city: "Madrid",
+                                                               country: "Spain",
+                                                               iata: "MAD",
+                                                               icao: "LEMD",
+                                                               region: .europe,
+                                                               latitude: 40.4719,
+                                                               longitude: -3.5626,
+                                                               runwayLength: 4179,
+                                                               elevation: 610,
+                                                               demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
+                                                               facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+                                                           )], accountBalance: 100_000_000)
+        } set: { value in
+            if let item = swiftDataUserData.first {
+                item.planes = value.planes
+                item.deliveryHubs = value.deliveryHubs
+                item.airlineIataCode = value.airlineIataCode
+                item.airlineName = value.airlineName
+                item.name = value.name
+                item.accountBalance = value.accountBalance
+                item.airlineReputation = value.airlineReputation
+                item.campaignEffectiveness = value.campaignEffectiveness
+                item.campaignRunning = value.campaignRunning
+                item.currentlyHoldingFuel = value.currentlyHoldingFuel
+                item.flightAttendentHappiness = value.flightAttendentHappiness
+                item.flightAttendents = value.flightAttendents
+                item.fuelDiscountMultiplier = value.fuelDiscountMultiplier
+                item.lastFuelPrice = value.lastFuelPrice
+                item.levels = value.levels
+                item.maintainanceCrew = value.maintainanceCrew
+                item.maintainanceCrewHappiness = value.maintainanceCrewHappiness
+                item.maxFuelHoldable = value.maxFuelHoldable
+                item.pilotHappiness = value.pilotHappiness
+                item.pilots = value.pilots
+                item.pilotHappiness = value.pilotHappiness
+                item.xp = value.xp
+                
+                try? modelContext.save()
+            }
+        }
+    }
     /// Debug stuff
     /// Keep in case above binding decides to cause problems again
     /// stupid bindings
@@ -65,7 +213,7 @@ struct UserUpgradeView: View {
     var body: some View {
         VStack {
             if !showAirportPickerView {
-                AirportPickerView(airportSelected: $selectedAirport, userData: userData, finishedPickingScreen: $showAirportPickerView)
+                AirportPickerView(airportText: "Please select your new hub airport", maxRange: 0, startAirport: nil, moveOn: $showAirportPickerView, finalAirportSelected: $selectedAirport, disallowedAirports: userData.wrappedValue.deliveryHubs, userData: userData.wrappedValue)
                     .transition(.move(edge: .leading))
                     .padding()
             } else {
@@ -73,7 +221,7 @@ struct UserUpgradeView: View {
                     HStack {
                         VStack {
                             HStack {
-                                TextField(userData.airlineName, text: $userData.airlineName)
+                                TextField(userData.wrappedValue.airlineName, text: userData.airlineName)
                                     .textFieldStyle(.plain)
                                     .font(.largeTitle)
                                     .fontWidth(.expanded)
@@ -83,33 +231,25 @@ struct UserUpgradeView: View {
                                 Text("As managed by ".uppercased())
                                     .font(.caption2)
                                     .fontWidth(.expanded)
-                                TextField(userData.name, text: $userData.name)
+                                TextField(userData.wrappedValue.name, text: userData.name)
                                     .textFieldStyle(.plain)
                                     .font(.caption2)
                                     .fontWidth(.expanded)
                                 Spacer()
                             }
                             HStack {
-                                Text("ACTIVE RESERVES: $\(userData.accountBalance.withCommas)".uppercased())
+                                Text("ACTIVE RESERVES: $\(userData.wrappedValue.accountBalance.withCommas)".uppercased())
                                     .font(.caption2)
                                     .fontWidth(.expanded)
                                     .contentTransition(.numericText(countsDown: true))
                                 Spacer()
                             }
                         }
-                        Text("\(userData.xpPoints)")
+                        Text("\(userData.wrappedValue.xpPoints)")
                             .fontWidth(.expanded)
                             .font(.largeTitle)
                         Text("AVAILABLE\nXP POINTS")
                             .fontWidth(.expanded)
-                        Button {
-                            dismiss()
-                        } label: {
-                            Image(systemName: "xmark.circle.fill")
-                                .symbolRenderingMode(.hierarchical)
-                                .padding()
-                        }
-                        .adaptiveButtonStyle()
                     }
                     HStack {
                         Button {
@@ -125,7 +265,7 @@ struct UserUpgradeView: View {
                                 .font(.caption)
                             Spacer()
                         }
-                        .adaptiveProminentButtonStyle()
+                        .buttonStyle(.borderedProminent)
                         .tint(screen == 1 ? .accentColor : .gray)
                         
                         
@@ -142,7 +282,7 @@ struct UserUpgradeView: View {
                                 .font(.caption)
                             Spacer()
                         }
-                        .adaptiveProminentButtonStyle()
+                        .buttonStyle(.borderedProminent)
                         .tint(screen == 2 ? .accentColor : .gray)
                         
                         Button {
@@ -158,7 +298,7 @@ struct UserUpgradeView: View {
                                 .font(.caption)
                             Spacer()
                         }
-                        .adaptiveProminentButtonStyle()
+                        .buttonStyle(.borderedProminent)
                         .tint(screen == 3 ? .accentColor : .gray)
                     }
                     if screen == 1 {
@@ -195,8 +335,8 @@ struct UserUpgradeView: View {
         .onChange(of: showAirportPickerView) { oldValue, newValue in
             if !oldValue && newValue && AirportDatabase.shared.allAirports.contains(where: {selectedAirport.name == $0.name}) {
                 withAnimation {
-                    userData.deliveryHubs.append(selectedAirport)
-                    userData.accountBalance -= 10000000
+                    userData.wrappedValue.deliveryHubs.append(selectedAirport)
+                    userData.wrappedValue.accountBalance -= 10000000
                 }
                 selectedAirport = Airport(
                     name: "Soote",
@@ -214,9 +354,10 @@ struct UserUpgradeView: View {
                 )
             }
         }
+        .frame(width: 600, height: 400)
     }
 }
 
 #Preview {
-    UserUpgradeView(userData: .constant(testUserDataEndgame))
+    UserUpgradeView()
 }

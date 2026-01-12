@@ -10,27 +10,149 @@ import SwiftData
 import Foundation
 import Combine
 
-/// Default user data
-/// to be used for initialisation
-let newUserData = UserData(name: "", airlineName: "", airlineIataCode: "", planes: [], xp: 0, levels: 1, airlineReputation: 0.6, reliabilityIndex: 0.7, fuelDiscountMultiplier: 1, lastFuelPrice: 0.75, pilots: 3, flightAttendents: 3, maintainanceCrew: 3, currentlyHoldingFuel: 1_000_000, maxFuelHoldable: 4_000_000, weeklyPilotSalary: 400, weeklyFlightAttendentSalary: 300, weeklyFlightMaintainanceCrewSalary: 250, pilotHappiness: 0.95, flightAttendentHappiness: 0.95, maintainanceCrewHappiness: 0.95, campaignRunning: false, deliveryHubs: [], accountBalance: 0)
-
 struct ContentView: View {
-    @State var showWelcome: Bool = false
-    @Environment(\.modelContext) var modelContext
-    @Query var userData: [UserData]
-    @State var showSetupScreen: Bool = false
-    var modifiableUserData: Binding<UserData> {
+    var moidifiableUserdata: Binding<UserData> {
         Binding {
-            if let userData = userData.first {
-                if userData.planes.isEmpty {
-                    showSetupScreen = true
-                }
-                return userData
-            } else {
-                modelContext.insert(newUserData)
-                showSetupScreen = true
-                return newUserData
-            }
+            userData.first ?? UserData(name: "Advait",
+                                       airlineName: "IndiGo Atlantic",
+                                       airlineIataCode: "6E",
+                                       planes: [
+                                           FleetItem(aircraftID: "IL96-400M",
+                                                     aircraftname: "Suka Blyat",
+                                                     registration: "VT-SBL",
+                                                     hoursFlown: 3,
+                                                     assignedRoute: Route(originAirport: Airport(
+                                                       name: "Adolfo Suárez Madrid-Barajas Airport",
+                                                       city: "Madrid",
+                                                       country: "Spain",
+                                                       iata: "MAD",
+                                                       icao: "LEMD",
+                                                       region: .europe,
+                                                       latitude: 40.4719,
+                                                       longitude: -3.5626,
+                                                       runwayLength: 4179,
+                                                       elevation: 610,
+                                                       demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
+                                                       facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+                                                     ), arrivalAirport: Airport(
+                                                       name: "London Heathrow Airport",
+                                                       city: "London",
+                                                       country: "United Kingdom",
+                                                       iata: "LHR",
+                                                       icao: "EGLL",
+                                                       region: .europe,
+                                                       latitude: 51.4700,
+                                                       longitude: -0.4543,
+                                                       runwayLength: 3902,
+                                                       elevation: 25,
+                                                       demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 8.8, businessTravelRatio: 0.80, tourismBoost: 0.85),
+                                                       facilities: AirportFacilities(terminalCapacity: 225000, cargoCapacity: 3800, gatesAvailable: 115, slotEfficiency: 0.93)
+                                                     )),
+                                                     seatingLayout: SeatingConfig(economy: 258, premiumEconomy: 54, business: 28, first: 6),
+                                                     kilometersTravelledSinceLastMaintainence: 3200,
+                                                     currentAirportLocation: Airport(
+                                                       name: "Adolfo Suárez Madrid-Barajas Airport",
+                                                       city: "Madrid",
+                                                       country: "Spain",
+                                                       iata: "MAD",
+                                                       icao: "LEMD",
+                                                       region: .europe,
+                                                       latitude: 40.4719,
+                                                       longitude: -3.5626,
+                                                       runwayLength: 4179,
+                                                       elevation: 610,
+                                                       demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
+                                                       facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+                                                     )),
+                                           FleetItem(aircraftID: "IL96-400M",
+                                                     aircraftname: "Babushka",
+                                                     registration: "VT-SBT",
+                                                     hoursFlown: 3,
+                                                     seatingLayout: SeatingConfig(economy: 258, premiumEconomy: 54, business: 28, first: 6),
+                                                     kilometersTravelledSinceLastMaintainence: 3200,
+                                                     currentAirportLocation: Airport(
+                                                       name: "Adolfo Suárez Madrid-Barajas Airport",
+                                                       city: "Madrid",
+                                                       country: "Spain",
+                                                       iata: "MAD",
+                                                       icao: "LEMD",
+                                                       region: .europe,
+                                                       latitude: 40.4719,
+                                                       longitude: -3.5626,
+                                                       runwayLength: 4179,
+                                                       elevation: 610,
+                                                       demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
+                                                       facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+                                                     )),
+                                           FleetItem(aircraftID: "IL96-400M",
+                                                     aircraftname: "Karthoshka",
+                                                     registration: "VT-SVT",
+                                                     hoursFlown: 3,
+                                                     seatingLayout: SeatingConfig(economy: 258, premiumEconomy: 54, business: 28, first: 6),
+                                                     kilometersTravelledSinceLastMaintainence: 3200,
+                                                     currentAirportLocation: Airport(
+                                                       name: "Stockholm Arlanda Airport",
+                                                       city: "Stockholm",
+                                                       country: "Sweden",
+                                                       iata: "ARN",
+                                                       icao: "ESSA",
+                                                       region: .europe,
+                                                       latitude: 59.6498,
+                                                       longitude: 17.9238,
+                                                       runwayLength: 3301,
+                                                       elevation: 42,
+                                                       demand: AirportDemand(passengerDemand: 8.4, cargoDemand: 7.5, businessTravelRatio: 0.70, tourismBoost: 0.78),
+                                                       facilities: AirportFacilities(terminalCapacity: 155000, cargoCapacity: 2800, gatesAvailable: 75, slotEfficiency: 0.89)
+                                                     ))
+                                       ],
+                                       xp: 250,
+                                       xpPoints: 8,
+                                       levels: 8,
+                                       airlineReputation: 0.8,
+                                       reliabilityIndex: 0.76,
+                                       fuelDiscountMultiplier: 0.99,
+                                       lastFuelPrice: 900,
+                                       pilots: 9,
+                                       flightAttendents: 27,
+                                       maintainanceCrew: 12,
+                                       currentlyHoldingFuel: 3_000_000,
+                                       maxFuelHoldable: 5_000_000,
+                                       weeklyPilotSalary: 500,
+                                       weeklyFlightAttendentSalary: 400,
+                                       weeklyFlightMaintainanceCrewSalary: 350,
+                                       pilotHappiness: 0.98,
+                                       flightAttendentHappiness: 0.97,
+                                       maintainanceCrewHappiness: 0.96,
+                                       campaignRunning: false,
+                                       deliveryHubs: [
+                                           Airport(
+                                               name: "Stockholm Arlanda Airport",
+                                               city: "Stockholm",
+                                               country: "Sweden",
+                                               iata: "ARN",
+                                               icao: "ESSA",
+                                               region: .europe,
+                                               latitude: 59.6498,
+                                               longitude: 17.9238,
+                                               runwayLength: 3301,
+                                               elevation: 42,
+                                               demand: AirportDemand(passengerDemand: 8.4, cargoDemand: 7.5, businessTravelRatio: 0.70, tourismBoost: 0.78),
+                                               facilities: AirportFacilities(terminalCapacity: 155000, cargoCapacity: 2800, gatesAvailable: 75, slotEfficiency: 0.89)
+                                           ),
+                                           Airport(
+                                               name: "Adolfo Suárez Madrid-Barajas Airport",
+                                               city: "Madrid",
+                                               country: "Spain",
+                                               iata: "MAD",
+                                               icao: "LEMD",
+                                               region: .europe,
+                                               latitude: 40.4719,
+                                               longitude: -3.5626,
+                                               runwayLength: 4179,
+                                               elevation: 610,
+                                               demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
+                                               facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+                                           )], accountBalance: 100_000_000)
         } set: { value in
             if let item = userData.first {
                 item.planes = value.planes
@@ -61,140 +183,135 @@ struct ContentView: View {
             }
         }
     }
+    @Environment(\.modelContext) var modelContext
+    @Query var userData: [UserData]
+    @State var showFinancialsAvailableAlert: Bool = false
     let planeArrivalTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    let fuelPriceTimer = Timer.publish(every: 7200, on: .main, in: .common).autoconnect()
-    let resetUserData: Bool
-    let useTestData: DataTypeToUse
-    
+    let fuelPriceTimer = Timer.publish(every: 7200, on: .main, in: .common).autoconnect() // 2 hours
+    var resetUserData: Bool
+    var useTestData: DataTypeToUse
     var body: some View {
         VStack {
-            MapManagerView(userData: modifiableUserData)
+            MapView(userData: moidifiableUserdata)
                 .onAppear {
-                    if !showSetupScreen {
-                        /// DEBUG CONTENT:
-                        /// DO NOT REMOVE. Ensure all passed through variables are updated accordingly
-                        if resetUserData {
-                            for userDataItem in userData {
-                                modelContext.delete(userDataItem)
-                            }
-                            try? modelContext.save()
+                    /// Test stubs
+                    if resetUserData {
+                        for item in userData {
+                            modelContext.delete(item)
                         }
-                        if useTestData != .none {
-                            var value: UserData
-                            if useTestData == .regular {
-                                value = testUserData
-                            } else if useTestData == .flyingPlanes {
-                                value = testUserDataWithFlyingPlanes
-                            } else {
-                                value = testUserDataEndgame
-                            }
-                            
-                            if let item = userData.first {
-                                item.planes = value.planes
-                                item.deliveryHubs = value.deliveryHubs
-                                item.airlineIataCode = value.airlineIataCode
-                                item.airlineName = value.airlineName
-                                item.name = value.name
-                                item.accountBalance = value.accountBalance
-                                item.airlineReputation = value.airlineReputation
-                                item.campaignEffectiveness = value.campaignEffectiveness
-                                item.campaignRunning = value.campaignRunning
-                                item.currentlyHoldingFuel = value.currentlyHoldingFuel
-                                item.flightAttendentHappiness = value.flightAttendentHappiness
-                                item.flightAttendents = value.flightAttendents
-                                item.fuelDiscountMultiplier = value.fuelDiscountMultiplier
-                                item.lastFuelPrice = value.lastFuelPrice
-                                item.levels = value.levels
-                                item.maintainanceCrew = value.maintainanceCrew
-                                item.maintainanceCrewHappiness = value.maintainanceCrewHappiness
-                                item.maxFuelHoldable = value.maxFuelHoldable
-                                item.pilotHappiness = value.pilotHappiness
-                                item.pilots = value.pilots
-                                item.pilotHappiness = value.pilotHappiness
-                                item.xp = value.xp
-                                
-                                try? modelContext.save()
-                            }
+                        try? modelContext.save()
+                    } else if useTestData != .none {
+                        var value: UserData
+                        print("SKIPPING TEST DATA IMPLEMENTATION IN THIS CODE")
+                        print("Swift Playgrounds cannot keep test data code as mainActor")
+                        if useTestData == .flyingPlanes {
+//                            value = testUserDataWithFlyingPlanes
+                            print("Flying planes test data used")
+                        } else if useTestData == .regular {
+//                            value = testUserData
+                            print("Regular test data used")
+                        } else {
+//                            value = testUserDataEndgame
+                            print("Endgame test user data being used")
                         }
-                        
-                        /// NOrmal content
-                        /// This stuff stays
-                        
-                        // Salary Deduction
-                        let todaysDate: Date = Date()
-                        let calendar = Calendar.current
-                        guard let days = calendar.dateComponents([.day], from: calendar.startOfDay(for: modifiableUserData.wrappedValue.lastLogin), to: calendar.startOfDay(for: todaysDate) ).day else { return }
-                        modifiableUserData.wrappedValue.daysPassedSinceStartOfFinancialWeek = days + modifiableUserData.wrappedValue.daysPassedSinceStartOfFinancialWeek
-                        if modifiableUserData.wrappedValue.daysPassedSinceStartOfFinancialWeek >= 7 {
-                            let numberOfDeductionsToMakeForSalary: Int
-                            numberOfDeductionsToMakeForSalary = Int(modifiableUserData.wrappedValue.daysPassedSinceStartOfFinancialWeek / 7)
-                            modifiableUserData.wrappedValue.daysPassedSinceStartOfFinancialWeek = modifiableUserData.wrappedValue.daysPassedSinceStartOfFinancialWeek % 7
-                            modifiableUserData.wrappedValue.accountBalance = modifiableUserData.wrappedValue.accountBalance - Double(modifiableUserData.wrappedValue.cashToPayAsSalaryPerWeek * numberOfDeductionsToMakeForSalary)
-                        }
-                        
-                        // Login date update thingy
-                        modifiableUserData.wrappedValue.lastLogin = todaysDate
-                        
-                        // Happiness reduction
-                        if days != 0 {
-                            for _ in 1...days {
-                                modifiableUserData.wrappedValue.flightAttendentHappiness -= Double.random(in: 0.01...0.03)
-                                modifiableUserData.wrappedValue.pilotHappiness -= Double.random(in: 0.01...0.03)
-                                modifiableUserData.wrappedValue.maintainanceCrewHappiness -= Double.random(in: 0.01...0.03)
-                                
-                            }
-                        }
-                        
-                        // Recalculate fuel price for the time passed since last open
-                        let hoursSinceLastFuelUpdate = Calendar.current.dateComponents([.hour], from: modifiableUserData.wrappedValue.lastFuelPriceCalculationDate, to: todaysDate).hour ?? 0
-                        if hoursSinceLastFuelUpdate >= 2 {
-                            let numberOfUpdates = hoursSinceLastFuelUpdate / 2
-                            for _ in 0..<numberOfUpdates {
-                                calculateNextFuelPrice(userData: modifiableUserData)
-                            }
-                        }
-                        modifiableUserData.wrappedValue.lastFuelPriceCalculationDate = todaysDate
+//                        if let item = userData.first {
+//                            item.planes = value.planes
+//                            item.deliveryHubs = value.deliveryHubs
+//                            item.airlineIataCode = value.airlineIataCode
+//                            item.airlineName = value.airlineName
+//                            item.name = value.name
+//                            item.accountBalance = value.accountBalance
+//                            item.airlineReputation = value.airlineReputation
+//                            item.campaignEffectiveness = value.campaignEffectiveness
+//                            item.campaignRunning = value.campaignRunning
+//                            item.currentlyHoldingFuel = value.currentlyHoldingFuel
+//                            item.flightAttendentHappiness = value.flightAttendentHappiness
+//                            item.flightAttendents = value.flightAttendents
+//                            item.fuelDiscountMultiplier = value.fuelDiscountMultiplier
+//                            item.lastFuelPrice = value.lastFuelPrice
+//                            item.levels = value.levels
+//                            item.maintainanceCrew = value.maintainanceCrew
+//                            item.maintainanceCrewHappiness = value.maintainanceCrewHappiness
+//                            item.maxFuelHoldable = value.maxFuelHoldable
+//                            item.pilotHappiness = value.pilotHappiness
+//                            item.pilots = value.pilots
+//                            item.pilotHappiness = value.pilotHappiness
+//                            item.xp = value.xp
+//                            
+//                            try? modelContext.save()
+//                        }
                     }
+                    
+                    let todaysDate: Date = Date()
+                    let calendar = Calendar.current
+                    guard let days = calendar.dateComponents([.day], from: calendar.startOfDay(for: moidifiableUserdata.wrappedValue.lastLogin), to: calendar.startOfDay(for: todaysDate) ).day else { return }
+                    moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek = days + moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek
+                    if moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek >= 7 {
+                        let numberOfDeductionsToMakeForSalary: Int
+                        numberOfDeductionsToMakeForSalary = Int(moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek / 7)
+                        moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek = moidifiableUserdata.wrappedValue.daysPassedSinceStartOfFinancialWeek % 7
+                        moidifiableUserdata.wrappedValue.accountBalance = moidifiableUserdata.wrappedValue.accountBalance - Double(moidifiableUserdata.wrappedValue.cashToPayAsSalaryPerWeek * numberOfDeductionsToMakeForSalary)
+                    }
+                    moidifiableUserdata.wrappedValue.lastLogin = todaysDate
+                    if days != 0 {
+                        for _ in 1...days {
+                            moidifiableUserdata.wrappedValue.flightAttendentHappiness -= Double.random(in: 0.01...0.03)
+                            moidifiableUserdata.wrappedValue.pilotHappiness -= Double.random(in: 0.01...0.03)
+                            moidifiableUserdata.wrappedValue.maintainanceCrewHappiness -= Double.random(in: 0.01...0.03)
+                            
+                        }
+                    }
+                    
+                    // Recalculate fuel price for the time passed since last open
+                    let hoursSinceLastFuelUpdate = Calendar.current.dateComponents([.hour], from: moidifiableUserdata.wrappedValue.lastFuelPriceCalculationDate, to: todaysDate).hour ?? 0
+                    if hoursSinceLastFuelUpdate >= 2 {
+                        let numberOfUpdates = hoursSinceLastFuelUpdate / 2
+                        for _ in 0..<numberOfUpdates {
+                            calculateNextFuelPrice(userData: moidifiableUserdata)
+                        }
+                    }
+                    moidifiableUserdata.wrappedValue.lastFuelPriceCalculationDate = todaysDate
+                    
                 }
             /// Manages marking the plane as arrived or not at the first possible instant
                 .onReceive(planeArrivalTimer) { _ in
                     let currentDate = Date()
-                    for (index, plane) in modifiableUserData.wrappedValue.planes.enumerated() {
+                    for (index, plane) in moidifiableUserdata.wrappedValue.planes.enumerated() {
                         if plane.isAirborne && plane.estimatedLandingTime != nil {
                             if currentDate >= plane.estimatedLandingTime! {
-                                modifiableUserData.wrappedValue.planes[index].markJetAsArrived(modifiableUserData)
+                                moidifiableUserdata.wrappedValue.planes[index].markJetAsArrived(moidifiableUserdata)
                             }
                         } else if plane.inMaintainance {
                             if currentDate >= plane.endMaintainanceDate! {
-                                modifiableUserData.wrappedValue.planes[index].markJetAsMaintainanceDone()
+                                moidifiableUserdata.wrappedValue.planes[index].markJetAsMaintainanceDone()
                             }
                         }
                     }
-                    if modifiableUserData.wrappedValue.campaignRunning {
-                        if modifiableUserData.wrappedValue.campaignEnd! <= currentDate {
-                            resetCampaignUponEnd(userData: modifiableUserData)
+                    if moidifiableUserdata.wrappedValue.campaignRunning {
+                        if moidifiableUserdata.wrappedValue.campaignEnd! <= currentDate {
+                            resetCampaignUponEnd(userData: moidifiableUserdata)
                         }
                     }
                     
-                    if modifiableUserData.wrappedValue.xpRequiredForNextXPLevel == 0 {
-                        modifiableUserData.wrappedValue.levels += 1
-                        modifiableUserData.wrappedValue.xpPoints += 1
+                    if moidifiableUserdata.wrappedValue.xpRequiredForNextXPLevel == 0 {
+                        moidifiableUserdata.wrappedValue.levels += 1
+                        moidifiableUserdata.wrappedValue.xpPoints += 1
                     }
                 }
                 .onReceive(fuelPriceTimer) { _ in
-                    calculateNextFuelPrice(userData: modifiableUserData)
-                    modifiableUserData.wrappedValue.lastFuelPriceCalculationDate = Date()
+                    calculateNextFuelPrice(userData: moidifiableUserdata)
+                    moidifiableUserdata.wrappedValue.lastFuelPriceCalculationDate = Date()
                 }
                 .onAppear {
                     let notificationsManager = NotificationsManager()
                     notificationsManager.requestPermission()
-                }
-                .fullScreenCover(isPresented: $showSetupScreen) {
-                    SetupView(userData: modifiableUserData)
-                        .interactiveDismissDisabled(true)
+                    
+                    /// COMMENT FOR FINAL REALEASE
+                    /// debug stub to remove all notifications
+//                    notificationsManager.removeAll()
                 }
         }
-        .statusBarHidden()
+
     }
 }
 

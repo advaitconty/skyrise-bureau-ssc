@@ -15,11 +15,11 @@ extension UserUpgradeView {
                     .font(.title3)
                     .fontWidth(.expanded)
                 Spacer()
-                Text("CURRENT REPUTATION: \((userData.airlineReputation * 100).withCommas)%")
+                Text("CURRENT REPUTATION: \((userData.wrappedValue.airlineReputation * 100).withCommas)%")
                     .fontWidth(.condensed)
                     .contentTransition(.numericText(countsDown: true))
             }
-            if !userData.campaignRunning {
+            if !userData.wrappedValue.campaignRunning {
                 HStack {
                     VStack {
                         HStack {
@@ -30,14 +30,14 @@ extension UserUpgradeView {
                                 .font(.callout)
                             Spacer()
                         }
-                        buttonForCampaignItem(3, price: 1_000_000, userData: $userData)
-                        buttonForCampaignItem(6, price: 1_750_000, userData: $userData)
-                        buttonForCampaignItem(12, price: 3_000_000, userData: $userData)
-                        buttonForCampaignItem(24, price: 6_000_000, userData: $userData)
+                        buttonForCampaignItem(3, price: 1_000_000, userData: userData)
+                        buttonForCampaignItem(6, price: 1_750_000, userData: userData)
+                        buttonForCampaignItem(12, price: 3_000_000, userData: userData)
+                        buttonForCampaignItem(24, price: 6_000_000, userData: userData)
                     }
-                    .padding()
+                    .padding(5)
                     .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
-                    .clipShape(RoundedRectangle(cornerRadius: 15.0))
+                    .clipShape(RoundedRectangle(cornerRadius: 7.0))
                     
                     VStack {
                         HStack {
@@ -50,18 +50,18 @@ extension UserUpgradeView {
                         }
                         
                         
-                        buttonForCampaignItem(3, price: 1_000_000, userData: $userData, range: 0.05...0.15)
-                        buttonForCampaignItem(6, price: 1_750_000, userData: $userData, range: 0.05...0.15)
-                        buttonForCampaignItem(12, price: 3_000_000, userData: $userData, range: 0.05...0.15)
-                        buttonForCampaignItem(24, price: 6_000_000, userData: $userData, range: 0.05...0.15)
+                        buttonForCampaignItem(3, price: 1_000_000, userData: userData, range: 0.05...0.15)
+                        buttonForCampaignItem(6, price: 1_750_000, userData: userData, range: 0.05...0.15)
+                        buttonForCampaignItem(12, price: 3_000_000, userData: userData, range: 0.05...0.15)
+                        buttonForCampaignItem(24, price: 6_000_000, userData: userData, range: 0.05...0.15)
                     }
-                    .padding()
+                    .padding(5)
                     .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
-                    .clipShape(RoundedRectangle(cornerRadius: 15.0))
+                    .clipShape(RoundedRectangle(cornerRadius: 7.0))
                 }
             } else {
                 TimelineView(.periodic(from: .now, by: 1)) { context in
-                    Text("A reputation campaign is already running, and has given you a \((userData.campaignEffectiveness! * 100).withCommas)% boost in your airline's reputation, and will last for the next \(timeTakenForCampaignEnd(context.date, userData: userData)).")
+                    Text("A reputation campaign is already running, and has given you a \((userData.wrappedValue.campaignEffectiveness! * 100).withCommas)% boost in your airline's reputation, and will last for the next \(timeTakenForCampaignEnd(context.date, userData: userData.wrappedValue)).")
                         .fontWidth(.condensed)
                         .contentTransition(.numericText(countsDown: true))
                 }

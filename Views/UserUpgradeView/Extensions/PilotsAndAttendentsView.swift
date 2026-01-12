@@ -19,10 +19,10 @@ extension UserUpgradeView {
                 Spacer()
                 Image(systemName: "person.crop.circle")
                     .font(.system(size: 36))
-                Text("$\(userData.weeklyPilotSalary.withCommas)/week")
+                Text("$\(userData.wrappedValue.weeklyPilotSalary.withCommas)/week")
                     .fontWidth(.condensed)
                     .contentTransition(.numericText(countsDown: true))
-                Text("\(String(Int(userData.pilotHappiness * 100)))%")
+                Text("\(String(Int(userData.wrappedValue.pilotHappiness * 100)))%")
                     .fontWidth(.condensed)
                     .contentTransition(.numericText(countsDown: true))
                 Spacer()
@@ -31,51 +31,51 @@ extension UserUpgradeView {
                 HStack {
                     Button {
                         var adder: Double
-                        if userData.pilotHappiness != 1 {
+                        if userData.wrappedValue.pilotHappiness != 1 {
                              adder = Double.random(in: 0.01...0.05)
-                            while adder + userData.pilotHappiness > 1 {
+                            while adder + userData.wrappedValue.pilotHappiness > 1 {
                                 adder = Double.random(in: 0.01...0.05)
                             }
                         } else {
                             adder = 0
                         }
                         withAnimation {
-                            userData.weeklyPilotSalary = userData.weeklyPilotSalary + 50
-                            userData.pilotHappiness = userData.pilotHappiness + adder
+                            userData.wrappedValue.weeklyPilotSalary = userData.wrappedValue.weeklyPilotSalary + 50
+                            userData.wrappedValue.pilotHappiness = userData.wrappedValue.pilotHappiness + adder
                         }
                     } label: {
                         Spacer()
                         Image(systemName: "arrowtriangle.up")
                         Spacer()
                     }
-                    .adaptiveProminentButtonStyle()
+                    .buttonStyle(.borderedProminent)
                     .tint(.green)
                     
                     Button {
                         var adder: Double
-                        if userData.pilotHappiness != 1 {
+                        if userData.wrappedValue.pilotHappiness != 1 {
                              adder = Double.random(in: 0.01...0.05)
-                            while adder + userData.pilotHappiness > 1 {
+                            while adder + userData.wrappedValue.pilotHappiness > 1 {
                                 adder = Double.random(in: 0.01...0.05)
                             }
                         } else {
                             adder = 0
                         }
                         withAnimation {
-                            userData.weeklyPilotSalary = userData.weeklyPilotSalary - 50
-                            userData.pilotHappiness = userData.pilotHappiness - adder
+                            userData.wrappedValue.weeklyPilotSalary = userData.wrappedValue.weeklyPilotSalary - 50
+                            userData.wrappedValue.pilotHappiness = userData.wrappedValue.pilotHappiness - adder
                         }
                     } label: {
                         Spacer()
                         Image(systemName: "arrowtriangle.down")
                         Spacer()
                     }
-                    .adaptiveProminentButtonStyle()
+                    .buttonStyle(.borderedProminent)
                     .tint(.red)
                 }
             }
-            .padding()
-            .frame(width: 200, height: 200)
+            .padding(5)
+            .frame(width: 150, height: 140)
             .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
             .clipShape(RoundedRectangle(cornerRadius: 10.0))
             
@@ -87,10 +87,10 @@ extension UserUpgradeView {
                 Spacer()
                 Image(systemName: "bell")
                     .font(.system(size: 36))
-                Text("$\(userData.weeklyFlightAttendentSalary.withCommas)/week")
+                Text("$\(userData.wrappedValue.weeklyFlightAttendentSalary.withCommas)/week")
                     .fontWidth(.condensed)
                     .contentTransition(.numericText(countsDown: true))
-                Text("\(String(Int(userData.flightAttendentHappiness * 100)))%")
+                Text("\(String(Int(userData.wrappedValue.flightAttendentHappiness * 100)))%")
                     .fontWidth(.condensed)
                     .contentTransition(.numericText(countsDown: true))
                 Spacer()
@@ -99,47 +99,47 @@ extension UserUpgradeView {
                 HStack {
                     Button {
                         var adder: Double = 0
-                        if userData.flightAttendentHappiness != 1 {
+                        if userData.wrappedValue.flightAttendentHappiness != 1 {
                             adder = Double.random(in: 0.01...0.05)
-                            while adder + userData.flightAttendentHappiness > 1 {
+                            while adder + userData.wrappedValue.flightAttendentHappiness > 1 {
                                 adder = Double.random(in: 0.01...0.05)
                             }
                         }
                         withAnimation {
-                            userData.weeklyFlightAttendentSalary = userData.weeklyFlightAttendentSalary + 50
-                            userData.flightAttendentHappiness = userData.flightAttendentHappiness + adder
+                            userData.wrappedValue.weeklyFlightAttendentSalary = userData.wrappedValue.weeklyFlightAttendentSalary + 50
+                            userData.wrappedValue.flightAttendentHappiness = userData.wrappedValue.flightAttendentHappiness + adder
                         }
                     } label: {
                         Spacer()
                         Image(systemName: "arrowtriangle.up")
                         Spacer()
                     }
-                    .adaptiveProminentButtonStyle()
+                    .buttonStyle(.borderedProminent)
                     .tint(.green)
                     
                     Button {
                         var adder: Double = 0
-                        if userData.flightAttendentHappiness != 1 {
+                        if userData.wrappedValue.flightAttendentHappiness != 1 {
                             adder = Double.random(in: 0.01...0.05)
-                            while adder + userData.flightAttendentHappiness > 1 {
+                            while adder + userData.wrappedValue.flightAttendentHappiness > 1 {
                                 adder = Double.random(in: 0.01...0.05)
                             }
                         }
                         withAnimation {
-                            userData.weeklyFlightAttendentSalary = userData.weeklyFlightAttendentSalary - 50
-                            userData.flightAttendentHappiness = userData.flightAttendentHappiness - adder
+                            userData.wrappedValue.weeklyFlightAttendentSalary = userData.wrappedValue.weeklyFlightAttendentSalary - 50
+                            userData.wrappedValue.flightAttendentHappiness = userData.wrappedValue.flightAttendentHappiness - adder
                         }
                     } label: {
                         Spacer()
                         Image(systemName: "arrowtriangle.down")
                         Spacer()
                     }
-                    .adaptiveProminentButtonStyle()
+                    .buttonStyle(.borderedProminent)
                     .tint(.red)
                 }
             }
-            .padding()
-            .frame(width: 200, height: 200)
+            .padding(5)
+            .frame(width: 150, height: 140)
             .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
             .clipShape(RoundedRectangle(cornerRadius: 10.0))
             
@@ -151,10 +151,10 @@ extension UserUpgradeView {
                 Spacer()
                 Image(systemName: "wrench.and.screwdriver")
                     .font(.system(size: 36))
-                Text("$\(userData.weeklyFlightMaintainanceCrewSalary.withCommas)/week")
+                Text("$\(userData.wrappedValue.weeklyFlightMaintainanceCrewSalary.withCommas)/week")
                     .fontWidth(.condensed)
                     .contentTransition(.numericText(countsDown: true))
-                Text("\(String(Int(userData.maintainanceCrewHappiness * 100)))%")
+                Text("\(String(Int(userData.wrappedValue.maintainanceCrewHappiness * 100)))%")
                     .fontWidth(.condensed)
                     .contentTransition(.numericText(countsDown: true))
                 Spacer()
@@ -163,47 +163,47 @@ extension UserUpgradeView {
                 HStack {
                     Button {
                         var adder: Double = 0
-                        if userData.maintainanceCrewHappiness != 1 {
+                        if userData.wrappedValue.maintainanceCrewHappiness != 1 {
                             adder = Double.random(in: 0.01...0.05)
-                            while adder + userData.maintainanceCrewHappiness > 1 {
+                            while adder + userData.wrappedValue.maintainanceCrewHappiness > 1 {
                                 adder = Double.random(in: 0.01...0.05)
                             }
                         }
                         withAnimation {
-                            userData.weeklyFlightMaintainanceCrewSalary = userData.weeklyFlightMaintainanceCrewSalary + 50
-                            userData.maintainanceCrewHappiness = userData.maintainanceCrewHappiness + adder
+                            userData.wrappedValue.weeklyFlightMaintainanceCrewSalary = userData.wrappedValue.weeklyFlightMaintainanceCrewSalary + 50
+                            userData.wrappedValue.maintainanceCrewHappiness = userData.wrappedValue.maintainanceCrewHappiness + adder
                         }
                     } label: {
                         Spacer()
                         Image(systemName: "arrowtriangle.up")
                         Spacer()
                     }
-                    .adaptiveProminentButtonStyle()
+                    .buttonStyle(.borderedProminent)
                     .tint(.green)
                     
                     Button {
                         var adder: Double = 0
-                        if userData.maintainanceCrewHappiness != 1 {
+                        if userData.wrappedValue.maintainanceCrewHappiness != 1 {
                             adder  = Double.random(in: 0.01...0.05)
-                            while adder + userData.maintainanceCrewHappiness > 1 {
+                            while adder + userData.wrappedValue.maintainanceCrewHappiness > 1 {
                                 adder = Double.random(in: 0.01...0.05)
                             }
                         }
                         withAnimation {
-                            userData.weeklyFlightMaintainanceCrewSalary = userData.weeklyFlightMaintainanceCrewSalary - 50
-                            userData.maintainanceCrewHappiness = userData.maintainanceCrewHappiness - adder
+                            userData.wrappedValue.weeklyFlightMaintainanceCrewSalary = userData.wrappedValue.weeklyFlightMaintainanceCrewSalary - 50
+                            userData.wrappedValue.maintainanceCrewHappiness = userData.wrappedValue.maintainanceCrewHappiness - adder
                         }
                     } label: {
                         Spacer()
                         Image(systemName: "arrowtriangle.down")
                         Spacer()
                     }
-                    .adaptiveProminentButtonStyle()
+                    .buttonStyle(.borderedProminent)
                     .tint(.red)
                 }
             }
-            .padding()
-            .frame(width: 200, height: 200)
+            .padding(5)
+            .frame(width: 150, height: 140)
             .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
             .clipShape(RoundedRectangle(cornerRadius: 10.0))
         }

@@ -16,8 +16,8 @@ extension UserUpgradeView {
             Text(airport.name)
                 .fontWidth(.condensed)
         }
-        .padding()
-        .frame(width: 200, height: 150)
+        .padding(5)
+        .frame(width: 150, height: 100)
         .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 10.0))
     }
@@ -33,7 +33,7 @@ extension UserUpgradeView {
             ScrollView(.horizontal) {
                 HStack {
                     ForEach(userData.deliveryHubs, id: \.uniqueID) { airport in
-                        airportItemView(airport)
+                        airportItemView(airport.wrappedValue)
                     }
                     Button {
                         withAnimation {
@@ -48,18 +48,19 @@ extension UserUpgradeView {
                                 .padding(1)
                             Text("$10,000,000")
                                 .fontWidth(.condensed)
-                            if userData.accountBalance < 10000000 {
+                            if userData.wrappedValue.accountBalance < 10000000 {
                                 Text("Not enough for a new hub")
                                     .fontWidth(.condensed)
                             }
                         }
-                        .padding()
-                        .frame(width: 200, height: 150)
+                        .padding(5)
+                        .frame(width: 150, height: 100)
                         .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
                         .clipShape(RoundedRectangle(cornerRadius: 10.0))
                     }
                     .buttonStyle(.plain)
-                    .disabled(userData.accountBalance < 10000000)
+                    .disabled(userData.wrappedValue.accountBalance < 10000000)
+                    /// To add later in v1.0
                 }
             }
         }
