@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct WelcomeView: View {
+    @Environment(\.dismissWindow) private var dismissWindow
+    @EnvironmentObject var windowsOpened: WindowRegistry
     @State var showLogo: Bool = true
     @State var showBody: Bool = false
     @State var error: Bool = false
@@ -85,6 +87,12 @@ struct WelcomeView: View {
                     openWindow(id: "main")
                     closeWindow = true
                 }
+            }
+            
+            windowsOpened.windowsOpened.append(.welcome)
+            
+            if windowsOpened.windowsOpened.count(where: { $0 == .welcome }) > 1 {
+                dismissWindow()
             }
         }
         .background(AnyView(closeWindow ? WindowCloser() : nil))

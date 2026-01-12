@@ -9,9 +9,14 @@ import SwiftUI
 import SwiftData
 import Foundation
 
+// Tracker that checks what windows are opened and what are not
+enum WindowType: Codable {
+    case main, welcome, fuel, attributes, shop
+}
+
 @MainActor
 final class WindowRegistry: ObservableObject {
-    @Published var openFleetWindows = 0
+    @Published var windowsOpened: [WindowType] = []
 }
 
 /// Enum to decide what data type to use
@@ -31,6 +36,8 @@ struct Skyrise_BureauApp: App {
     /// BUILD OF APP
     
     @Environment(\.openWindow) var openWindow
+    @StateObject private var windowRegistry = WindowRegistry()
+
     
     var body: some Scene {
         let sharedModelContainer: ModelContainer = {
@@ -43,12 +50,17 @@ struct Skyrise_BureauApp: App {
         
         WindowGroup("Welcome to Skyrise Bureau!", id: "welcome") {
             WelcomeView(debug: resetUserData)
+                .environmentObject(windowRegistry)
         }
         .windowResizability(.contentSize)
         .modelContainer(sharedModelContainer)
         
         WindowGroup("Skyrise Bureau", id: "main") {
             ContentView(resetUserData: resetUserData, useTestData: useTestData)
+                .environmentObject(windowRegistry)
+                .onAppear {
+                    windowRegistry.windowsOpened = []
+                }
         }
         .modelContainer(sharedModelContainer)
         .commands {
@@ -63,6 +75,7 @@ struct Skyrise_BureauApp: App {
         
         WindowGroup("Jet Set Emporium", id: "shop") {
             AirplaneStoreView()
+                .environmentObject(windowRegistry)
         }
         .windowResizability(.contentSize)
         .modelContainer(sharedModelContainer)
@@ -79,6 +92,7 @@ struct Skyrise_BureauApp: App {
         WindowGroup("About Your Airline", id: "attributes") {
             UserUpgradeView()
             //            Text("stupid shit just work")
+                .environmentObject(windowRegistry)
         }
         .modelContainer(sharedModelContainer)
         .windowResizability(.contentSize)
@@ -94,6 +108,7 @@ struct Skyrise_BureauApp: App {
         
         WindowGroup("KEROX", id: "fuel") {
             FuelPriceView()
+                .environmentObject(windowRegistry)
         }
         .windowResizability(.contentSize)
         .modelContainer(sharedModelContainer)
@@ -109,6 +124,7 @@ struct Skyrise_BureauApp: App {
         
         WindowGroup("About Skyrise Bureau", id: "about") {
             AboutView()
+                .environmentObject(windowRegistry)
         }
         .windowResizability(.contentSize)
         

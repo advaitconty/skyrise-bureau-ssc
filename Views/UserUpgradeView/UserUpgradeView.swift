@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct UserUpgradeView: View {
+    @Environment(\.dismissWindow) private var dismissWindow
+    @EnvironmentObject var windowsOpened: WindowRegistry
     @State var showAirportPickerView: Bool = true
     @State var selectedAirport: Airport = Airport(
         name: "Soote",
@@ -355,6 +357,18 @@ struct UserUpgradeView: View {
             }
         }
         .frame(width: 600, height: 400)
+        .onAppear {
+            windowsOpened.windowsOpened.append(.attributes)
+            
+            print(windowsOpened.windowsOpened.count(where: { $0 == .attributes }))
+
+            if windowsOpened.windowsOpened.count(where: { $0 == .attributes }) >= 2 {
+                dismissWindow()
+            }
+        }
+        .onDisappear {
+            windowsOpened.windowsOpened.remove(at: windowsOpened.windowsOpened.firstIndex(where: { $0 == .attributes})!)
+        }
     }
 }
 
