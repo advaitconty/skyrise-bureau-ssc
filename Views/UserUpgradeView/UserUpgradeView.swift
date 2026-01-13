@@ -153,6 +153,14 @@ struct UserUpgradeView: View {
                             .font(.largeTitle)
                         Text("AVAILABLE\nXP POINTS")
                             .fontWidth(.expanded)
+                        if !checkForMacCatalyst() {
+                            Button {
+                                dismiss()
+                            } label: {
+                                Image(systemName: "xmark")
+                            }
+                            .adaptiveButtonStyle()
+                        } // targetEnvironment(macCatalyst)
                     }
                     HStack {
                         Button {

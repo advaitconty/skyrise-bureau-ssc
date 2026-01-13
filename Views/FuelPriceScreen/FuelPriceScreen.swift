@@ -105,6 +105,14 @@ struct FuelPriceView: View {
                         .multilineTextAlignment(.trailing)
                         .contentTransition(.numericText(countsDown: true))
                     }
+                    if !checkForMacCatalyst() {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                        }
+                        .adaptiveButtonStyle()
+                    }  // targetEnvironment(macCatalyst)
                 }
                 HStack {
                     /// SwiftUI chart

@@ -97,6 +97,14 @@ struct ShopView: View {
                             /// Remove upon final release
                             selectedPlane = filteredPlanes[52]
                         }
+                    if !checkForMacCatalyst() {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                        }
+                        .adaptiveButtonStyle()
+                    } // targetEnvironment(macCatalyst)
                 }
                 .padding([.top, .leading, .trailing])
                 NavigationSplitView {

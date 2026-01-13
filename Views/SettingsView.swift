@@ -75,6 +75,14 @@ struct SettingsView: View {
                     .font(.largeTitle)
                     .fontWidth(.expanded)
                 Spacer()
+                if !checkForMacCatalyst() {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                    }
+                    .adaptiveButtonStyle()
+                } // targetEnvironment(macCatalyst)
             }
             Spacer()
             // MARK: Notification settings stuff
