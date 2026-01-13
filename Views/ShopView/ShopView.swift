@@ -97,28 +97,6 @@ struct ShopView: View {
                             /// Remove upon final release
                             selectedPlane = filteredPlanes[52]
                         }
-                    if #available(iOS 26.0, *) {
-                        Button {
-                            dismiss()
-                        } label: {
-                            Image(systemName: "xmark")
-                                .font(.largeTitle)
-                                .symbolRenderingMode(.hierarchical)
-                        }
-                        .tint(.gray)
-                        .hoverEffect()
-                        .buttonStyle(.glass)
-                    } else {
-                        Button {
-                            dismiss()
-                        } label: {
-                            Image(systemName: "xmark")
-                                .font(.largeTitle)
-                                .symbolRenderingMode(.hierarchical)
-                        }
-                        .tint(.gray)
-                        .hoverEffect()
-                    }
                 }
                 .padding([.top, .leading, .trailing])
                 NavigationSplitView {

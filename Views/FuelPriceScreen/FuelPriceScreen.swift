@@ -105,14 +105,6 @@ struct FuelPriceView: View {
                         .multilineTextAlignment(.trailing)
                         .contentTransition(.numericText(countsDown: true))
                     }
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .symbolRenderingMode(.hierarchical)
-                            .font(.title)
-                    }
-                    .adaptiveButtonStyle()
                 }
                 HStack {
                     /// SwiftUI chart

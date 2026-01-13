@@ -75,25 +75,6 @@ struct SettingsView: View {
                     .font(.largeTitle)
                     .fontWidth(.expanded)
                 Spacer()
-                if #available(iOS 26.0, *) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .symbolRenderingMode(.hierarchical)
-                    }
-                    .tint(.gray)
-                    .buttonStyle(.glass)
-                } else {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .symbolRenderingMode(.hierarchical)
-                    }
-                    .tint(.gray)
-                    .buttonStyle(.plain)
-                }
             }
             Spacer()
             // MARK: Notification settings stuff

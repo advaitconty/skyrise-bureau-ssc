@@ -153,14 +153,6 @@ struct UserUpgradeView: View {
                             .font(.largeTitle)
                         Text("AVAILABLE\nXP POINTS")
                             .fontWidth(.expanded)
-                        Button {
-                            dismiss()
-                        } label: {
-                            Image(systemName: "xmark.circle.fill")
-                                .symbolRenderingMode(.hierarchical)
-                                .padding()
-                        }
-                        .adaptiveButtonStyle()
                     }
                     HStack {
                         Button {
