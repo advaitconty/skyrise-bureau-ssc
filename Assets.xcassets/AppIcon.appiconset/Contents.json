@@ -1,36 +1,6 @@
 {
   "images" : [
     {
-      "filename" : "Skyrise-iOS-Default-1024x1024@1x.png",
-      "idiom" : "universal",
-      "platform" : "ios",
-      "size" : "1024x1024"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "Skyrise-iOS-Dark-1024x1024@1x.png",
-      "idiom" : "universal",
-      "platform" : "ios",
-      "size" : "1024x1024"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "tinted"
-        }
-      ],
-      "filename" : "Skyrise-iOS-TintedDark-1024x1024@1x.png",
-      "idiom" : "universal",
-      "platform" : "ios",
-      "size" : "1024x1024"
-    },
-    {
       "filename" : "Skyrise-macOS-Default-16x16@1x.png",
       "idiom" : "mac",
       "scale" : "1x",
