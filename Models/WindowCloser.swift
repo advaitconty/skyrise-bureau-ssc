@@ -7,7 +7,6 @@
 
 
 import SwiftUI
-import AppKit
 
 struct WindowCloser: View {
     @Environment(\.dismissWindow) var dissmissWindow

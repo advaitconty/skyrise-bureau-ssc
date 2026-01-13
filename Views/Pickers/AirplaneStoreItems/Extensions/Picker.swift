@@ -27,7 +27,7 @@ extension AirplaneStoreView {
                                 Text("\(countryNameToEmoji(airport.country)) \(airport.reportCorrectCodeForUserData(userData.wrappedValue))")
                                     .fontWidth(.expanded)
                             }
-                            .buttonStyle(.borderedProminent)
+                            .adaptiveProminentButtonStyle()
                             .transition(.blurReplace)
                         } else {
                             Button {
@@ -38,7 +38,7 @@ extension AirplaneStoreView {
                                 Text("\(countryNameToEmoji(airport.country)) \(airport.reportCorrectCodeForUserData(userData.wrappedValue))")
                                     .fontWidth(.condensed)
                             }
-                            .buttonStyle(.bordered)
+                            .adaptiveButtonStyle()
                             .transition(.blurReplace)
                         }
                     }

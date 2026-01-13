@@ -33,7 +33,7 @@ extension UserUpgradeView {
             Text("$\(price.withCommas)")
                 .fontWidth(.condensed)
         }
-        .buttonStyle(.bordered)
+        .adaptiveButtonStyle()
         .disabled(userData.wrappedValue.accountBalance < price)
     }
 }

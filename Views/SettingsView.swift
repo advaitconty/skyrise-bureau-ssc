@@ -210,7 +210,7 @@ struct SettingsView: View {
                     Text("IATA (e.g. AUH/LAX)")
                         .fontWidth(.condensed)
                 }
-                .buttonStyle(.borderedProminent)
+                .adaptiveProminentButtonStyle()
                 .tint(moidifiableUserdata.wrappedValue.preferedAirlineCodeType == .iata ? Color.accentColor : .gray)
                 Button {
                     withAnimation {
@@ -220,7 +220,7 @@ struct SettingsView: View {
                     Text("ICAO (e.g. OMAA/KLAX)")
                         .fontWidth(.condensed)
                 }
-                .buttonStyle(.borderedProminent)
+                .adaptiveProminentButtonStyle()
                 .tint(moidifiableUserdata.wrappedValue.preferedAirlineCodeType == .icao ? Color.accentColor : .gray)
             }
             /// Notification preferences manager
@@ -242,7 +242,7 @@ struct SettingsView: View {
                     Text("Jet Arrival")
                         .fontWidth(.condensed)
                 }
-                .buttonStyle(.borderedProminent)
+                .adaptiveProminentButtonStyle()
                 .tint(moidifiableUserdata.wrappedValue.allowedNotificationTypes.contains(.arrival) ? Color.accentColor : .gray)
                 
                 Button {
@@ -259,7 +259,7 @@ struct SettingsView: View {
                     Text("End of Maintainance")
                         .fontWidth(.condensed)
                 }
-                .buttonStyle(.borderedProminent)
+                .adaptiveProminentButtonStyle()
                 .tint(moidifiableUserdata.wrappedValue.allowedNotificationTypes.contains(.maintainanceEnd) ? Color.accentColor : .gray)
                 
                 Button {
@@ -276,7 +276,7 @@ struct SettingsView: View {
                     Text("End of Campaign")
                         .fontWidth(.condensed)
                 }
-                .buttonStyle(.borderedProminent)
+                .adaptiveProminentButtonStyle()
                 .tint(moidifiableUserdata.wrappedValue.allowedNotificationTypes.contains(.campaignEnd) ? Color.accentColor : .gray)
             }
             
@@ -297,7 +297,7 @@ struct SettingsView: View {
                         Spacer()
                     }
                 }
-                .buttonStyle(.borderedProminent)
+                .adaptiveProminentButtonStyle()
                 .tint(showNotificationsLog ? Color.accentColor : .gray)
                 
                 if showNotificationsLog {

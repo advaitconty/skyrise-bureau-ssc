@@ -22,7 +22,7 @@ extension MapView {
                             Image(systemName: "sidebar.left")
                                 .padding(2)
                         }
-                        .buttonStyle(.bordered)
+                        .adaptiveButtonStyle()
                         .background(.ultraThickMaterial)
                         .matchedGeometryEffect(id: "sidebarBtn", in: namespace)
                         Text("Planes")

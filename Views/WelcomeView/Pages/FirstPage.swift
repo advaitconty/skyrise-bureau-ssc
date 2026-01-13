@@ -37,37 +37,11 @@ extension WelcomeView {
                         .font(.title3)
                         .fontWidth(.expanded)
                     
-                    HStack {
-                        Text("Airline name")
-                            .fontWidth(.expanded)
-                        Spacer()
-                        TextField("IndiGo Atlantic", text: $userDataForAddition.airlineName)
-                            .textFieldStyle(.roundedBorder)
-                            .monospaced()
-                    }
+                    GlassTextField("Airline Name", $userDataForAddition.airlineName, "Etihad Airways", monospaced: true)
                     
-                    HStack {
-                        Text("Airline CEO")
-                            .fontWidth(.expanded)
-                        Spacer()
-                        TextField("Pieters Elbiers", text: $userDataForAddition.name)
-                            .textFieldStyle(.roundedBorder)
-                            .monospaced()
-                    }
+                    GlassTextField("Airline CEO", $userDataForAddition.name, "Antonoaldo Neves", monospaced: true)
                     
-                    HStack {
-                        Text("IATA Code")
-                            .fontWidth(.expanded)
-                        Spacer()
-                        TextField("2-letter airline code (e.g., 6E, BA, SQ)", text: $userDataForAddition.airlineIataCode)
-                            .textFieldStyle(.roundedBorder)
-                            .monospaced()
-                            .onChange(of: userDataForAddition.airlineIataCode) { oldValue, newValue in
-                                if newValue.count > 2 {
-                                    userDataForAddition.airlineIataCode = String(newValue.prefix(2))
-                                }
-                            }
-                    }
+                    GlassTextField("IATA Code", $userDataForAddition.airlineIataCode, "2-letter airline code (e.g., EY, LH, EK)", monospaced: true)
                 }
                 .transition(.blurReplace)
                 .onChange(of: userDataForAddition.airlineIataCode) {
@@ -120,6 +94,7 @@ extension WelcomeView {
                         .fontWidth(.condensed)
                 }
                 .transition(.blurReplace)
+                .adaptiveProminentButtonStyle()
             }
         }
         .transition(.slide)

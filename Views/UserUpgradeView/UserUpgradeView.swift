@@ -267,7 +267,7 @@ struct UserUpgradeView: View {
                                 .font(.caption)
                             Spacer()
                         }
-                        .buttonStyle(.borderedProminent)
+                        .adaptiveProminentButtonStyle()
                         .tint(screen == 1 ? .accentColor : .gray)
                         
                         
@@ -284,7 +284,7 @@ struct UserUpgradeView: View {
                                 .font(.caption)
                             Spacer()
                         }
-                        .buttonStyle(.borderedProminent)
+                        .adaptiveProminentButtonStyle()
                         .tint(screen == 2 ? .accentColor : .gray)
                         
                         Button {
@@ -300,7 +300,7 @@ struct UserUpgradeView: View {
                                 .font(.caption)
                             Spacer()
                         }
-                        .buttonStyle(.borderedProminent)
+                        .adaptiveProminentButtonStyle()
                         .tint(screen == 3 ? .accentColor : .gray)
                     }
                     if screen == 1 {

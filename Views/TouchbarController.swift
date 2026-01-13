@@ -207,7 +207,7 @@ struct TouchbarController: View {
 //                } label: {
 //                    Image(systemName: "chevron.left")
 //                }
-//                .buttonStyle(.bordered)
+//                .adaptiveButtonStyle()
                 
                 Text("\(selectedPlane!.aircraftname)")
                     .fontWidth(.expanded)

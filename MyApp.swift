@@ -37,23 +37,22 @@ struct Skyrise_BureauApp: App {
     
     @Environment(\.openWindow) var openWindow
     @StateObject private var windowRegistry = WindowRegistry()
-
+    
+    static var sharedModelContainer: ModelContainer = {
+        let schema = Schema([
+            UserData.self,
+        ])
+        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        return try! ModelContainer(for: schema, configurations: [config])
+    }()
     
     var body: some Scene {
-        let sharedModelContainer: ModelContainer = {
-            let schema = Schema([
-                UserData.self,
-            ])
-            let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-            return try! ModelContainer(for: schema, configurations: [config])
-        }()
-        
         WindowGroup("Welcome to Skyrise Bureau!", id: "welcome") {
             WelcomeView(debug: resetUserData)
                 .environmentObject(windowRegistry)
         }
         .windowResizability(.contentSize)
-        .modelContainer(sharedModelContainer)
+        .modelContainer(Self.sharedModelContainer)
         
         WindowGroup("Skyrise Bureau", id: "main") {
             ContentView(resetUserData: resetUserData, useTestData: useTestData)
@@ -62,7 +61,7 @@ struct Skyrise_BureauApp: App {
                     windowRegistry.windowsOpened = []
                 }
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(Self.sharedModelContainer)
         .commands {
             CommandGroup(replacing: .appInfo) {
                 Button {
@@ -78,7 +77,7 @@ struct Skyrise_BureauApp: App {
                 .environmentObject(windowRegistry)
         }
         .windowResizability(.contentSize)
-        .modelContainer(sharedModelContainer)
+        .modelContainer(Self.sharedModelContainer)
         .commands {
             CommandGroup(replacing: .appInfo) {
                 Button {
@@ -94,7 +93,7 @@ struct Skyrise_BureauApp: App {
             //            Text("stupid shit just work")
                 .environmentObject(windowRegistry)
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(Self.sharedModelContainer)
         .windowResizability(.contentSize)
         .commands {
             CommandGroup(replacing: .appInfo) {
@@ -111,7 +110,7 @@ struct Skyrise_BureauApp: App {
                 .environmentObject(windowRegistry)
         }
         .windowResizability(.contentSize)
-        .modelContainer(sharedModelContainer)
+        .modelContainer(Self.sharedModelContainer)
         .commands {
             CommandGroup(replacing: .appInfo) {
                 Button {

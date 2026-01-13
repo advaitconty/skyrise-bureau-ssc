@@ -48,7 +48,7 @@ extension UserUpgradeView {
                         Image(systemName: "arrowtriangle.up")
                         Spacer()
                     }
-                    .buttonStyle(.borderedProminent)
+                    .adaptiveProminentButtonStyle()
                     .tint(.green)
                     
                     Button {
@@ -70,7 +70,7 @@ extension UserUpgradeView {
                         Image(systemName: "arrowtriangle.down")
                         Spacer()
                     }
-                    .buttonStyle(.borderedProminent)
+                    .adaptiveProminentButtonStyle()
                     .tint(.red)
                 }
             }
@@ -114,7 +114,7 @@ extension UserUpgradeView {
                         Image(systemName: "arrowtriangle.up")
                         Spacer()
                     }
-                    .buttonStyle(.borderedProminent)
+                    .adaptiveProminentButtonStyle()
                     .tint(.green)
                     
                     Button {
@@ -134,7 +134,7 @@ extension UserUpgradeView {
                         Image(systemName: "arrowtriangle.down")
                         Spacer()
                     }
-                    .buttonStyle(.borderedProminent)
+                    .adaptiveProminentButtonStyle()
                     .tint(.red)
                 }
             }
@@ -178,7 +178,7 @@ extension UserUpgradeView {
                         Image(systemName: "arrowtriangle.up")
                         Spacer()
                     }
-                    .buttonStyle(.borderedProminent)
+                    .adaptiveProminentButtonStyle()
                     .tint(.green)
                     
                     Button {
@@ -198,7 +198,7 @@ extension UserUpgradeView {
                         Image(systemName: "arrowtriangle.down")
                         Spacer()
                     }
-                    .buttonStyle(.borderedProminent)
+                    .adaptiveProminentButtonStyle()
                     .tint(.red)
                 }
             }

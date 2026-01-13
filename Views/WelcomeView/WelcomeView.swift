@@ -98,3 +98,8 @@ struct WelcomeView: View {
         .background(AnyView(closeWindow ? WindowCloser() : nil))
     }
 }
+
+
+#Preview {
+    WelcomeView(debug: false)
+}

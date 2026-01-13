@@ -97,7 +97,9 @@ extension MapView {
                             MapPitchToggle(scope: mapScope)
                             MapCompass(scope: mapScope)
                             MapScaleView(scope: mapScope)
+                            #if os(macOS)
                             MapZoomStepper(scope: mapScope)
+                            #endif
                         }
                         VStack {
                             if !showSidebar {
@@ -109,7 +111,7 @@ extension MapView {
                                     Image(systemName: "sidebar.left")
                                         .padding(2)
                                 }
-                                .buttonStyle(.bordered)
+                                .adaptiveButtonStyle()
                                 .background(.ultraThickMaterial)
                                 .matchedGeometryEffect(id: "sidebarBtn", in: namespace)
                             }
@@ -120,7 +122,7 @@ extension MapView {
                                 Image(systemName: "map")
                                     .padding(2)
                             }
-                            .buttonStyle(.bordered)
+                            .adaptiveButtonStyle()
                             .background(.ultraThickMaterial)
                             .popover(isPresented: $showMapSelector, arrowEdge: .bottom) {
                                 mapSelectView()

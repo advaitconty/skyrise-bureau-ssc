@@ -206,7 +206,9 @@ struct AirportPickerView: View {
                             MapPitchToggle(scope: mapScope)
                             MapCompass(scope: mapScope)
                             MapScaleView(scope: mapScope)
+                            #if os(macOS)
                             MapZoomStepper(scope: mapScope)
+                            #endif
                         }
                         VStack {
                             Button {
@@ -215,7 +217,7 @@ struct AirportPickerView: View {
                                 Image(systemName: "map")
                                     .padding(2)
                             }
-                            .buttonStyle(.bordered)
+                            .adaptiveButtonStyle()
                             .background(.ultraThickMaterial)
                             .popover(isPresented: $showMapSelector, arrowEdge: .bottom) {
                                 mapSelectView()
