@@ -8,13 +8,13 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "Skyrise Bureau Swift Playgrounds",
+    name: "Skyrise Bureau",
     platforms: [
         .iOS("26.0")
     ],
     products: [
         .iOSApplication(
-            name: "Skyrise Bureau Swift Playgrounds",
+            name: "Skyrise Bureau",
             targets: ["AppModule"],
             bundleIdentifier: "com.advaitconty.ssc.Skyrise-Bureau-Swift-Playgrounds",
             teamIdentifier: "MK2VQ82S9T",
@@ -34,7 +34,8 @@ let package = Package(
             ],
             capabilities: [
                 .fileAccess(.userSelectedFiles, mode: .readWrite)
-            ]
+            ],
+            appCategory: .simulationGames
         )
     ],
     dependencies: [

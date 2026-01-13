@@ -24,7 +24,11 @@ struct Skyrise_BureauApp: App {
     
     /// ENSURE ALL VARIABLES ABOVE ARE SET TO false BEFORE FINAL
     /// BUILD OF APP
-        
+    ///
+    init() {
+        UserDefaults.standard.set(false, forKey: "UIApplicationSupportsTabbedSceneCollection")
+    }
+    
     var body: some Scene {
         let sharedModelContainer: ModelContainer = {
             let schema = Schema([
@@ -36,6 +40,11 @@ struct Skyrise_BureauApp: App {
         
         WindowGroup("Skyrise Bureau", id: "main") {
             ContentView(resetUserData: resetUserData, useTestData: useTestData)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        EmptyView()
+                    }
+                }
         }
         .modelContainer(sharedModelContainer)
         

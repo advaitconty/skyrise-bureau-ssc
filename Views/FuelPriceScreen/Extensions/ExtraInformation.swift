@@ -25,7 +25,7 @@ extension FuelPriceView {
                 Text("REMAINING\nBALANCE:")
                     .fontWidth(.condensed)
                 Spacer()
-                Text("$\((modifiableUserData.wrappedValue.accountBalance - userData.currentFuelPrice/1000 * amountOfFuelUserWantsToPurchase).withCommas)")
+                Text("$\((modifiableUserData.wrappedValue.accountBalance - modifiableUserData.wrappedValue.currentFuelPrice/1000 * amountOfFuelUserWantsToPurchase).withCommas)")
                     .font(.title2)
                     .fontWidth(.expanded)
                     .contentTransition(.numericText(countsDown: true))
