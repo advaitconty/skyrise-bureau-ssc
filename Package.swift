@@ -20,7 +20,7 @@ let package = Package(
             teamIdentifier: "MK2VQ82S9T",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .asset("AppIcon"),
+            appIcon: .placeholder(icon: .plane),
             accentColor: .asset("AccentColor"),
             supportedDeviceFamilies: [
                 .pad,
@@ -39,13 +39,19 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/buh/CompactSlider.git", "2.1.0"..<"3.0.0")
+        .package(url: "https://github.com/buh/CompactSlider.git", "2.1.0"..<"3.0.0"),
+        .package(url: "https://github.com/maplibre/maplibre-gl-native-distribution.git", "6.22.1"..<"7.0.0"),
+        .package(url: "https://github.com/maplibre/swiftui-dsl.git", .branch("main"))
     ],
     targets: [
         .executableTarget(
             name: "AppModule",
             dependencies: [
-                .product(name: "CompactSlider", package: "compactslider")
+                .product(name: "CompactSlider", package: "compactslider"),
+                .product(name: "MapLibre", package: "maplibre-gl-native-distribution"),
+                .product(name: "MapLibreSwiftDSL", package: "swiftui-dsl"),
+                .product(name: "MapLibreSwiftMacros", package: "swiftui-dsl"),
+                .product(name: "MapLibreSwiftUI", package: "swiftui-dsl")
             ],
             path: "."
         )
