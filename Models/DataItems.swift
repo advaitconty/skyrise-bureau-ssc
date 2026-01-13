@@ -401,8 +401,8 @@ struct FleetItem: Codable, Identifiable, Equatable {
         // Update flight status
         isAirborne = true
         takeoffTime = Date()
-        landingTime = takeoffTime!.adding(hours: Double(distance) / Double(planeSelected.cruiseSpeed))
-        estimatedLandingTime = takeoffTime!.adding(hours: Double(distance) / Double(planeSelected.cruiseSpeed))
+        landingTime = takeoffTime!.adding(hours: (Double(distance) / Double(planeSelected.cruiseSpeed) / 200))
+        estimatedLandingTime = takeoffTime!.adding(hours: (Double(distance) / Double(planeSelected.cruiseSpeed) / 200))
         passengerSeatsUsed = seatsBooked
         userDataProvided.wrappedValue.accountBalance += revenue
         currentAirportLocation = nil
