@@ -1,5 +1,5 @@
 {
-  "originHash" : "7f16fd3d6f54515b66b124ad11036d0c13776b456e49386d30138608101277bb",
+  "originHash" : "cc8de9b663067bfda23d2dd4fe8690addc3bb3271b1d4e1382a83350c5a1d3e8",
   "pins" : [
     {
       "identity" : "compactslider",
@@ -8,51 +8,6 @@
       "state" : {
         "revision" : "52a01bd09156152881c53ba235c862e3bf5690b1",
         "version" : "2.1.0"
-      }
-    },
-    {
-      "identity" : "maplibre-gl-native-distribution",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/maplibre/maplibre-gl-native-distribution.git",
-      "state" : {
-        "revision" : "fa12216f30833c2b4d897714f7c1ca2f5608f685",
-        "version" : "6.22.1"
-      }
-    },
-    {
-      "identity" : "mockable",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/Kolos65/Mockable.git",
-      "state" : {
-        "revision" : "1e0d218b41aef515627a0fa7c98ca2b9d2833213",
-        "version" : "0.5.0"
-      }
-    },
-    {
-      "identity" : "swift-syntax",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swiftlang/swift-syntax.git",
-      "state" : {
-        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
-        "version" : "602.0.0"
-      }
-    },
-    {
-      "identity" : "swiftui-dsl",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/maplibre/swiftui-dsl.git",
-      "state" : {
-        "branch" : "main",
-        "revision" : "e2da0e969a345c00e7524adf391d9be232be9c26"
-      }
-    },
-    {
-      "identity" : "xctest-dynamic-overlay",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
-      "state" : {
-        "revision" : "34e463e98ab8541c604af706c99bed7160f5ec70",
-        "version" : "1.8.1"
       }
     }
   ],
