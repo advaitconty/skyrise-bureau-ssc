@@ -6,19 +6,19 @@
 //
 
 import SwiftUI
-import CompactSlider
 
 extension ShopView {
     func seatingConfiguratorItem(numberToChange: Binding<Int>, icon: String) -> some View {
             HStack {
-                CompactSlider(value: Binding(get: {
-                    return Float(numberToChange.wrappedValue)
-                }, set: {
-                    numberToChange.wrappedValue = Int($0)
-                    
-                }), in: 0...Float(selectedPlane!.maxSeats), step: 1)
-                .compactSliderStyle(default: .horizontal(.leading))
-                .frame(height: 20)
+                GeometryReader { geometry in
+                    Slider(value: Binding(get: {
+                        return Float(numberToChange.wrappedValue)
+                    }, set: {
+                        numberToChange.wrappedValue = Int($0)
+                        
+                    }), in: 0...Float(selectedPlane!.maxSeats), step: 1)
+                }
+                
                 Image(systemName: icon)
                 Text("\(numberToChange.wrappedValue)")
                     .fontWidth(.condensed)

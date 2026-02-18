@@ -8,80 +8,48 @@
 import SwiftUI
 
 extension ShopView {
+    func aircraftImage(_ plane: Aircraft) -> some View {
+        HStack {
+            Image(plane.modelCode)
+                .resizable()
+                .scaledToFit()
+                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+        }
+    }
+    
     func planeConfiguratorView(_ plane: Aircraft) -> some View {
         ScrollView {
+            GeometryReader { geo in
+                        let isNarrow = geo.size.width < 600
+                        
+                        Group {
+                            if isNarrow {
+                                VStack(alignment: .leading, spacing: 16) {
+                                    aircraftImage(plane)
+                                    infoPanel(plane)
+                                }
+                            } else {
+                                HStack(alignment: .top, spacing: 24) {
+                                    aircraftImage(plane)
+                                        .frame(width: geo.size.width * 0.4, height: 280)
+                                    
+                                    infoPanel(plane)
+                                        .frame(width: geo.size.width * 0.55)
+                                }
+                            }
+                        }
+                    }
+                    .frame(minHeight: 400)
+            
             VStack {
-                Image(plane.modelCode)
-                    .resizable()
-                    .scaledToFit()
-                    .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-                VStack {
-                    HStack {
-                        Text(plane.name)
-                            .font(.system(size: 36))
-                            .fontWidth(.expanded)
-                        Spacer()
-                    }
-                    HStack {
-                        Text(plane.description)
-                            .font(.system(size: 16))
-                            .fontWidth(.condensed)
-                        Spacer()
-                    }
-                }
-                
-                LazyVGrid(columns: [
-                    GridItem(.adaptive(minimum: 150), spacing: 12)
-                ], spacing: 12) {
-                    littleSmallBoxThingyForMainView(icon: "ruler", item: "\(plane.maxRange)km")
-                    littleSmallBoxThingyForMainView(icon: "gauge.with.dots.needle.33percent", item: "\(plane.cruiseSpeed)km/h")
-                    littleSmallBoxThingyForMainView(icon: "carseat.right.fill", item: "\(plane.maxSeats)")
-                    littleSmallBoxThingyForMainView(icon: "fuelpump", item: "\(plane.fuelBurnRate)L/km")
-                    littleSmallBoxThingyForMainView(icon: "road.lanes", item: "\(plane.minRunwayLength)m")
-                    littleSmallBoxThingyForMainView(icon: "dollarsign.circle", item: "$\(plane.maintenanceCostPerHour)/km")
-                }
-                VStack {
-                    HStack {
-                        Text("Normal seating arrangement")
-                            .fontWidth(.condensed)
-                        Spacer()
-                    }
-                    HStack {
-                        Image(systemName: "carseat.right")
-                            .font(.system(size: 12))
-                        Text("\(plane.defaultSeating.economy)")
-                            .font(.system(size: 12))
-                            .fontWidth(.condensed)
-                        Divider()
-                        Image(systemName: "star")
-                            .font(.system(size: 12))
-                        Text("\(plane.defaultSeating.premiumEconomy)")
-                            .font(.system(size: 12))
-                            .fontWidth(.condensed)
-                        Divider()
-                        Image(systemName: "briefcase")
-                            .font(.system(size: 12))
-                        Text("\(plane.defaultSeating.business)")
-                            .font(.system(size: 12))
-                            .fontWidth(.condensed)
-                        Divider()
-                        Image(systemName: "crown")
-                            .font(.system(size: 12))
-                        Text("\(plane.defaultSeating.first)")
-                            .font(.system(size: 12))
-                            .fontWidth(.condensed)
-                    }
-                }
-                .frame(maxWidth: 250, maxHeight: 50)
-                .padding()
-                .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
-                .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
                 
                 if modifiableUserData.wrappedValue.accountBalance > plane.purchasePrice {
                     seatingConfiguration()
-                    .onAppear {
+                        .onAppear {
                             preferedSeatingConfig = plane.defaultSeating
                         }
+                    
+                    availableAirportPicker()
                     
                     
                     if !showAllSeatsFilled {
@@ -97,7 +65,7 @@ extension ShopView {
                         
                         if #available(iOS 26.0, *) {
                             Button {
-                                modifiableUserData.wrappedValue.planes.append(FleetItem(aircraftID: plane.modelCode, aircraftname: aircraftName, registration: registration, hoursFlown: 0, seatingLayout: preferedSeatingConfig, kilometersTravelledSinceLastMaintainence: 0))
+                                modifiableUserData.wrappedValue.planes.append(FleetItem(aircraftID: plane.modelCode, aircraftname: aircraftName, registration: registration, hoursFlown: 0, seatingLayout: preferedSeatingConfig, kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: airportToDeliverPlaneTo))
                                 modifiableUserData.wrappedValue.maintainanceCrew += 3
                                 modifiableUserData.wrappedValue.pilots += plane.pilots
                                 modifiableUserData.wrappedValue.flightAttendents += plane.flightAttendents
@@ -110,7 +78,7 @@ extension ShopView {
                             .hoverEffect()
                         } else {
                             Button {
-                                modifiableUserData.wrappedValue.planes.append(FleetItem(aircraftID: plane.modelCode, aircraftname: aircraftName, registration: registration, hoursFlown: 0, seatingLayout: preferedSeatingConfig, kilometersTravelledSinceLastMaintainence: 0))
+                                modifiableUserData.wrappedValue.planes.append(FleetItem(aircraftID: plane.modelCode, aircraftname: aircraftName, registration: registration, hoursFlown: 0, seatingLayout: preferedSeatingConfig, kilometersTravelledSinceLastMaintainence: 0, currentAirportLocation: airportToDeliverPlaneTo))
                                 modifiableUserData.wrappedValue.maintainanceCrew += 3
                                 modifiableUserData.wrappedValue.pilots += plane.pilots
                                 modifiableUserData.wrappedValue.flightAttendents += plane.flightAttendents

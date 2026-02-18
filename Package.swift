@@ -38,15 +38,9 @@ let package = Package(
             appCategory: .simulationGames
         )
     ],
-    dependencies: [
-        .package(url: "https://github.com/buh/CompactSlider.git", "2.1.0"..<"3.0.0")
-    ],
     targets: [
         .executableTarget(
             name: "AppModule",
-            dependencies: [
-                .product(name: "CompactSlider", package: "compactslider")
-            ],
             path: "."
         )
     ],

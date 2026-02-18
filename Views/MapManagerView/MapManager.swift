@@ -40,35 +40,26 @@ struct MapManagerView: View {
     @State var takeoffItems: DepartureDoneSuccessfullyItemsToShow? = nil
     @State var showTakeoffPopup: Bool = false
     @State var openShopView: Bool = false
+    @State var mapCameraPosition: OfflineMapPosition = .world
     
     var body: some View {
         ZStack {
             GeometryReader { reader in
                 // map item
                 ZStack(alignment: .bottomLeading) {
-                    Map {
-                        ForEach(AirportDatabase.shared.allAirports, id: \.id) { airport in
-                            airportAnnotation(airport)
-                        }
-                        
-                        ForEach(userData.planes.compactMap { plane -> (FleetItem, Airport)? in
-                            guard let location = plane.currentAirportLocation else { return nil }
-                            return (plane, location)
-                        }, id: \.0.id) { plane, location in
-                            aircraftAnnotation(plane, location: location)
-                            if let route = plane.assignedRoute {
-                                aircraftRouteAnnotation(route)
+                    OfflineMap(position: $mapCameraPosition) {
+                        OfflineMapContentGroup(
+                            annotations: AirportDatabase.shared.allAirports.map { airport in
+                                airport.asOfflineAnnotation(hubIATAs: userData.hubsAcquired.map(\.iata))
+                            } + userData.planes.compactMap { plane -> OfflineAnnotation? in
+                                guard plane.currentAirportLocation != nil else { return nil }
+                                return plane.asOfflineAnnotation()
+                            },
+                            routes: userData.planes.compactMap { plane -> OfflineRoute? in
+                                guard let route = plane.assignedRoute else { return nil }
+                                return route.asOfflineRoute(isActive: plane.isAirborne)
                             }
-                        }
-                    }
-                    .onAppear {
-                        print("Loaded view")
-                    }
-                    .mapStyle(mapType)
-                    .mapControls {
-                        MapPitchToggle(scope: mapScope)
-                        MapCompass(scope: mapScope)
-                        MapScaleView(scope: mapScope)
+                        )
                     }
                 }
                 
@@ -92,7 +83,8 @@ struct MapManagerView: View {
                                                     .font(.title)
                                                  +
                                                  Text("\nmanaged by \(userData.name)")
-                                                    .fontWidth(.condensed))                                }
+                                                    .fontWidth(.condensed))
+                                            }
                                             Spacer()
                                         }
                                         
@@ -170,19 +162,23 @@ struct MapManagerView: View {
                                         VStack {
                                             ProgressView(value: userData.progressToNextXPLevel) {
                                                 HStack {
-                                                    Text("Level \(userData.levels)")
+                                                    Text("\(userData.xp) XP - Level \(userData.currentLevel)")
                                                         .fontWidth(.condensed)
+                                                        .contentTransition(.numericText(countsDown: false))
                                                     Spacer()
                                                     Text("\(userData.xpRequiredForNextXPLevel) XP to next level")
                                                         .fontWidth(.condensed)
+                                                        .contentTransition(.numericText(countsDown: true))
                                                 }
                                             }
                                             HStack {
                                                 Text("Balance: $\(userData.accountBalance.withCommas)")
                                                     .fontWidth(.condensed)
+                                                    .contentTransition(.numericText(countsDown: false))
                                                 Spacer()
                                                 Text("Reputation: \((userData.airlineReputation * 100).withCommas)%")
                                                     .fontWidth(.condensed)
+                                                    .contentTransition(.numericText(countsDown: false))
                                             }
                                             
                                             HStack {
@@ -259,6 +255,13 @@ struct MapManagerView: View {
                                 } else {
                                     selectedJetView()
                                         .transition(.move(edge: .trailing))
+                                        .frame(height: .infinity, alignment: .top)
+                                    
+                                    .onAppear {
+                                        print(userData.xp)
+                                        print(userData.currentLevel)
+                                        print(userData.levels)
+                                    }
                                 }
                                 
                             }
@@ -331,7 +334,15 @@ struct MapManagerView: View {
             FuelPriceView()
         }
         .fullScreenCover(isPresented: $openShopView) {
-            ShopView()
+            ShopView(modifiableUserData: $userData)
+        }
+        .onChange(of: userData.levels) {
+            withAnimation {
+                userData.currentLevel = userData.levels
+            }
+        }
+        .onAppear {
+            userData.currentLevel = userData.levels
         }
     }
 }

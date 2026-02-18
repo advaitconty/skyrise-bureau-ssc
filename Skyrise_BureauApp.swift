@@ -45,26 +45,7 @@ struct Skyrise_BureauApp: App {
                         EmptyView()
                     }
                 }
-        }
-        .modelContainer(sharedModelContainer)
-        
-        WindowGroup("KEROX", id: "fuel") {
-            FuelPriceView()
-        }
-        .modelContainer(sharedModelContainer)
-        
-        WindowGroup("Jet Set Emporium", id: "shop") {
-            ShopView()
-        }
-        .modelContainer(sharedModelContainer)
-        
-        WindowGroup("Settings", id: "settings") {
-            SettingsView()
-        }
-        .modelContainer(sharedModelContainer)
-        
-        WindowGroup("Upgrade View", id: "upgrade") {
-            UserUpgradeView()
+                .preferredColorScheme(.dark)
         }
         .modelContainer(sharedModelContainer)
     }

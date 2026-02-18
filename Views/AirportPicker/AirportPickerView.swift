@@ -18,7 +18,7 @@ struct AirportPickerView: View {
     var maxRange: Int = 0
     var startAirport: Airport? = nil
     @Environment(\.dismiss) var dismiss
-    @State var mapCameraPosition: MapCameraPosition = .automatic
+    @State var mapCameraPosition: OfflineMapPosition = .world
     @Binding var finishedPickingScreen: Bool
     
     var filteredAirports: [Airport] {
@@ -102,10 +102,13 @@ struct AirportPickerView: View {
                         Spacer()
                             .onChange(of: airportSelected) { oldValue, newValue in
                                 withAnimation {
-                                    mapCameraPosition = .region(MKCoordinateRegion(
-                                        center: CLLocationCoordinate2D(latitude: airportSelected.latitude, longitude: airportSelected.longitude),
-                                        span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-                                    ))
+                                    mapCameraPosition = .region(
+                                        center: CLLocationCoordinate2D(
+                                            latitude: newValue.latitude,
+                                            longitude: newValue.longitude
+                                        ),
+                                        zoom: 4.0
+                                    )
                                 }
                             }
                     }

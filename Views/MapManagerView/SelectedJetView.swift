@@ -87,28 +87,34 @@ extension MapManagerView {
                             HStack {
                                 Text("Plane is flying from \(userData.planes[selectedJet!].assignedRoute!.originAirport.reportCorrectCodeForUserData(userData)) to \(userData.planes[selectedJet!].assignedRoute!.arrivalAirport.reportCorrectCodeForUserData(userData))")
                                     .fontWidth(.condensed)
-                                Spacer()
+                                    .fixedSize(horizontal: false, vertical: true)
+                                    .multilineTextAlignment(.leading)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                             }
                             HStack {
                                 TimelineView(.periodic(from: .now, by: 1)) { context in
                                     Text("Landing in \(userData.planes[selectedJet!].timeTakenForJetToReturn(context.date))")
                                         .fontWidth(.condensed)
+                                        .fixedSize(horizontal: false, vertical: true)
                                 }
-                                Spacer()
+                                .multilineTextAlignment(.leading)
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
                     } else {
-                        HStack {
                             Text("Plane is currently on the ground at \(userData.planes[selectedJet!].currentAirportLocation!.reportCorrectCodeForUserData(userData)). Assigned to fly from \(userData.planes[selectedJet!].assignedRoute!.originAirport.reportCorrectCodeForUserData(userData)) to \(userData.planes[selectedJet!].assignedRoute!.arrivalAirport.reportCorrectCodeForUserData(userData))")
                                 .fontWidth(.condensed)
-                            Spacer()
-                        }
+                                .fixedSize(horizontal: false, vertical: true)
+                                .multilineTextAlignment(.leading)
+                                .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 } else {
                     HStack {
                         Text("No assigned route. Currently at \(userData.planes[selectedJet!].currentAirportLocation!.reportCorrectCodeForUserData(userData))")
                             .fontWidth(.condensed)
-                        Spacer()
+                            .lineLimit(2)
+                            .multilineTextAlignment(.leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
                 

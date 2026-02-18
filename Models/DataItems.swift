@@ -270,7 +270,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
             let totalFlightDuration = landing.timeIntervalSince(takeoff)
             let elapsedTime = Date().timeIntervalSince(takeoff)
             let progress = min(max(elapsedTime / totalFlightDuration, 0), 1)
-                
+            
             let startLat = route.originAirport.latitude
             let startLon = route.originAirport.longitude
             let endLat = route.arrivalAirport.latitude
@@ -291,8 +291,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         formatter.allowedUnits = [.hour, .minute, .second]
         formatter.unitsStyle = .short
         formatter.zeroFormattingBehavior = .dropAll
-        return formatter.string(from: currentDate, to: landingTime!)!
-        
+        return formatter.string(from: currentDate, to: landingTime ?? Date()) ?? "now"
     }
     
     func timeTakenForJetToGetOutOfMaintainance(_ currentDate: Date) -> String {
@@ -329,13 +328,13 @@ struct FleetItem: Codable, Identifiable, Equatable {
             return DepartureDoneSuccessfullyItems(departedSuccessfully: false, moneyMade: nil, seatsUsedInPlane: nil, seatingConfigOfJet: nil)
         }
         print("conditions 2 matched")
-
+        
         // Check if plane has enough range
         guard fuelRequired <= Double(planeSelected.fuelCapacity) else {
             return DepartureDoneSuccessfullyItems(departedSuccessfully: false, moneyMade: nil, seatsUsedInPlane: nil, seatingConfigOfJet: nil)
         }
         print("conditions 3 matched")
-
+        
         // Calculate base demand
         let baseDemand = db.calculatePassengerDistribution(
             from: route.originAirport,
@@ -411,7 +410,9 @@ struct FleetItem: Codable, Identifiable, Equatable {
         let notificationsManager = NotificationsManager()
         
         notificationsManager.schedule(notificationType: .arrival, planeInvolved: self, date: landingTime!, userData: userDataProvided.wrappedValue)
-                
+        
+        
+        
         return DepartureDoneSuccessfullyItems(
             departedSuccessfully: true,
             moneyMade: revenue,
@@ -420,7 +421,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         )
     }
     
-    mutating func markJetAsArrived(_ userDataProvided: Binding<UserData>) {
+    mutating func markJetAsArrived(_ userDataProvided: Binding<UserData>) -> Int {
         let diffComponenets = Calendar.current.dateComponents([.hour], from: takeoffTime!, to: landingTime!)
         let hours = diffComponenets.hour
         hoursFlown = hoursFlown + Double(hours!)
@@ -439,7 +440,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         currentAirportLocation = assignedRoute!.arrivalAirport
         assignedRoute = Route(originAirport: holdingDepartureAirport, arrivalAirport: assignedRoute!.originAirport)
         
-        userDataProvided.wrappedValue.xp = userDataProvided.wrappedValue.xp + 1
+        return 1
     }
     
     /// Repair starter
@@ -502,6 +503,8 @@ class UserData {
     var xp: Int = 0
     var levels: Int = 0
     var xpPoints: Int = 0
+    var currentLevel: Int = 1
+    var xpThreshold: Int = 100
     var airlineReputation: Double = 0.6
     var reliabilityIndex: Double = 0.7
     var fuelDiscountMultiplier: Double = 1
@@ -522,6 +525,7 @@ class UserData {
     var maintainanceCrewHappiness: Double = 0.95
     var campaignRunning: Bool = false
     var campaignEffectiveness: Double?
+    
     // Percentage airline improves during campaign. After campaign, airline improves reputation by 1% of their improvement during the campaign
     // airline also looses reputation when their maintainance or happiness drops below 0.7
     var deliveryHubs: [Airport]
@@ -579,7 +583,7 @@ class UserData {
         self.planes = planes
         self.xp = xp
         self.xpPoints = xpPoints
-        self.levels = levels
+        self.levels = 100
         self.airlineReputation = airlineReputation
         self.reliabilityIndex = reliabilityIndex
         self.fuelDiscountMultiplier = fuelDiscountMultiplier
@@ -610,6 +614,33 @@ class UserData {
         self.fuelPurchasedByUserAtLastFuelPrice = 0
         self.currentFuelPrice = 750
         self.lastFewFuelPricesForGraph = [1100, 2100, 300, 1700, 2600, 900, 1400, 1300, 2700, 750]
+    }
+    
+    // XP Special
+    func addXP(_ amount: Int = 1) {
+        xp += amount
+        xpPoints += amount
+        guard levels > 0 else { return }
+        
+        if levels <= 0 { levels = 100 }
+        
+        while xp >= levels {
+            xp -= levels
+            levels += 1
+            levels = Int(Double(levels) * 1.2)
+        }
+    }
+    
+    func reconcileXP() {
+        guard levels > 0 else { return }
+        
+        if levels <= 0 { levels = 100 }
+        
+        while xp >= levels {
+            xp -= levels
+            currentLevel += 1
+            levels = Int(Double(levels) * 1.2)
+        }
     }
 }
 

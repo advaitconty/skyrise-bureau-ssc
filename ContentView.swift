@@ -160,10 +160,14 @@ struct ContentView: View {
             /// Manages marking the plane as arrived or not at the first possible instant
                 .onReceive(planeArrivalTimer) { _ in
                     let currentDate = Date()
+                    
+                    var amountOfXPtoAdd: Int = 0
+                    
                     for (index, plane) in modifiableUserData.wrappedValue.planes.enumerated() {
                         if plane.isAirborne && plane.estimatedLandingTime != nil {
                             if currentDate >= plane.estimatedLandingTime! {
-                                modifiableUserData.wrappedValue.planes[index].markJetAsArrived(modifiableUserData)
+                                amountOfXPtoAdd += modifiableUserData.wrappedValue.planes[index].markJetAsArrived(modifiableUserData)
+
                             }
                         } else if plane.inMaintainance {
                             if currentDate >= plane.endMaintainanceDate! {
@@ -171,6 +175,11 @@ struct ContentView: View {
                             }
                         }
                     }
+                    
+                    withAnimation {
+                        modifiableUserData.wrappedValue.addXP(amountOfXPtoAdd)
+                    }
+                    
                     if modifiableUserData.wrappedValue.campaignRunning {
                         if modifiableUserData.wrappedValue.campaignEnd! <= currentDate {
                             resetCampaignUponEnd(userData: modifiableUserData)
@@ -200,6 +209,9 @@ struct ContentView: View {
             Button("OK", role: .cancel) { }
         } message: {
             Text("Thank you for testing Skyrise Bureau. This is a slimmed down version of the app. It misses out on:\n- Proper maps through Apple Maps\n- Accurate plane waiting times\nFor this demo, the speed of the planes in this demo have been sped up by 200x. For the real version, check out Skyrise Bureau on the App Store.")
+        }
+        .onAppear {
+            modifiableUserData.wrappedValue.reconcileXP()
         }
     }
 }
