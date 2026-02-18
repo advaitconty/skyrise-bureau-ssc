@@ -19,7 +19,7 @@ struct ContentView: View {
     @Environment(\.modelContext) var modelContext
     @Query var userData: [UserData]
     @State var showSetupScreen: Bool = false
-    @AppStorage("warningForTesters") var testerWarning: Bool = true
+    @State var testerWarning: Bool = true
     var modifiableUserData: Binding<UserData> {
         Binding {
             if let userData = userData.first {
@@ -208,7 +208,7 @@ struct ContentView: View {
         .alert("Welcome to Skyrise Bureau!", isPresented: $testerWarning) {
             Button("OK", role: .cancel) { }
         } message: {
-            Text("Thank you for testing Skyrise Bureau. This is a slimmed down version of the app. It misses out on:\n- Proper maps through Apple Maps\n- Accurate plane waiting times\nFor this demo, the speed of the planes in this demo have been sped up by 200x. For the real version, check out Skyrise Bureau on the App Store.")
+            Text("Thank you for testing Skyrise Bureau. This is a slimmed down version of the app. It misses out on:\n- Proper maps through Apple Maps\n- Accurate plane waiting times\nFor this demo, the speed of the planes in this demo have been sped up by 500x, and Apple Maps has been replaced by a custom canvas.. For the real version, check out Skyrise Bureau on the App Store.")
         }
         .onAppear {
             modifiableUserData.wrappedValue.reconcileXP()
