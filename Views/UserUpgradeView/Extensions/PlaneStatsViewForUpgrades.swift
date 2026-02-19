@@ -25,6 +25,7 @@ extension UserUpgradeView {
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: 5.0))
             
+            
             ProgressView(value: plane.condition.wrappedValue) {
                 HStack {
                     Text("Condition")
@@ -54,6 +55,11 @@ extension UserUpgradeView {
             Text("\(Int(plane.hoursFlown.wrappedValue).withCommas)h flown - \(plane.isAirborne.wrappedValue ? "currently flying" : plane.currentAirportLocation.wrappedValue.map { "at \($0.reportCorrectCodeForUserData(modifiableUserData.wrappedValue))" } ?? "unknown location")")
                 .font(.caption)
                 .fontWidth(.condensed)
+            if plane.wrappedValue.inMaintainance {
+                Text("Under maintainance")
+                    .font(.caption)
+                    .fontWidth(.condensed)
+            }
         }
         .padding()
         .frame(width: 200, height: 250)

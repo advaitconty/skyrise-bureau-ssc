@@ -105,7 +105,7 @@ struct MapManagerView: View {
                                             Button {
                                                 var jetsDepartedSuccessfully: [DepartureDoneSuccessfullyItems] = []
                                                 for (index, plane) in userData.planes.enumerated() {
-                                                    if !plane.isAirborne {
+                                                    if !plane.isAirborne && !plane.inMaintainance {
                                                         var attempt = userData.planes[index].departJet($userData)
                                                         if attempt.departedSuccessfully {
                                                             attempt.planeInfo = userData.planes[index]
@@ -113,7 +113,6 @@ struct MapManagerView: View {
                                                         }
                                                     }
                                                 }
-                                                print(jetsDepartedSuccessfully)
                                                 var planesTakenOff: [FleetItem] = []
                                                 var economyPassengersServed: Int = 0
                                                 var premiumEconomyPassengersServed: Int = 0
@@ -147,7 +146,7 @@ struct MapManagerView: View {
                                             } label: {
                                                 HStack {
                                                     Spacer()
-                                                    Text("Depart all (\(amountOfNotDepartedPlanes(userData)) to depart)")
+                                                    Text("Depart all (\(amountOfNotDepartedPlanes(userData)) flight\(amountOfNotDepartedPlanes(userData) == 1 ? "" : "s") to depart)")
                                                         .fontWidth(.condensed)
                                                     Spacer()
                                                 }

@@ -320,7 +320,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         /// 3. Return DepartureDoneSuccessfullyItems
         
         let pricing = assignedPricing
-        guard let route = assignedRoute, !isAirborne, condition > 0.25 else {
+        guard let route = assignedRoute, !isAirborne, condition >= 0.15 else {
             return DepartureDoneSuccessfullyItems(departedSuccessfully: false, moneyMade: nil, seatsUsedInPlane: nil, seatingConfigOfJet: nil)
         }
         print("conditions 1 matched")
@@ -447,7 +447,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         
         notificationsManager.schedule(notificationType: .arrival, planeInvolved: self, date: landingTime!, userData: userDataProvided.wrappedValue)
         
-        userDataProvided.wrappedValue.amountOfMoneyMadeFromDeparturesInTheLastWeek[-1] = userDataProvided.wrappedValue.amountOfMoneyMadeFromDeparturesInTheLastWeek[-1] + revenue
+        userDataProvided.wrappedValue.amountOfMoneyMadeFromDeparturesInTheLastWeek[userDataProvided.wrappedValue.amountOfMoneyMadeFromDeparturesInTheLastWeek.endIndex - 1] = userDataProvided.wrappedValue.amountOfMoneyMadeFromDeparturesInTheLastWeek[userDataProvided.wrappedValue.amountOfMoneyMadeFromDeparturesInTheLastWeek.endIndex - 1] + revenue
         
         return DepartureDoneSuccessfullyItems(
             departedSuccessfully: true,
@@ -463,9 +463,11 @@ struct FleetItem: Codable, Identifiable, Equatable {
         hoursFlown = hoursFlown + Double(hours!)
         let db = AirportDatabase()
         let distanceFlown = db.calculateDistance(from: assignedRoute!.originAirport, to: assignedRoute!.arrivalAirport)
+        kilometersTravelledSinceLastMaintainence = kilometersTravelledSinceLastMaintainence + distanceFlown
         let degradationRate = 1.0 / Double.random(in: 35000...65000)
         lastHoursOfPlaneDuringMaintainance = lastHoursOfPlaneDuringMaintainance + Double(hours!)
         condition = max(0.0, 1.0 - Double(kilometersTravelledSinceLastMaintainence) * degradationRate)
+        print(condition)
         
         isAirborne = false
         takeoffTime = nil
@@ -484,8 +486,10 @@ struct FleetItem: Codable, Identifiable, Equatable {
     mutating func setJetUnderMaintainance(_ userDataProvided: Binding<UserData>) {
         let currentDate = Date()
         let selectedPlane = AircraftDatabase.shared.allAircraft.first(where: { $0.id == aircraftID })!
+        inMaintainance = true
         condition = 1.0
-        endMaintainanceDate = currentDate.adding(hours: 3.0)
+        endMaintainanceDate = currentDate.addingTimeInterval(21)
+        kilometersTravelledSinceLastMaintainence = 0
         print(userDataProvided.wrappedValue.accountBalance)
         userDataProvided.wrappedValue.accountBalance = userDataProvided.wrappedValue.accountBalance - selectedPlane.maintenanceCostPerHour * lastHoursOfPlaneDuringMaintainance
         print(userDataProvided.wrappedValue.accountBalance)
@@ -694,7 +698,7 @@ func amountOfNotDepartedPlanes(_ userData: UserData) -> Int {
     var numberOfunDepartedPlanes: Int = 0
     
     for plane in userData.planes {
-        if !plane.isAirborne && plane.assignedRoute != nil {
+        if !plane.isAirborne && plane.assignedRoute != nil && !plane.inMaintainance {
             numberOfunDepartedPlanes = numberOfunDepartedPlanes + 1
         }
     }

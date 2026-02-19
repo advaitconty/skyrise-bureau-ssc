@@ -58,7 +58,7 @@ struct ShowDepartureDonePopupView: View {
         ZStack(alignment: .top) {
             VStack {
                 HStack {
-                    Text("Successfully departed \(departureDoneSuccessfullyItemsToShow.noOfPlanesTakenOff) plane(s)!")
+                    Text("Successfully departed \(departureDoneSuccessfullyItemsToShow.noOfPlanesTakenOff) flight\(departureDoneSuccessfullyItemsToShow.noOfPlanesTakenOff == 1 ? "" : "s")!")
                     /// TO DO: Research a way that keeps this grammatically correct automatically
                         .font(.title)
                         .fontWidth(.expanded)

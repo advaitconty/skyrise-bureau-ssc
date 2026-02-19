@@ -20,6 +20,7 @@ extension MapManagerView {
                 Text(plane.registration)
                     .fontWidth(.compressed)
             }
+            
             if plane.assignedRoute != nil {
                 if plane.isAirborne {
                     VStack {
@@ -48,6 +49,16 @@ extension MapManagerView {
                     Text("No assigned route. Currently at \(plane.currentAirportLocation!.reportCorrectCodeForUserData(userData))")
                         .fontWidth(.condensed)
                     Spacer()
+                }
+            }
+            if plane.inMaintainance {
+                TimelineView(.periodic(from: .now, by: 1.0)) { context in
+                    HStack {
+                        Text("\(plane.timeTakenForJetToGetOutOfMaintainance(context.date)) to finish maintainace")
+                            .fontWidth(.condensed)
+                            .contentTransition(.numericText(countsDown: true))
+                        Spacer()
+                    }
                 }
             }
         }

@@ -80,7 +80,32 @@ extension MapManagerView {
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: 10.0))
             
+            
             VStack {
+                if !userData.planes[selectedJet!].isAirborne && userData.planes[selectedJet!].condition >= 0.15 {
+                    VStack {
+                        ProgressView(value: userData.planes[selectedJet!].condition) {
+                            HStack {
+                                Text("Condition: \((userData.planes[selectedJet!].condition * 100).withCommas)%")
+                                    .fontWidth(.condensed)
+                                Spacer()
+                                if !userData.planes[selectedJet!].inMaintainance && userData.planes[selectedJet!].condition >= 0.15  {
+                                    Button {
+                                        userData.planes[selectedJet!].setJetUnderMaintainance($userData)
+                                        let notificationsManager = NotificationsManager()
+                                        notificationsManager.schedule(notificationType: .maintainanceEnd, planeInvolved: userData.planes[selectedJet!], date: userData.planes[selectedJet!].endMaintainanceDate!, userData: userData)
+                                    } label: {
+                                        Text("Repair")
+                                            .fontWidth(.condensed)
+                                    }
+                                    .adaptiveButtonStyle()
+                                    .disabled(AircraftDatabase.shared.allAircraft.first(where: { $0.id == userData.planes[selectedJet!].aircraftID })!.maintenanceCostPerHour * userData.planes[selectedJet!].lastHoursOfPlaneDuringMaintainance > userData.accountBalance)
+                                }
+                            }
+                        }
+                    }
+                }
+                
                 if userData.planes[selectedJet!].assignedRoute != nil {
                     if userData.planes[selectedJet!].isAirborne {
                         VStack {
@@ -102,11 +127,11 @@ extension MapManagerView {
                             }
                         }
                     } else {
-                            Text("Plane is currently on the ground at \(userData.planes[selectedJet!].currentAirportLocation!.reportCorrectCodeForUserData(userData)). Assigned to fly from \(userData.planes[selectedJet!].assignedRoute!.originAirport.reportCorrectCodeForUserData(userData)) to \(userData.planes[selectedJet!].assignedRoute!.arrivalAirport.reportCorrectCodeForUserData(userData))")
-                                .fontWidth(.condensed)
-                                .fixedSize(horizontal: false, vertical: true)
-                                .multilineTextAlignment(.leading)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                        Text("Plane is currently on the ground at \(userData.planes[selectedJet!].currentAirportLocation!.reportCorrectCodeForUserData(userData)). Assigned to fly from \(userData.planes[selectedJet!].assignedRoute!.originAirport.reportCorrectCodeForUserData(userData)) to \(userData.planes[selectedJet!].assignedRoute!.arrivalAirport.reportCorrectCodeForUserData(userData))")
+                            .fontWidth(.condensed)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .multilineTextAlignment(.leading)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 } else {
                     HStack {
@@ -118,9 +143,9 @@ extension MapManagerView {
                     }
                 }
                 
-                if !userData.planes[selectedJet!].isAirborne {
+                if !userData.planes[selectedJet!].isAirborne && !userData.planes[selectedJet!].inMaintainance {
                     HStack {
-                        Text("Change route")
+                        Text("\(userData.planes[selectedJet!].assignedRoute == nil ? "Assign" : "Change") destination airport")
                             .fontWidth(.expanded)
                         Spacer()
                         if #available(iOS 26.0, *) {
@@ -130,7 +155,7 @@ extension MapManagerView {
                                 }
                                 airportSelector = true
                             } label: {
-                                Text("Arrival")
+                                Text("Change")
                                     .fontWidth(.condensed)
                             }
                             .buttonStyle(.glassProminent)
@@ -149,10 +174,10 @@ extension MapManagerView {
                     }
                 }
                 
-                if userData.planes[selectedJet!].assignedRoute != nil && !userData.planes[selectedJet!].isAirborne {
+                if userData.planes[selectedJet!].assignedRoute != nil && !userData.planes[selectedJet!].isAirborne && !userData.planes[selectedJet!].inMaintainance {
                     VStack {
                         HStack {
-                            Text("Change pricing")
+                            Text("Modify pricing")
                                 .fontWidth(.expanded)
                             Spacer()
                         }
@@ -193,7 +218,20 @@ extension MapManagerView {
                             .hoverEffect()
                         } else {
                             Button {
-                                
+                                let db = AirportDatabase()
+                                let distance = db.calculateDistance(from: userData.planes[selectedJet!].assignedRoute!.originAirport, to: userData.planes[selectedJet!].assignedRoute!.arrivalAirport)
+                                let reasonablePricingForAirline = PricingConfig(
+                                    economy: Double(predictorModel.predictPricePerKM(rating: userData.airlineReputation, seatClass: .economy) * Double(distance)),
+                                    premiumEconomy: Double(predictorModel.predictPricePerKM(rating: userData.airlineReputation, seatClass: .premiumEconomy) * Double(distance)),
+                                    business: Double(predictorModel.predictPricePerKM(rating: userData.airlineReputation, seatClass: .business) * Double(distance)),
+                                    first: Double(predictorModel.predictPricePerKM(rating: userData.airlineReputation, seatClass: .first) * Double(distance))
+                                )
+                                withAnimation {
+                                    userData.planes[selectedJet!].assignedPricing.economy = reasonablePricingForAirline.economy
+                                    userData.planes[selectedJet!].assignedPricing.premiumEconomy = reasonablePricingForAirline.premiumEconomy
+                                    userData.planes[selectedJet!].assignedPricing.business = reasonablePricingForAirline.business
+                                    userData.planes[selectedJet!].assignedPricing.first = reasonablePricingForAirline.first
+                                }
                             } label: {
                                 HStack {
                                     Image(systemName: "chart.xyaxis.line")
@@ -207,34 +245,60 @@ extension MapManagerView {
                             .hoverEffect()
                         }
                         
-                        HStack {
-                            Text("Depart jet")
-                                .fontWidth(.condensed)
-                            Spacer()
-                            
-                            Button {
-                                let departureStatus = userData.planes[selectedJet!].departJet($userData)
-                                print(departureStatus)
-                                if departureStatus.departedSuccessfully {
-                                    takeoffItems = DepartureDoneSuccessfullyItemsToShow(planesTakenOff: [userData.planes[selectedJet!]],
-                                                                                        economyPassenegersServed: departureStatus.seatsUsedInPlane!.economy,
-                                                                                        premiumEconomyPassenegersServed: departureStatus.seatsUsedInPlane!.premiumEconomy,
-                                                                                        businessPassengersServed: departureStatus.seatsUsedInPlane!.business,
-                                                                                        firstClassPassengersServed: departureStatus.seatsUsedInPlane!.first,
-                                                                                        maxEconomyPassenegersServed: departureStatus.seatingConfigOfJet!.economy,
-                                                                                        maxPremiumEconomyPassenegersServed: departureStatus.seatingConfigOfJet!.premiumEconomy,
-                                                                                        maxBusinessPassengersServed: departureStatus.seatingConfigOfJet!.business,
-                                                                                        maxFirstClassPassengersServed: departureStatus.seatingConfigOfJet!.first,
-                                                                                        moneyMade: departureStatus.moneyMade!)
-                                    withAnimation {
-                                        showTakeoffPopup = true
+                        if userData.planes[selectedJet!].condition >= 0.15 {
+                            HStack {
+                                Text("Depart jet")
+                                    .fontWidth(.condensed)
+                                Spacer()
+                                
+                                Button {
+                                    let departureStatus = userData.planes[selectedJet!].departJet($userData)
+                                    print(departureStatus)
+                                    if departureStatus.departedSuccessfully {
+                                        takeoffItems = DepartureDoneSuccessfullyItemsToShow(planesTakenOff: [userData.planes[selectedJet!]],
+                                                                                            economyPassenegersServed: departureStatus.seatsUsedInPlane!.economy,
+                                                                                            premiumEconomyPassenegersServed: departureStatus.seatsUsedInPlane!.premiumEconomy,
+                                                                                            businessPassengersServed: departureStatus.seatsUsedInPlane!.business,
+                                                                                            firstClassPassengersServed: departureStatus.seatsUsedInPlane!.first,
+                                                                                            maxEconomyPassenegersServed: departureStatus.seatingConfigOfJet!.economy,
+                                                                                            maxPremiumEconomyPassenegersServed: departureStatus.seatingConfigOfJet!.premiumEconomy,
+                                                                                            maxBusinessPassengersServed: departureStatus.seatingConfigOfJet!.business,
+                                                                                            maxFirstClassPassengersServed: departureStatus.seatingConfigOfJet!.first,
+                                                                                            moneyMade: departureStatus.moneyMade!)
+                                        withAnimation {
+                                            showTakeoffPopup = true
+                                        }
+                                    }
+                                } label: {
+                                    Text("Depart")
+                                        .fontWidth(.condensed)
+                                }
+                                .adaptiveProminentButtonStyle()
+                            }
+                        } else if userData.planes[selectedJet!].condition <= 0.15 {
+                            HStack {
+                                Text("Plane cannot fly due to poor condition")
+                                    .fontWidth(.condensed)
+                                Spacer()
+                                if userData.accountBalance > AircraftDatabase.shared.allAircraft.first(where: { userData.planes[selectedJet!].aircraftID == $0.modelCode })!.maintenanceCostPerHour * (userData.planes[selectedJet!].hoursFlown - userData.planes[selectedJet!].lastHoursOfPlaneDuringMaintainance) {
+                                    Button {
+                                        withAnimation {
+                                            userData.accountBalance -= AircraftDatabase.shared.allAircraft.first(where: { userData.planes[selectedJet!].aircraftID == $0.modelCode })!.maintenanceCostPerHour * (userData.planes[selectedJet!].hoursFlown - userData.planes[selectedJet!].lastHoursOfPlaneDuringMaintainance)
+                                        }
+                                    } label: {
+                                        Text("$\((AircraftDatabase.shared.allAircraft.first(where: { userData.planes[selectedJet!].aircraftID == $0.modelCode })!.maintenanceCostPerHour * (userData.planes[selectedJet!].hoursFlown - userData.planes[selectedJet!].lastHoursOfPlaneDuringMaintainance)).withCommas)")
                                     }
                                 }
-                            } label: {
-                                Text("Depart")
-                                    .fontWidth(.condensed)
                             }
-                            .adaptiveProminentButtonStyle()
+                        }
+                    }
+                } else if userData.planes[selectedJet!].endMaintainanceDate != nil {
+                    TimelineView(.periodic(from: .now, by: 1.0))  { context in
+                        HStack {
+                            Text("\(userData.planes[selectedJet!].timeTakenForJetToGetOutOfMaintainance(context.date)) to finish maintainace")
+                                .fontWidth(.condensed)
+                                .contentTransition(.numericText(countsDown: true))
+                            Spacer()
                         }
                     }
                 }
