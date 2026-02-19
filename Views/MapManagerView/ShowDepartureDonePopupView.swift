@@ -31,7 +31,6 @@ struct ShowDepartureDonePopupView: View {
     @Environment(\.colorScheme) var colorScheme
     @Binding var showDeparturePopupView: Bool
     @State var count: Int = 0
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     let departureDoneSuccessfullyItemsToShow: DepartureDoneSuccessfullyItemsToShow
     
     func listOfDepartedPlaneNames(_ fleetItem: [FleetItem]) -> String {
@@ -65,14 +64,6 @@ struct ShowDepartureDonePopupView: View {
                         .fontWidth(.expanded)
                         .foregroundStyle(.white)
                     Spacer()
-                        .onReceive(timer) { _ in
-                            count = count + 1
-                            if count == 3 {
-                                withAnimation {
-                                    showDeparturePopupView = false
-                                }
-                            }
-                        }
                 }
                 
                 HStack {

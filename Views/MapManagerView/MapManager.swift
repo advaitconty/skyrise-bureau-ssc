@@ -31,16 +31,18 @@ struct MapManagerView: View {
     @State var selectedPlane: FleetItem? = nil
     @Environment(\.colorScheme) var colorScheme
     @Binding var userData: UserData
-    @State var sidebarWidth: Float = 300
+    @State var sidebarWidth: Float = 400
     @State var selectedJet: Int? = nil
     @State var showSidebar: Bool = true
-    @StateObject var clock = Clock()
+//    @StateObject var clock = Clock()
     @State var openSettings: Bool = false
     @State var openUserUpgradeView: Bool = false
     @State var takeoffItems: DepartureDoneSuccessfullyItemsToShow? = nil
     @State var showTakeoffPopup: Bool = false
     @State var openShopView: Bool = false
     @State var mapCameraPosition: OfflineMapPosition = .world
+    @State var countSincePopupAppeared: Int = 0
+    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
     var body: some View {
         ZStack {
@@ -63,243 +65,255 @@ struct MapManagerView: View {
                     }
                 }
                 
-                    HStack(spacing: 0) {
-                        VStack {
-                            HStack(spacing: 0) {
-                                if selectedJet == nil {
-                                    VStack {
-                                        HStack {
-                                            if #available(iOS 26.0, *) {
-                                                (Text(userData.airlineName)
-                                                    .fontWidth(.expanded)
-                                                    .font(.title)
-                                                 +
-                                                 Text("\nmanaged by \(userData.name)")
-                                                    .fontWidth(.condensed))
-                                                .containerCornerOffset(.leading, sizeToFit: true)
-                                            } else {
-                                                (Text(userData.airlineName)
-                                                    .fontWidth(.expanded)
-                                                    .font(.title)
-                                                 +
-                                                 Text("\nmanaged by \(userData.name)")
-                                                    .fontWidth(.condensed))
-                                            }
-                                            Spacer()
+                HStack(spacing: 0) {
+                    VStack {
+                        HStack(spacing: 0) {
+                            if selectedJet == nil {
+                                VStack {
+                                    HStack {
+                                        if #available(iOS 26.0, *) {
+                                            (Text(userData.airlineName)
+                                                .fontWidth(.expanded)
+                                                .font(.title)
+                                             +
+                                             Text("\nmanaged by \(userData.name)")
+                                                .fontWidth(.condensed))
+                                            .containerCornerOffset(.leading, sizeToFit: true)
+                                        } else {
+                                            (Text(userData.airlineName)
+                                                .fontWidth(.expanded)
+                                                .font(.title)
+                                             +
+                                             Text("\nmanaged by \(userData.name)")
+                                                .fontWidth(.condensed))
                                         }
-                                        
-                                        ScrollView {
-                                            if amountOfNotDepartedPlanes(userData) > 0 {
-                                                Button {
-                                                    var jetsDepartedSuccessfully: [DepartureDoneSuccessfullyItems] = []
-                                                    for (index, plane) in userData.planes.enumerated() {
-                                                        if !plane.isAirborne {
-                                                            var attempt = userData.planes[index].departJet($userData)
-                                                            if attempt.departedSuccessfully {
-                                                                attempt.planeInfo = userData.planes[index]
-                                                                jetsDepartedSuccessfully.append(attempt)
-                                                            }
+                                        Spacer()
+                                    }
+                                    
+                                    ScrollView {
+                                        if amountOfNotDepartedPlanes(userData) > 0 {
+                                            Button {
+                                                var jetsDepartedSuccessfully: [DepartureDoneSuccessfullyItems] = []
+                                                for (index, plane) in userData.planes.enumerated() {
+                                                    if !plane.isAirborne {
+                                                        var attempt = userData.planes[index].departJet($userData)
+                                                        if attempt.departedSuccessfully {
+                                                            attempt.planeInfo = userData.planes[index]
+                                                            jetsDepartedSuccessfully.append(attempt)
                                                         }
                                                     }
-                                                    print(jetsDepartedSuccessfully)
-                                                    var planesTakenOff: [FleetItem] = []
-                                                    var economyPassengersServed: Int = 0
-                                                    var premiumEconomyPassengersServed: Int = 0
-                                                    var businessPassengersServed: Int = 0
-                                                    var firstPassengersServed: Int = 0
-                                                    
-                                                    var maxEconomyPassengersServed: Int = 0
-                                                    var maxPremiumEconomyPassengersServed: Int = 0
-                                                    var maxBusinessPassengersServed: Int = 0
-                                                    var maxFirstPassengersServed: Int = 0
-                                                    
-                                                    var totalMoneyMade: Double = 0
-                                                    
-                                                    for jetDepartedSuccessfully in jetsDepartedSuccessfully {
-                                                        planesTakenOff.append(jetDepartedSuccessfully.planeInfo ?? FleetItem(aircraftID: "somethong", aircraftname: "goasngo", registration: "gaogns", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 4, premiumEconomy: 41, business: 414, first: 41), kilometersTravelledSinceLastMaintainence: 4))
-                                                        economyPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.economy
-                                                        premiumEconomyPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.premiumEconomy
-                                                        businessPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.business
-                                                        firstPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.first
-                                                        maxEconomyPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.economy
-                                                        maxPremiumEconomyPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.premiumEconomy
-                                                        maxBusinessPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.business
-                                                        maxFirstPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.first
-                                                        totalMoneyMade += jetDepartedSuccessfully.moneyMade!
-                                                    }
-                                                    
-                                                    takeoffItems = DepartureDoneSuccessfullyItemsToShow(planesTakenOff: planesTakenOff, economyPassenegersServed: economyPassengersServed, premiumEconomyPassenegersServed: premiumEconomyPassengersServed, businessPassengersServed: businessPassengersServed, firstClassPassengersServed: firstPassengersServed, maxEconomyPassenegersServed: maxEconomyPassengersServed, maxPremiumEconomyPassenegersServed: maxPremiumEconomyPassengersServed, maxBusinessPassengersServed: maxBusinessPassengersServed, maxFirstClassPassengersServed: maxFirstPassengersServed, moneyMade: totalMoneyMade)
-                                                    withAnimation {
-                                                        showTakeoffPopup = true
-                                                    }
-                                                } label: {
-                                                    HStack {
-                                                        Spacer()
-                                                        Text("Depart all (\(amountOfNotDepartedPlanes(userData)) to depart)")
-                                                            .fontWidth(.condensed)
-                                                        Spacer()
-                                                    }
                                                 }
-                                                .adaptiveProminentButtonStyle()
-                                                .hoverEffect()
-                                            }
-                                            
-                                            ForEach(userData.planes, id: \.id) { plane in
-                                                Button {
-                                                    withAnimation {
-                                                        selectedJet = userData.planes.firstIndex(where: { $0.id == plane.id })!
-                                                    }
-                                                } label: {
-                                                    planeItemView(plane)
+                                                print(jetsDepartedSuccessfully)
+                                                var planesTakenOff: [FleetItem] = []
+                                                var economyPassengersServed: Int = 0
+                                                var premiumEconomyPassengersServed: Int = 0
+                                                var businessPassengersServed: Int = 0
+                                                var firstPassengersServed: Int = 0
+                                                
+                                                var maxEconomyPassengersServed: Int = 0
+                                                var maxPremiumEconomyPassengersServed: Int = 0
+                                                var maxBusinessPassengersServed: Int = 0
+                                                var maxFirstPassengersServed: Int = 0
+                                                
+                                                var totalMoneyMade: Double = 0
+                                                
+                                                for jetDepartedSuccessfully in jetsDepartedSuccessfully {
+                                                    planesTakenOff.append(jetDepartedSuccessfully.planeInfo ?? FleetItem(aircraftID: "somethong", aircraftname: "goasngo", registration: "gaogns", hoursFlown: 0, seatingLayout: SeatingConfig(economy: 4, premiumEconomy: 41, business: 414, first: 41), kilometersTravelledSinceLastMaintainence: 4))
+                                                    economyPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.economy
+                                                    premiumEconomyPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.premiumEconomy
+                                                    businessPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.business
+                                                    firstPassengersServed += jetDepartedSuccessfully.seatsUsedInPlane!.first
+                                                    maxEconomyPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.economy
+                                                    maxPremiumEconomyPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.premiumEconomy
+                                                    maxBusinessPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.business
+                                                    maxFirstPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.first
+                                                    totalMoneyMade += jetDepartedSuccessfully.moneyMade!
                                                 }
-                                                .buttonStyle(.plain)
-                                                .hoverEffect()
+                                                
+                                                takeoffItems = DepartureDoneSuccessfullyItemsToShow(planesTakenOff: planesTakenOff, economyPassenegersServed: economyPassengersServed, premiumEconomyPassenegersServed: premiumEconomyPassengersServed, businessPassengersServed: businessPassengersServed, firstClassPassengersServed: firstPassengersServed, maxEconomyPassenegersServed: maxEconomyPassengersServed, maxPremiumEconomyPassenegersServed: maxPremiumEconomyPassengersServed, maxBusinessPassengersServed: maxBusinessPassengersServed, maxFirstClassPassengersServed: maxFirstPassengersServed, moneyMade: totalMoneyMade)
+                                                withAnimation {
+                                                    showTakeoffPopup = true
+                                                }
+                                            } label: {
+                                                HStack {
+                                                    Spacer()
+                                                    Text("Depart all (\(amountOfNotDepartedPlanes(userData)) to depart)")
+                                                        .fontWidth(.condensed)
+                                                    Spacer()
+                                                }
                                             }
+                                            .adaptiveProminentButtonStyle()
+                                            .hoverEffect()
                                         }
                                         
-                                        Spacer()
-                                        /// For the extras
-                                        VStack {
-                                            ProgressView(value: userData.progressToNextXPLevel) {
-                                                HStack {
-                                                    Text("\(userData.xp) XP - Level \(userData.currentLevel)")
-                                                        .fontWidth(.condensed)
-                                                        .contentTransition(.numericText(countsDown: false))
-                                                    Spacer()
-                                                    Text("\(userData.xpRequiredForNextXPLevel) XP to next level")
-                                                        .fontWidth(.condensed)
-                                                        .contentTransition(.numericText(countsDown: true))
+                                        ForEach(userData.planes, id: \.id) { plane in
+                                            Button {
+                                                withAnimation {
+                                                    selectedJet = userData.planes.firstIndex(where: { $0.id == plane.id })!
                                                 }
+                                            } label: {
+                                                planeItemView(plane)
                                             }
+                                            .buttonStyle(.plain)
+                                            .hoverEffect()
+                                        }
+                                    }
+                                    
+                                    Spacer()
+                                    /// For the extras
+                                    VStack {
+                                        ProgressView(value: userData.progressToNextXPLevel) {
                                             HStack {
-                                                Text("Balance: $\(userData.accountBalance.withCommas)")
+                                                Text("\(userData.xp) XP - Level \(userData.currentLevel)")
                                                     .fontWidth(.condensed)
                                                     .contentTransition(.numericText(countsDown: false))
                                                 Spacer()
-                                                Text("Reputation: \((userData.airlineReputation * 100).withCommas)%")
+                                                Text("\(userData.xpRequiredForNextXPLevel) XP to next level")
                                                     .fontWidth(.condensed)
-                                                    .contentTransition(.numericText(countsDown: false))
-                                            }
-                                            
-                                            HStack {
-                                                Button {
-#if targetEnvironment(macCatalyst)
-                                                    openWindow(id: "fuel")
-#else
-                                                    openFuelWindow = true
-#endif
-                                                } label: {
-                                                    HStack {
-                                                        Spacer()
-                                                        Image(systemName: "fuelpump")
-                                                        Spacer()
-                                                    }
-                                                }
-                                                .adaptiveButtonStyle()
-                                                .hoverEffect()
-                                                
-                                                Button {
-                                                    print("Open")
-#if targetEnvironment(macCatalyst)
-                                                    openWindow(id: "upgrade")
-#else
-                                                    openUserUpgradeView = true
-#endif
-                                                } label: {
-                                                    HStack {
-                                                        Spacer()
-                                                        Image(systemName: "person.text.rectangle")
-                                                        Spacer()
-                                                    }
-                                                }
-                                                .adaptiveButtonStyle()
-                                                .hoverEffect()
-                                                
-                                                Button {
-#if targetEnvironment(macCatalyst)
-                                                    openWindow(id: "shop")
-#else
-                                                    openShopView = true
-#endif
-                                                } label: {
-                                                    HStack {
-                                                        Spacer()
-                                                        Image(systemName: "cart")
-                                                        Spacer()
-                                                    }
-                                                }
-                                                .adaptiveButtonStyle()
-                                                .hoverEffect()
-                                                
-                                                Button {
-#if targetEnvironment(macCatalyst)
-                                                    openWindow(id: "settings")
-#else
-                                                    openSettings = true
-#endif
-                                                } label: {
-                                                    HStack {
-                                                        Spacer()
-                                                        Image(systemName: "gearshape.2")
-                                                        Spacer()
-                                                    }
-                                                }
-                                                .adaptiveButtonStyle()
-                                                .hoverEffect()
-                                                
+                                                    .contentTransition(.numericText(countsDown: true))
                                             }
                                         }
+                                        HStack {
+                                            Text("Balance: $\(userData.accountBalance.withCommas)")
+                                                .fontWidth(.condensed)
+                                                .contentTransition(.numericText(countsDown: false))
+                                            Spacer()
+                                            Text("Reputation: \((userData.airlineReputation * 100).withCommas)%")
+                                                .fontWidth(.condensed)
+                                                .contentTransition(.numericText(countsDown: false))
+                                        }
+                                        
+                                        HStack {
+                                            Button {
+#if targetEnvironment(macCatalyst)
+                                                openWindow(id: "fuel")
+#else
+                                                openFuelWindow = true
+#endif
+                                            } label: {
+                                                HStack {
+                                                    Spacer()
+                                                    Image(systemName: "fuelpump")
+                                                    Spacer()
+                                                }
+                                            }
+                                            .adaptiveButtonStyle()
+                                            .hoverEffect()
+                                            
+                                            Button {
+                                                print("Open")
+#if targetEnvironment(macCatalyst)
+                                                openWindow(id: "upgrade")
+#else
+                                                openUserUpgradeView = true
+#endif
+                                            } label: {
+                                                HStack {
+                                                    Spacer()
+                                                    Image(systemName: "person.text.rectangle")
+                                                    Spacer()
+                                                }
+                                            }
+                                            .adaptiveButtonStyle()
+                                            .hoverEffect()
+                                            
+                                            Button {
+#if targetEnvironment(macCatalyst)
+                                                openWindow(id: "shop")
+#else
+                                                openShopView = true
+#endif
+                                            } label: {
+                                                HStack {
+                                                    Spacer()
+                                                    Image(systemName: "cart")
+                                                    Spacer()
+                                                }
+                                            }
+                                            .adaptiveButtonStyle()
+                                            .hoverEffect()
+                                            
+                                            Button {
+#if targetEnvironment(macCatalyst)
+                                                openWindow(id: "settings")
+#else
+                                                openSettings = true
+#endif
+                                            } label: {
+                                                HStack {
+                                                    Spacer()
+                                                    Image(systemName: "gearshape.2")
+                                                    Spacer()
+                                                }
+                                            }
+                                            .adaptiveButtonStyle()
+                                            .hoverEffect()
+                                            
+                                        }
                                     }
-                                    //                            .transition(.slide)
-                                    .transition(.move(edge: .leading))
-                                } else {
-                                    selectedJetView()
-                                        .transition(.move(edge: .trailing))
-                                        .frame(height: .infinity, alignment: .top)
-                                    
+                                }
+                                //                            .transition(.slide)
+                                .transition(.move(edge: .leading))
+                            } else {
+                                selectedJetView()
+                                    .transition(.move(edge: .trailing))
+                                    .frame(height: .infinity, alignment: .top)
+                                
                                     .onAppear {
                                         print(userData.xp)
                                         print(userData.currentLevel)
                                         print(userData.levels)
                                     }
-                                }
-                                
                             }
-                            .padding()
-                            .frame(width: CGFloat(sidebarWidth + 10), height: reader.size.height - 75)
-                            .background(.ultraThinMaterial)
-                            .clipShape(RoundedRectangle(cornerRadius: 20.0))
+                            
                         }
-                        Rectangle()
-                            .frame(width: 10)
-                            .foregroundStyle(.clear)
-                            .contentShape(Rectangle())
-                            .gesture(DragGesture().onChanged { value in
-                                let newWidth = CGFloat(self.sidebarWidth) + value.translation.width
-                                self.sidebarWidth = Float(CGFloat(min(500, max(250, newWidth))))
-                            })
-                            .onChange(of: reader.size.width) {
-                                if sidebarWidth > Float(reader.size.width) - 40 {
-                                    sidebarWidth = Float(reader.size.width) - 40
-                                }
-                            }
-                            .onChange(of: sidebarWidth) {
-                                if sidebarWidth > Float(reader.size.width) - 40 {
-                                    sidebarWidth = Float(reader.size.width) - 40
-                                }
-                            }
+                        .padding()
+                        .frame(width: CGFloat(sidebarWidth + 10), height: reader.size.height - 75)
+                        .background(.ultraThinMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 20.0))
                     }
-                    .padding()
+                    Rectangle()
+                        .frame(width: 10)
+                        .foregroundStyle(.clear)
+                        .contentShape(Rectangle())
+                        .gesture(DragGesture().onChanged { value in
+                            let newWidth = CGFloat(self.sidebarWidth) + value.translation.width
+                            self.sidebarWidth = Float(CGFloat(min(500, max(250, newWidth))))
+                        })
+                        .onChange(of: reader.size.width) {
+                            if sidebarWidth > Float(reader.size.width) - 40 {
+                                sidebarWidth = Float(reader.size.width) - 40
+                            }
+                        }
+                        .onChange(of: sidebarWidth) {
+                            if sidebarWidth > Float(reader.size.width) - 40 {
+                                sidebarWidth = Float(reader.size.width) - 40
+                            }
+                        }
+                }
+                .padding()
             }
             
             if showTakeoffPopup {
                 ShowDepartureDonePopupView(showDeparturePopupView: $showTakeoffPopup, departureDoneSuccessfullyItemsToShow: takeoffItems!)
+                    .transition(.blurReplace)
+                    .zIndex(1)
             }
         }
         .statusBarHidden(true)
         .ignoresSafeArea()
+        .onChange(of: showTakeoffPopup) { newValue in
+            if newValue {
+                Task { @MainActor in
+                    try? await Task.sleep(nanoseconds: 1_500_000_000*2)
+                    withAnimation {
+                        showTakeoffPopup = false
+                    }
+                }
+            }
+        }
         .sheet(isPresented: $openSettings) {
-            SettingsView()
+            SettingsView(modifiableUserData: $userData)
         }
         .fullScreenCover(isPresented: $airportSelector) {
             AirportPickerView(airportSelected: Binding {
@@ -325,13 +339,13 @@ struct MapManagerView: View {
             })
         }
         .fullScreenCover(isPresented: $openUserUpgradeView) {
-            UserUpgradeView()
+            UserUpgradeView(modifiableUserData: $userData)
                 .onAppear {
                     print("Open")
                 }
         }
         .fullScreenCover(isPresented: $openFuelWindow) {
-            FuelPriceView()
+            FuelPriceView(modifiableUserData: $userData)
         }
         .fullScreenCover(isPresented: $openShopView) {
             ShopView(modifiableUserData: $userData)

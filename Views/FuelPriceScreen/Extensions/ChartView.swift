@@ -12,7 +12,7 @@ extension FuelPriceView {
     func chartView() -> some View {
         VStack {
             HStack {
-                Text("Price over last 20 hours")
+                Text("Price over last 10 min")
                     .font(.caption)
                     .fontWidth(.expanded)
                 Spacer()

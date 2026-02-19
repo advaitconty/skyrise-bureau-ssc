@@ -18,18 +18,14 @@ struct ContentView: View {
     @State var showWelcome: Bool = false
     @Environment(\.modelContext) var modelContext
     @Query var userData: [UserData]
-    @State var showSetupScreen: Bool = false
-    @State var testerWarning: Bool = true
+    @AppStorage("showSetup") var showSetupScreen: Bool = true
+    @State var testerWarning: Bool = false
     var modifiableUserData: Binding<UserData> {
         Binding {
             if let userData = userData.first {
-                if userData.planes.isEmpty {
-                    showSetupScreen = true
-                }
                 return userData
             } else {
                 modelContext.insert(newUserData)
-                showSetupScreen = true
                 return newUserData
             }
         } set: { value in
@@ -63,7 +59,7 @@ struct ContentView: View {
         }
     }
     let planeArrivalTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    let fuelPriceTimer = Timer.publish(every: 7200, on: .main, in: .common).autoconnect()
+    let fuelPriceTimer = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
     let resetUserData: Bool
     let useTestData: DataTypeToUse
     
@@ -147,9 +143,9 @@ struct ContentView: View {
                         }
                         
                         // Recalculate fuel price for the time passed since last open
-                        let hoursSinceLastFuelUpdate = Calendar.current.dateComponents([.hour], from: modifiableUserData.wrappedValue.lastFuelPriceCalculationDate, to: todaysDate).hour ?? 0
-                        if hoursSinceLastFuelUpdate >= 2 {
-                            let numberOfUpdates = hoursSinceLastFuelUpdate / 2
+                        let hoursSinceLastFuelUpdate = Calendar.current.dateComponents([.hour], from: modifiableUserData.wrappedValue.lastFuelPriceCalculationDate, to: todaysDate).second ?? 0
+                        if hoursSinceLastFuelUpdate >= 30 {
+                            let numberOfUpdates = hoursSinceLastFuelUpdate / 30
                             for _ in 0..<numberOfUpdates {
                                 calculateNextFuelPrice(userData: modifiableUserData)
                             }
@@ -192,26 +188,34 @@ struct ContentView: View {
                     }
                 }
                 .onReceive(fuelPriceTimer) { _ in
-                    calculateNextFuelPrice(userData: modifiableUserData)
+                    withAnimation {
+                        calculateNextFuelPrice(userData: modifiableUserData)
+                    }
                     modifiableUserData.wrappedValue.lastFuelPriceCalculationDate = Date()
                 }
                 .onAppear {
                     let notificationsManager = NotificationsManager()
                     notificationsManager.requestPermission()
-                }
-                .fullScreenCover(isPresented: $showSetupScreen) {
-                    SetupView(userData: modifiableUserData)
-                        .interactiveDismissDisabled(true)
+                    print(modifiableUserData.wrappedValue.appNotSetup)
                 }
         }
         .statusBarHidden()
         .alert("Welcome to Skyrise Bureau!", isPresented: $testerWarning) {
             Button("OK", role: .cancel) { }
         } message: {
-            Text("Thank you for testing Skyrise Bureau. This is a slimmed down version of the app. It misses out on:\n- Proper maps through Apple Maps\n- Accurate plane waiting times\nFor this demo, the speed of the planes in this demo have been sped up by 500x, and Apple Maps has been replaced by a custom canvas.. For the real version, check out Skyrise Bureau on the App Store.")
+            Text("Thank you for testing Skyrise Bureau.\n\nThis is a slimmed down version of the app. \n\nFor this demo, the speed of the planes in this demo have been sped up by 500x, Apple Maps has been replaced by a custom canvas, and fuel price refreshes are every 30s instead of every 2 hours.\n\nIf you enjoy the demo, please check out Skyrise Bureau on the App Store!")
         }
         .onAppear {
             modifiableUserData.wrappedValue.reconcileXP()
+        }
+        .onChange(of: modifiableUserData.wrappedValue.appNotSetup) {
+            if !modifiableUserData.wrappedValue.appNotSetup {
+                testerWarning = true
+            }
+        }
+        .fullScreenCover(isPresented: modifiableUserData.appNotSetup) {
+            SetupView(userData: modifiableUserData)
+                .interactiveDismissDisabled(true)
         }
     }
 }

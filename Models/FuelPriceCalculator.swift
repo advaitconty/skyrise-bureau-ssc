@@ -11,7 +11,7 @@ import SwiftUI
 /// Fuel price logic
 /// The process
 /// 1. Check final fuel price
-/// 2. Calculate delta in fuel price over last 20 results (refresh every 3 hours)
+/// 2. Calculate delta in fuel price over last 20 results (refresh every 2 hours)
 /// 3. Randomly select a fuel price multipler (from 0.3x of current price to 3x of current price - chances will change based on delta of all fuel prices)
 
 

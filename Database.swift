@@ -2871,30 +2871,6 @@ class AirportDatabase {
                 demand: AirportDemand(passengerDemand: 4.5, cargoDemand: 3.5, businessTravelRatio: 0.40, tourismBoost: 0.82),
                 facilities: AirportFacilities(terminalCapacity: 55000, cargoCapacity: 800, gatesAvailable: 22, slotEfficiency: 0.77)
             ),
-            Airport(name: "Xaleidscopix International Gateway",
-                    city: "Darekuma",
-                    country: "7sref",
-                    iata: "XSX",
-                    icao: "AXSX",
-                    region: .australiaAndOceania,
-                    latitude: 35.6149384,
-                    longitude: 139.731068,
-                    runwayLength: 2500,
-                    elevation: 1500,
-                    demand: AirportDemand(passengerDemand: 4.0, cargoDemand: 3.7, businessTravelRatio: 0.5, tourismBoost: 0.9),
-                    facilities: AirportFacilities(terminalCapacity: 30000, cargoCapacity: 3000, gatesAvailable: 10, slotEfficiency: 0.65)),
-            Airport(name: "DragonSenseiGuy Secret Gateway",
-                    city: "Kwajalein",
-                    country: "Republic of Dragons",
-                    iata: "DSG",
-                    icao: "RDSG",
-                    region: .australiaAndOceania,
-                    latitude: 9.1257934,
-                    longitude: 167.5740472,
-                    runwayLength: 4500,
-                    elevation: 1500,
-                    demand: AirportDemand(passengerDemand: 3.5, cargoDemand: 4.0, businessTravelRatio: 0.35, tourismBoost: 0.87),
-                    facilities: AirportFacilities(terminalCapacity: 35000, cargoCapacity: 1000, gatesAvailable: 25, slotEfficiency: 0.88)),
             Airport(
                 name: "Fua'amotu International Airport",
                 city: "Nuku'alofa",
@@ -3306,7 +3282,6 @@ class AirportDatabase {
                 demand: AirportDemand(passengerDemand: 7.5, cargoDemand: 6.5, businessTravelRatio: 0.58, tourismBoost: 0.85),
                 facilities: AirportFacilities(terminalCapacity: 145000, cargoCapacity: 2600, gatesAvailable: 68, slotEfficiency: 0.86)
             ),
-            
             // INDIA (add to Asia section)
             Airport(
                 name: "Surat International Airport",
@@ -3335,19 +3310,7 @@ class AirportDatabase {
                 elevation: 591,
                 demand: AirportDemand(passengerDemand: 7.2, cargoDemand: 6.5, businessTravelRatio: 0.70, tourismBoost: 0.60),
                 facilities: AirportFacilities(terminalCapacity: 120000, cargoCapacity: 2200, gatesAvailable: 52, slotEfficiency: 0.84)
-            ),
-            Airport(name: "Kasimir International Airport",
-                    city: "Leosia City",
-                    country: "Leosia",
-                    iata: "LKW",
-                    icao: "LKMW",
-                    region: .australiaAndOceania,
-                    latitude: 24.15444,
-                    longitude: 160.76127,
-                    runwayLength: 3000,
-                    elevation: 200,
-                    demand: AirportDemand(passengerDemand: 7.2, cargoDemand: 6.5, businessTravelRatio: 0.70, tourismBoost: 0.60),
-                    facilities: AirportFacilities(terminalCapacity: 120000, cargoCapacity: 2200, gatesAvailable: 52, slotEfficiency: 0.84))
+            )
         ]
     }
     

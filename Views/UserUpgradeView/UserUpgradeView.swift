@@ -50,56 +50,7 @@ struct UserUpgradeView: View {
     @Environment(\.dismiss) var dismiss
     @Query var userData: [UserData]
     @Environment(\.modelContext) var modelContext
-    var modifiableUserData: Binding<UserData> {
-        Binding {
-            if let userData = userData.first {
-                if userData.planes.isEmpty {
-                    #if os(macOS)
-                        dismissWindow()
-                    #elseif os(iOS)
-                        dismiss()
-                    #endif
-                }
-                return userData
-            } else {
-                modelContext.insert(newUserData)
-                #if os(macOS)
-                    dismissWindow()
-                #elseif os(iOS)
-                    dismiss()
-                #endif
-                return newUserData
-            }
-        } set: { value in
-            if let item = userData.first {
-                item.planes = value.planes
-                item.deliveryHubs = value.deliveryHubs
-                item.airlineIataCode = value.airlineIataCode
-                item.airlineName = value.airlineName
-                item.name = value.name
-                item.accountBalance = value.accountBalance
-                item.airlineReputation = value.airlineReputation
-                item.campaignEffectiveness = value.campaignEffectiveness
-                item.campaignRunning = value.campaignRunning
-                item.currentlyHoldingFuel = value.currentlyHoldingFuel
-                item.flightAttendentHappiness = value.flightAttendentHappiness
-                item.flightAttendents = value.flightAttendents
-                item.fuelDiscountMultiplier = value.fuelDiscountMultiplier
-                item.lastFuelPrice = value.lastFuelPrice
-                item.levels = value.levels
-                item.maintainanceCrew = value.maintainanceCrew
-                item.maintainanceCrewHappiness = value.maintainanceCrewHappiness
-                item.maxFuelHoldable = value.maxFuelHoldable
-                item.pilotHappiness = value.pilotHappiness
-                item.pilots = value.pilots
-                item.pilotHappiness = value.pilotHappiness
-                item.xp = value.xp
-                print("saving userdata...")
-                try? modelContext.save()
-                print("saved userdata successfully")
-            }
-        }
-    }
+    var modifiableUserData: Binding<UserData>
     /// Debug stuff
     /// Keep in case above binding decides to cause problems again
     /// stupid bindings
@@ -153,14 +104,14 @@ struct UserUpgradeView: View {
                             .font(.largeTitle)
                         Text("AVAILABLE\nXP POINTS")
                             .fontWidth(.expanded)
-                        if !checkForMacCatalyst() {
+//                        if !checkForMacCatalyst() {
                             Button {
                                 dismiss()
                             } label: {
                                 Image(systemName: "xmark")
                             }
                             .adaptiveButtonStyle()
-                        } // targetEnvironment(macCatalyst)
+//                        }  targetEnvironment(macCatalyst)
                     }
                     HStack {
                         Button {
@@ -266,8 +217,4 @@ struct UserUpgradeView: View {
             }
         }
     }
-}
-
-#Preview {
-    UserUpgradeView()
 }

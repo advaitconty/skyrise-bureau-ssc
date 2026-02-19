@@ -237,6 +237,10 @@ struct Route: Codable, Equatable {
     var originAirport: Airport
     var arrivalAirport: Airport
     var stopoverAirport: Airport?
+    
+    static func == (lhs: Route, rhs: Route) -> Bool {
+        return lhs.originAirport == rhs.originAirport && lhs.arrivalAirport == rhs.arrivalAirport && lhs.stopoverAirport == rhs.stopoverAirport
+    }
 }
 
 struct DepartureDoneSuccessfullyItems: Codable {
@@ -352,26 +356,58 @@ struct FleetItem: Codable, Identifiable, Equatable {
         )
         
         // Calculate demand multipliers based on pricing for each class
-        let economyMultiplier = calculatePricingMultiplier(
+        var economyMultiplier = calculatePricingMultiplier(
             userPrice: Double(pricing.economy),
             marketPrice: Double(reasonablePricingForAirline.economy),
             elasticity: 1.5
         )
-        let premiumMultiplier = calculatePricingMultiplier(
+        var premiumMultiplier = calculatePricingMultiplier(
             userPrice: Double(pricing.premiumEconomy),
             marketPrice: Double(reasonablePricingForAirline.premiumEconomy),
             elasticity: 1.3
         )
-        let businessMultiplier = calculatePricingMultiplier(
+        var businessMultiplier = calculatePricingMultiplier(
             userPrice: Double(pricing.business),
             marketPrice: Double(reasonablePricingForAirline.business),
             elasticity: 1.0
         )
-        let firstMultiplier = calculatePricingMultiplier(
+        var firstMultiplier = calculatePricingMultiplier(
             userPrice: Double(pricing.first),
             marketPrice: Double(reasonablePricingForAirline.first),
             elasticity: 0.8
         )
+        
+        // Check the amount of times route has been run on this day
+        var randomDropNowHappening: Bool = false
+        
+        for (i, routeInformation) in userDataProvided.wrappedValue.routeInformation.enumerated() {
+            if routeInformation.route == assignedRoute {
+                if routeInformation.passengerDropHappened {
+                    if ((routeInformation.timeOfLastPassengerDrop?.timeIntervalSince(Date()) ?? 0) / 10800) >= 3 {
+                        userDataProvided.wrappedValue.routeInformation[i].passengerDropHappened = false
+                        userDataProvided.wrappedValue.routeInformation[i].routesRunToday = 0
+                    } else {
+                        randomDropNowHappening = true
+                    }
+                } else {
+                    randomDropNowHappening = Int.random(in: 1...( (25 - routeInformation.routesRunToday) <= 1 ? 1 : (25 - routeInformation.routesRunToday) )) == 1
+                    if randomDropNowHappening {
+                        userDataProvided.wrappedValue.routeInformation[i].passengerDropHappened = true
+                        userDataProvided.wrappedValue.routeInformation[i].timeOfLastPassengerDrop = Date()
+                    }
+                }
+                
+                userDataProvided.wrappedValue.routeInformation[i].routesRunToday += 1
+            }
+        }
+        
+        // Add random drop, based on randomness
+        if randomDropNowHappening {
+            firstMultiplier *= 0.5
+            businessMultiplier *= 0.5
+            premiumMultiplier *= 0.5
+            economyMultiplier *= 0.5
+        }
         
         // Apply multipliers to base demand
         let adjustedDemand = RoutePassengerDistribution(
@@ -487,12 +523,24 @@ enum PreferedAirlineCodeType: Codable {
     case iata, icao
 }
 
+/// Tracks the number of routes done on one route
+/// The more done, the higher the chances of the passenger drop
+/// Once a passenger drop happens on a route, the route willl always run with a passenger drop
+struct RouteInformation: Codable, Identifiable, Equatable {
+    var id: UUID = UUID()
+    var route: Route
+    var routesRunToday: Int = 0
+    var passengerDropHappened: Bool = false
+    var timeOfLastPassengerDrop: Date? = nil
+}
+
 /// SwiftData class
 /// name --> CEO name, airlineName --> name of the airline, airlineIataCode --> Airline IATA code, that will be used at the start of all
 /// flights under that airline, planes [FleetItem] --> Contains a list of the planes
 @Model
 class UserData {
     /// New for settings
+    var appNotSetup: Bool = true
     var allowedNotificationTypes: [AllowedNotificationTypes] = [AllowedNotificationTypes.arrival, AllowedNotificationTypes.maintainanceEnd, AllowedNotificationTypes.campaignEnd]
     var preferredAirlineCodeType: String = "iata"
     var name: String
@@ -525,6 +573,7 @@ class UserData {
     var maintainanceCrewHappiness: Double = 0.95
     var campaignRunning: Bool = false
     var campaignEffectiveness: Double?
+    var routeInformation: [RouteInformation] = []
     
     // Percentage airline improves during campaign. After campaign, airline improves reputation by 1% of their improvement during the campaign
     // airline also looses reputation when their maintainance or happiness drops below 0.7
