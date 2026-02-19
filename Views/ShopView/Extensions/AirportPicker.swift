@@ -10,8 +10,8 @@ import SwiftUI
 extension ShopView {
     func availableAirportPicker() -> some View {
         VStack {
-                Text("Delivery Airport")
-                    .fontWidth(.expanded)
+            Text("Delivery Airport")
+                .fontWidth(.expanded)
             ScrollView(.horizontal) {
                 HStack {
                     ForEach(modifiableUserData.deliveryHubs, id: \.uniqueID) { airport in

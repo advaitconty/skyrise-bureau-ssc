@@ -117,3 +117,7 @@ struct AirportPickerView: View {
         }
     }
 }
+
+#Preview(traits: .landscapeLeft) {
+    AirportPickerView(airportSelected: .constant(AirportDatabase().allAirports.first!), userData: testUserData, finishedPickingScreen: .constant(false))
+}

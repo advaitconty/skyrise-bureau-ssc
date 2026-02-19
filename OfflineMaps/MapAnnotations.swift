@@ -14,7 +14,14 @@ extension Airport {
         OfflineAnnotation(
             id: iata,
             coordinate: clLocationCoordinateItemForLocation,
-            kind: .airport(iata: iata, name: name, isHub: hubIATAs.contains(iata))
+            kind: .airport(
+                iata: iata,
+                icao: icao,
+                name: name,
+                city: city,
+                country: country,
+                isHub: hubIATAs.contains(iata)
+            )
         )
     }
 }
@@ -32,7 +39,7 @@ extension FleetItem {
 extension Route {
     func asOfflineRoute(isActive: Bool = false) -> OfflineRoute {
         OfflineRoute(
-            origin: CLLocationCoordinate2D(latitude: originAirport.latitude,  longitude: originAirport.longitude),
+            origin: CLLocationCoordinate2D(latitude: originAirport.latitude, longitude: originAirport.longitude),
             destination: CLLocationCoordinate2D(latitude: arrivalAirport.latitude, longitude: arrivalAirport.longitude),
             isActive: isActive
         )

@@ -24,9 +24,24 @@ struct Skyrise_BureauApp: App {
     
     /// ENSURE ALL VARIABLES ABOVE ARE SET TO false BEFORE FINAL
     /// BUILD OF APP
-    ///
+    let sharedModelContainer: ModelContainer
+    
     init() {
         UserDefaults.standard.set(false, forKey: "UIApplicationSupportsTabbedSceneCollection")
+        
+        let schema = Schema([UserData.self])
+        let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        do {
+            sharedModelContainer = try ModelContainer(for: schema, configurations: [config])
+        } catch {
+            // If migration fails, wipe and recreate fresh
+            let wipedConfig = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+            do {
+                sharedModelContainer = try ModelContainer(for: schema, configurations: [wipedConfig])
+            } catch {
+                fatalError("Could not create ModelContainer: \(error)")
+            }
+        }
     }
     
     var body: some Scene {

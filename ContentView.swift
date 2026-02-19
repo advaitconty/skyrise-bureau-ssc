@@ -22,12 +22,7 @@ struct ContentView: View {
     @State var testerWarning: Bool = false
     var modifiableUserData: Binding<UserData> {
         Binding {
-            if let userData = userData.first {
-                return userData
-            } else {
-                modelContext.insert(newUserData)
-                return newUserData
-            }
+            userData.first ?? newUserData
         } set: { value in
             if let item = userData.first {
                 item.planes = value.planes
@@ -67,6 +62,11 @@ struct ContentView: View {
         VStack {
             MapManagerView(userData: modifiableUserData)
                 .onAppear {
+                    if modifiableUserData.wrappedValue.appNotSetup {
+                        modelContext.insert(newUserData)
+                        try? modelContext.save()
+                    }
+                    
                     if !showSetupScreen {
                         /// DEBUG CONTENT:
                         /// DO NOT REMOVE. Ensure all passed through variables are updated accordingly
@@ -203,7 +203,7 @@ struct ContentView: View {
         .alert("Welcome to Skyrise Bureau!", isPresented: $testerWarning) {
             Button("OK", role: .cancel) { }
         } message: {
-            Text("Thank you for testing Skyrise Bureau.\n\nThis is a slimmed down version of the app. \n\nFor this demo, the speed of the planes in this demo have been sped up by 500x, Apple Maps has been replaced by a custom canvas, and fuel price refreshes are every 30s instead of every 2 hours.\n\nIf you enjoy the demo, please check out Skyrise Bureau on the App Store!")
+            Text("Welcome to Skyrise Bureau!\n\nThis app playground is a condensed version of a larger project. To aid judging, the following adjustments have been made:\n\n• Plane speeds are 500× faster than real-time\n• Apple Maps has been replaced with a custom canvas\n• Fuel price refreshes occur every 30s instead of every 2 hours")
         }
         .onAppear {
             modifiableUserData.wrappedValue.reconcileXP()

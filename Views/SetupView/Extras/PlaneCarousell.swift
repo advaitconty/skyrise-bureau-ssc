@@ -14,7 +14,7 @@ extension SetupView {
                 Image(jet1)
                     .resizable()
                     .scaledToFit()
-                    .clipShape(RoundedRectangle(cornerRadius: 4.0))
+                    .clipShape(RoundedRectangle(cornerRadius: 10.0))
                     .transition(.asymmetric(insertion: .slide, removal: .scale))
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
@@ -27,7 +27,7 @@ extension SetupView {
                 Image(jet2)
                     .resizable()
                     .scaledToFit()
-                    .clipShape(RoundedRectangle(cornerRadius: 4.0))
+                    .clipShape(RoundedRectangle(cornerRadius: 10.0))
                     .transition(.asymmetric(insertion: .slide, removal: .scale))
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
@@ -38,7 +38,7 @@ extension SetupView {
                     }
             }
         }
-        .frame(width: 160, height: 90)
+        .frame(width: 220, height: 132.5)
     }
 
 }

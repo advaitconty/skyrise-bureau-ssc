@@ -24,10 +24,10 @@ extension _OfflineMapRenderer {
         ctx.stroke(path, with: .color(gridColor), lineWidth: 0.5)
         var eq = Path()
         eq.move(to: p.point(for: .init(latitude: 0, longitude: -180)))
-        eq.addLine(to: p.point(for: .init(latitude: 0, longitude: 180)))
+        eq.addLine(to: p.point(for: .init(latitude: 0, longitude:  180)))
         ctx.stroke(eq, with: .color(.white.opacity(0.07)), lineWidth: 1)
     }
-    
+
     func drawLand(ctx: GraphicsContext, p: Projection) {
         for outline in worldOutlines {
             guard outline.count > 2 else { continue }
@@ -41,7 +41,7 @@ extension _OfflineMapRenderer {
             ctx.stroke(path, with: .color(.white.opacity(0.05)), lineWidth: 0.8)
         }
     }
-    
+
     func drawRoutes(ctx: GraphicsContext, p: Projection) {
         for route in routes {
             let pts = greatCircle(from: route.origin, to: route.destination)
@@ -55,15 +55,15 @@ extension _OfflineMapRenderer {
                                           dash: route.isActive ? [5,3] : [3,4]))
         }
     }
-    
+
     func drawAnnotations(ctx: GraphicsContext, p: Projection) {
         for ann in annotations {
             let pt = p.point(for: ann.coordinate)
             let isSelected = selectedAnnotation?.id == ann.id
-            
+
             switch ann.kind {
-            case .airport(let iata, _, let isHub):
-                let color: Color  = isHub ? hubColor : airportColor
+            case .airport(let iata, _, _, _, _, let isHub):  // icao/name/city/country only used in callout
+                let color: Color    = isHub ? hubColor : airportColor
                 let radius: CGFloat = isHub ? 5 : 3.5
                 if isHub {
                     ctx.fill(Path(ellipseIn: CGRect(x: pt.x-10, y: pt.y-10, width: 20, height: 20)),
@@ -84,7 +84,7 @@ extension _OfflineMapRenderer {
                         at: CGPoint(x: pt.x, y: pt.y + 11)
                     )
                 }
-                
+
             case .aircraft(let reg, let airborne):
                 let color: Color = airborne ? aircraftColor : .white.opacity(0.5)
                 ctx.draw(

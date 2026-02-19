@@ -18,13 +18,15 @@ extension AirportPickerView {
                         coordinate: airport.clLocationCoordinateItemForLocation,
                         kind: .airport(
                             iata: airport.reportCorrectCodeForUserData(userData),
+                            icao: airport.icao,
                             name: airport.name,
+                            city: airport.city,
+                            country: airport.country,
                             isHub: airportSelected == airport
                         )
                     )
                 },
                 routes: []
             )
-        }
-    }
+        }    }
 }

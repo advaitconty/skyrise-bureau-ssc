@@ -36,7 +36,9 @@ struct SetupView: View {
             } else if screenNum == 3 {
                 thirdScreen()
                     .padding()
-                    .onAppear { userData.deliveryHubs.append(selectedStartingAirport) }
+                    .onAppear {
+                        userData.deliveryHubs.append(selectedStartingAirport)
+                    }
             }
         }
     }

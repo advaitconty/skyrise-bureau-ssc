@@ -18,12 +18,12 @@ import SwiftUI
                 OfflineAnnotation(
                     id: "LHR",
                     coordinate: .init(latitude: 51.47, longitude: -0.45),
-                    kind: .airport(iata: "LHR", name: "London Heathrow", isHub: true)
+                    kind: .airport(iata: "LHR", icao: "EGLL", name: "London Heathrow", city: "London", country: "United Kingdom", isHub: true)
                 ),
                 OfflineAnnotation(
                     id: "BLR",
                     coordinate: .init(latitude: 13.19, longitude: 77.70),
-                    kind: .airport(iata: "BLR", name: "Bengaluru Intl", isHub: true)
+                    kind: .airport(iata: "BLR", icao: "VOBL", name: "Kempegowda International Airport", city: "Bengaluru", country: "India", isHub: true)
                 ),
                 OfflineAnnotation(
                     id: "plane-1",
@@ -39,5 +39,4 @@ import SwiftUI
                 )
             ]
         )
-    }
-}
+    }}

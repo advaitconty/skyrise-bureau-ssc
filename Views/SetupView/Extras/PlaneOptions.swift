@@ -20,33 +20,35 @@ extension SetupView {
                 carousell(jet1: jet1, jet2: jet2)
                 Text(focus)
                     .fontWidth(.condensed)
-                HStack {
-                    Image(systemName: "airplane")
-                    Text("Starting fleet")
-                        .font(.title2)
+                
+                VStack {
+                    HStack {
+                        Image(systemName: "airplane")
+                        Text("Starting fleet")
+                            .font(.title2)
+                            .fontWidth(.expanded)
+                    }
+                    .padding(.bottom, 3)
+                    
+                    Text(jet1Full)
                         .fontWidth(.expanded)
-                    Spacer()
+                    Text(jet2Full)
+                        .fontWidth(.expanded)
                 }
-                .frame(maxWidth: 160)
-
-
-                Text(jet1Full)
-                    .fontWidth(.condensed)
-                Text(jet2Full)
-                    .fontWidth(.condensed)
+                .padding()
+                .background(Color.gray.opacity(0.15))
+                .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                
                 HStack {
-                    Text("Starting capital")
-                        .font(.title2)
-                        .fontWidth(.expanded)
-                    Text(startingCapital)
+                    Text("Starting capital: \(startingCapital)")
                         .font(.title2)
                         .fontWidth(.condensed)
                 }
             }
             .padding()
-            .frame(width: 350 - 50, height: 300)
-            .background(fleetChoice == option ? .blue : (colorScheme == .dark ? Color(red: 18/255, green: 18/255, blue: 18/255) : Color(red: 237/255, green: 237/255, blue: 237/255)))
-            .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
+            .frame(width: 450, height: 450)
+            .background(fleetChoice == option ? Color.accentColor : (colorScheme == .dark ? Color(red: 18/255, green: 18/255, blue: 18/255) : Color(red: 237/255, green: 237/255, blue: 237/255)))
+            .clipShape(RoundedRectangle(cornerRadius: 22.5, style: .continuous))
             .shadow(color: colorScheme == .dark ? .white.opacity(0.01) : .black.opacity(0.1), radius: 15, x: 0, y: 5)
             .onTapGesture {
                 withAnimation {

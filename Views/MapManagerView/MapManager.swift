@@ -34,6 +34,8 @@ struct MapManagerView: View {
     @State var sidebarWidth: Float = 400
     @State var selectedJet: Int? = nil
     @State var showSidebar: Bool = true
+    @State var showAIView: Bool = false
+    @State var isAIAvailable: Bool = false
 //    @StateObject var clock = Clock()
     @State var openSettings: Bool = false
     @State var openUserUpgradeView: Bool = false
@@ -53,9 +55,17 @@ struct MapManagerView: View {
                         OfflineMapContentGroup(
                             annotations: AirportDatabase.shared.allAirports.map { airport in
                                 airport.asOfflineAnnotation(hubIATAs: userData.hubsAcquired.map(\.iata))
-                            } + userData.planes.compactMap { plane -> OfflineAnnotation? in
-                                guard plane.currentAirportLocation != nil else { return nil }
-                                return plane.asOfflineAnnotation()
+                            } + userData.planes.map { plane in
+                                OfflineAnnotation(
+                                    id: plane.id.uuidString,
+                                    coordinate: plane.isAirborne
+                                        ? plane.planeLocationInFlight
+                                        : CLLocationCoordinate2D(
+                                            latitude: plane.currentAirportLocation?.latitude ?? 0,
+                                            longitude: plane.currentAirportLocation?.longitude ?? 0
+                                        ),
+                                    kind: .aircraft(registration: plane.registration, isAirborne: plane.isAirborne)
+                                )
                             },
                             routes: userData.planes.compactMap { plane -> OfflineRoute? in
                                 guard let route = plane.assignedRoute else { return nil }
@@ -173,14 +183,36 @@ struct MapManagerView: View {
                                                     .contentTransition(.numericText(countsDown: true))
                                             }
                                         }
+                                        
+                                        ProgressView(value: Float(userData.currentlyHoldingFuel/userData.maxFuelHoldable)) {
+                                            HStack {
+                                                Text("Fuel Capacity")
+                                                    .fontWidth(.condensed)
+                                                    .contentTransition(.numericText(countsDown: false))
+                                                Spacer()
+                                                Text("\(userData.currentlyHoldingFuel.withCommas)kgs/\(userData.maxFuelHoldable.withCommas)kgs")
+                                                    .fontWidth(.condensed)
+                                                    .contentTransition(.numericText(countsDown: true))
+                                            }
+                                        }
+                                        
+                                        ProgressView(value: userData.airlineReputation) {
+                                            HStack {
+                                                Text("Reputation")
+                                                    .fontWidth(.condensed)
+                                                    .contentTransition(.numericText(countsDown: false))
+                                                Spacer()
+                                                Text("\((userData.airlineReputation * 100).withCommas)% known")
+                                                    .fontWidth(.condensed)
+                                                    .contentTransition(.numericText(countsDown: true))
+                                            }
+                                        }
+                                        
                                         HStack {
                                             Text("Balance: $\(userData.accountBalance.withCommas)")
                                                 .fontWidth(.condensed)
                                                 .contentTransition(.numericText(countsDown: false))
                                             Spacer()
-                                            Text("Reputation: \((userData.airlineReputation * 100).withCommas)%")
-                                                .fontWidth(.condensed)
-                                                .contentTransition(.numericText(countsDown: false))
                                         }
                                         
                                         HStack {

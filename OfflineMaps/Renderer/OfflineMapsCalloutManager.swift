@@ -1,5 +1,5 @@
 //
-//  CalloutManager.swift
+//  OfflineMapsCalloutManager.swift
 //  Skyrise Bureau SSC
 //
 //  Created by Milind Contractor on 18/2/26.
@@ -13,15 +13,26 @@ extension _OfflineMapRenderer {
     func calloutView(for ann: OfflineAnnotation) -> some View {
         VStack(spacing: 4) {
             switch ann.kind {
-            case .airport(let iata, let name, let isHub):
-                Text(iata)
-                    .font(.system(size: 13, weight: .bold, design: .monospaced))
-                    .foregroundColor(isHub ? hubColor : airportColor)
+            case .airport(let iata, let icao, let name, let city, let country, let isHub):
+                HStack(spacing: 6) {
+                    Text(iata)
+                        .font(.system(size: 14, weight: .bold, design: .monospaced))
+                        .foregroundColor(isHub ? hubColor : airportColor)
+                    Text("·")
+                        .foregroundColor(.white.opacity(0.3))
+                    Text(icao)
+                        .font(.system(size: 12, weight: .medium, design: .monospaced))
+                        .foregroundColor(.white.opacity(0.55))
+                }
                 Text(name)
-                    .font(.system(size: 11))
-                    .foregroundColor(.white.opacity(0.8))
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(.white.opacity(0.85))
                     .fontWidth(.condensed)
-
+                    .multilineTextAlignment(.center)
+                Text("\(city), \(country)")
+                    .font(.system(size: 10))
+                    .foregroundColor(.white.opacity(0.5))
+                    .fontWidth(.condensed)
                 if isHub {
                     Text("HUB")
                         .font(.system(size: 9, weight: .heavy))
@@ -31,6 +42,7 @@ extension _OfflineMapRenderer {
                         .background(hubColor.opacity(0.15))
                         .clipShape(Capsule())
                 }
+
             case .aircraft(let reg, let airborne):
                 Text(reg)
                     .font(.system(size: 13, weight: .bold, design: .monospaced))
@@ -42,10 +54,10 @@ extension _OfflineMapRenderer {
                     .fontWidth(.condensed)
             }
         }
-        .padding(.horizontal, 12).padding(.vertical, 8)
+        .padding(.horizontal, 14).padding(.vertical, 10)
         .background(.ultraThinMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
-        .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.white.opacity(0.12), lineWidth: 1))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.white.opacity(0.12), lineWidth: 1))
         .shadow(color: .black.opacity(0.4), radius: 8)
     }
 }

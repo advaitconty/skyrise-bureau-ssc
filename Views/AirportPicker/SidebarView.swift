@@ -40,8 +40,9 @@ extension AirportPickerView {
                                         .fontWidth(.condensed)
                                 }
                             }
+                            .foregroundStyle(Color.white)
                             .padding()
-                            .background(.indigo)
+                            .background(Color.accentColor)
                             .clipShape(RoundedRectangle(cornerRadius: 10.0))
                         }
                         .buttonStyle(.plain)
@@ -81,6 +82,13 @@ extension AirportPickerView {
                     }
                 }
             }
+            HStack {
+                Image(systemName: "location.magnifyingglass")
+                TextField("Search for airports...", text: $searchTerm)
+                    .fontWidth(.condensed)
+            }
+            .padding()
+            .glassEffect()
         }
         .padding()
         .frame(width: CGFloat(300), height: height - 30)

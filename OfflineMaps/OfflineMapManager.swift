@@ -9,7 +9,7 @@ import SwiftUI
 import Foundation
 import CoreLocation
 
-struct OfflineMap {
+struct OfflineMap: View {
     @Binding var position: OfflineMapPosition
     var content: OfflineMapContentGroup
 
@@ -20,7 +20,7 @@ struct OfflineMap {
     }
 }
 
-extension OfflineMap: View {
+extension OfflineMap {
     private var oceanColor:    Color { Color(red: 0.07, green: 0.09, blue: 0.12) }
     private var landColor:     Color { Color(red: 0.17, green: 0.22, blue: 0.20) }
     private var gridColor:     Color { Color.white.opacity(0.04) }

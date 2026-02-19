@@ -178,13 +178,11 @@ struct FlowLayout: Layout {
         
         for view in subviews {
             let size = view.sizeThatFits(.unspecified)
-            
             if x + size.width > maxWidth {
                 x = 0
                 y += rowHeight + spacing
                 rowHeight = 0
             }
-            
             rowHeight = max(rowHeight, size.height)
             x += size.width + spacing
         }
@@ -194,26 +192,39 @@ struct FlowLayout: Layout {
     
     func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize,
                        subviews: Subviews, cache: inout ()) {
-        
         let maxWidth = bounds.width
-        var x: CGFloat = bounds.minX
         var y: CGFloat = bounds.minY
-        var rowHeight: CGFloat = 0
-        
+
+        // Group subviews into rows first
+        var rows: [[LayoutSubviews.Element]] = []
+        var currentRow: [LayoutSubviews.Element] = []
+        var currentRowWidth: CGFloat = 0
+
         for view in subviews {
             let size = view.sizeThatFits(.unspecified)
-            
-            if x + size.width > bounds.maxX {
-                x = bounds.minX
-                y += rowHeight + spacing
-                rowHeight = 0
+            if currentRowWidth + size.width > maxWidth, !currentRow.isEmpty {
+                rows.append(currentRow)
+                currentRow = [view]
+                currentRowWidth = size.width + spacing
+            } else {
+                currentRow.append(view)
+                currentRowWidth += size.width + spacing
             }
-            
-            view.place(at: CGPoint(x: x, y: y),
-                       proposal: ProposedViewSize(size))
-            
-            x += size.width + spacing
-            rowHeight = max(rowHeight, size.height)
+        }
+        if !currentRow.isEmpty { rows.append(currentRow) }
+
+        // Place each row centered
+        for row in rows {
+            let rowWidth = row.reduce(0) { $0 + $1.sizeThatFits(.unspecified).width } + CGFloat(row.count - 1) * spacing
+            var x = bounds.minX + (maxWidth - rowWidth) / 2
+            let rowHeight = row.map { $0.sizeThatFits(.unspecified).height }.max() ?? 0
+
+            for view in row {
+                let size = view.sizeThatFits(.unspecified)
+                view.place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(size))
+                x += size.width + spacing
+            }
+            y += rowHeight + spacing
         }
     }
 }
