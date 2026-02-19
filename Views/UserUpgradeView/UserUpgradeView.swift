@@ -75,20 +75,29 @@ struct UserUpgradeView: View {
                     HStack {
                         VStack {
                             HStack {
-                                TextField(modifiableUserData.wrappedValue.airlineName, text: modifiableUserData.airlineName)
-                                    .textFieldStyle(.plain)
-                                    .font(.largeTitle)
-                                    .fontWidth(.expanded)
+                                HStack {
+                                    Image(systemName: "pencil.line")
+                                        .font(.title)
+                                    TextField(modifiableUserData.wrappedValue.airlineName, text: modifiableUserData.airlineName)
+                                        .textFieldStyle(.plain)
+                                        .font(.largeTitle)
+                                        .fontWidth(.expanded)
+                                        .fixedSize()
+                                }
                                 Spacer()
                             }
                             HStack(spacing: 0) {
                                 Text("As managed by ".uppercased())
                                     .font(.caption2)
                                     .fontWidth(.expanded)
-                                TextField(modifiableUserData.wrappedValue.name, text: modifiableUserData.name)
-                                    .textFieldStyle(.plain)
-                                    .font(.caption2)
-                                    .fontWidth(.expanded)
+                                HStack {
+                                    Image(systemName: "pencil.line")
+                                    TextField(modifiableUserData.wrappedValue.name, text: modifiableUserData.name)
+                                        .textFieldStyle(.plain)
+                                        .font(.caption2)
+                                        .fontWidth(.expanded)
+                                        .fixedSize()
+                                }
                                 Spacer()
                             }
                             HStack {
@@ -104,14 +113,14 @@ struct UserUpgradeView: View {
                             .font(.largeTitle)
                         Text("AVAILABLE\nXP POINTS")
                             .fontWidth(.expanded)
-//                        if !checkForMacCatalyst() {
-                            Button {
-                                dismiss()
-                            } label: {
-                                Image(systemName: "xmark")
-                            }
-                            .adaptiveButtonStyle()
-//                        }  targetEnvironment(macCatalyst)
+                        //                        if !checkForMacCatalyst() {
+                        Button {
+                            dismiss()
+                        } label: {
+                            Image(systemName: "xmark")
+                        }
+                        .adaptiveButtonStyle()
+                        //                        }  targetEnvironment(macCatalyst)
                     }
                     HStack {
                         Button {

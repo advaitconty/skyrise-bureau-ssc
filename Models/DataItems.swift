@@ -447,7 +447,7 @@ struct FleetItem: Codable, Identifiable, Equatable {
         
         notificationsManager.schedule(notificationType: .arrival, planeInvolved: self, date: landingTime!, userData: userDataProvided.wrappedValue)
         
-        
+        userDataProvided.wrappedValue.amountOfMoneyMadeFromDeparturesInTheLastWeek[-1] = userDataProvided.wrappedValue.amountOfMoneyMadeFromDeparturesInTheLastWeek[-1] + revenue
         
         return DepartureDoneSuccessfullyItems(
             departedSuccessfully: true,
@@ -581,10 +581,11 @@ class UserData {
     var accountBalance: Double
     var lastLogin: Date = Date()
     var lastFuelPriceCalculationDate: Date = Date()
-    var amountSpentOnFuelInTheLastWeek: Double = 0
-    var amountSpentOnPlanesInTheLastWeek: Double = 0
-    var amountSpentOnHubsAccquisitionInTheLastWeek: Double = 0
-    var amountOfMoneyMadeFromDepartures: Double = 0
+    var lastCalculationsForPreviousWeekFinancesDoneTime: Date = Date()
+    var amountSpentOnFuelInTheLastWeek: [Double] = [0, 0, 0, 0, 0, 0, 0]
+    var amountSpentOnPlanesInTheLastWeek: [Double] = [0, 0, 0, 0, 0, 0, 0]
+    var amountSpentOnHubsAccquisitionInTheLastWeek: [Double] = [0, 0, 0, 0, 0, 0, 0]
+    var amountOfMoneyMadeFromDeparturesInTheLastWeek: [Double] = [0, 0, 0, 0, 0, 0, 0]
     var hubsAcquired: [Airport] = []
     var daysPassedSinceStartOfFinancialWeek: Int = 0
     var campaignEnd: Date? = nil
@@ -654,10 +655,6 @@ class UserData {
         self.accountBalance = accountBalance
         self.lastLogin = Date()
         self.lastFuelPriceCalculationDate = Date()
-        self.amountSpentOnFuelInTheLastWeek = 0
-        self.amountSpentOnPlanesInTheLastWeek = 0
-        self.amountSpentOnHubsAccquisitionInTheLastWeek = 0
-        self.amountOfMoneyMadeFromDepartures = 0
         self.hubsAcquired = []
         self.daysPassedSinceStartOfFinancialWeek = 0
         self.fuelPurchasedByUserAtLastFuelPrice = 0

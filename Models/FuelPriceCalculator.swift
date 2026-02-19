@@ -75,4 +75,7 @@ func calculateNextFuelPrice(userData: Binding<UserData>) {
     
     /// Reset the purchase tracker for the new price period
     userData.wrappedValue.fuelPurchasedByUserAtLastFuelPrice = 0
+    
+    userData.wrappedValue.lastFewFuelPricesForGraph.remove(at: 0)
+    userData.wrappedValue.lastFewFuelPricesForGraph.append(userData.wrappedValue.currentFuelPrice)
 }

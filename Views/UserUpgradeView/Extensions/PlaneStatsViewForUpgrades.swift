@@ -10,31 +10,53 @@ import SwiftUI
 extension UserUpgradeView {
     func planeItemView(_ plane: Binding<FleetItem>) -> some View {
         VStack {
+            HStack {
+                Image(systemName: "pencil.line")
+                    .font(.subheadline)
+                
+                TextField("Aircraft Name", text: plane.aircraftname, axis: .vertical)
+                    .textFieldStyle(.plain)
+                    .font(.subheadline)
+                    .fontWidth(.expanded)
+            }
+            
             Image(plane.aircraftID.wrappedValue)
                 .resizable()
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: 5.0))
-
-            TextField("Aircraft Name", text: plane.aircraftname)
-                .textFieldStyle(.plain)
-                .font(.subheadline)
-                .fontWidth(.expanded)
+            
+            ProgressView(value: plane.condition.wrappedValue) {
+                HStack {
+                    Text("Condition")
+                    Spacer()
+                    Text("\((plane.condition.wrappedValue * 100).withCommas)%")
+                }
+                
+                .font(.caption)
+                .fontWidth(.condensed)
+            }
+            
             HStack {
                 Text(plane.aircraftID.wrappedValue)
                     .font(.caption)
                     .fontWidth(.condensed)
+                Spacer()
                 TextField("Registration", text: plane.registration)
+                    .fontWidth(.condensed)
                     .textFieldStyle(.plain)
                     .font(.caption)
-                    .fontWidth(.condensed)
                     .multilineTextAlignment(.trailing)
+                    .fixedSize()
+                
+                Image(systemName: "pencil.line")
+                    .font(.caption)
             }
             Text("\(Int(plane.hoursFlown.wrappedValue).withCommas)h flown - \(plane.isAirborne.wrappedValue ? "currently flying" : plane.currentAirportLocation.wrappedValue.map { "at \($0.reportCorrectCodeForUserData(modifiableUserData.wrappedValue))" } ?? "unknown location")")
                 .font(.caption)
                 .fontWidth(.condensed)
         }
         .padding()
-        .frame(width: 200, height: 210)
+        .frame(width: 200, height: 250)
         .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 10.0))
     }

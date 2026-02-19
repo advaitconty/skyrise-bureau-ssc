@@ -186,6 +186,20 @@ struct ContentView: View {
                         modifiableUserData.wrappedValue.levels += 1
                         modifiableUserData.wrappedValue.xpPoints += 1
                     }
+                    
+                    let components = Calendar.current.dateComponents([.day], from: modifiableUserData.wrappedValue.lastCalculationsForPreviousWeekFinancesDoneTime, to: Date())
+                    if components.day! >= 1 {
+                        modifiableUserData.wrappedValue.amountSpentOnFuelInTheLastWeek.remove(at: 0)
+                        modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek.remove(at: 0)
+                        modifiableUserData.wrappedValue.amountSpentOnHubsAccquisitionInTheLastWeek.remove(at: 0)
+                        modifiableUserData.wrappedValue.amountOfMoneyMadeFromDeparturesInTheLastWeek.remove(at: 0)
+                        
+                        modifiableUserData.wrappedValue.amountSpentOnFuelInTheLastWeek.append(0)
+                        modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek.append(0)
+                        modifiableUserData.wrappedValue.amountSpentOnHubsAccquisitionInTheLastWeek.append(0)
+                        modifiableUserData.wrappedValue.amountOfMoneyMadeFromDeparturesInTheLastWeek.append(0)
+                        modifiableUserData.wrappedValue.lastCalculationsForPreviousWeekFinancesDoneTime = Date()
+                    }
                 }
                 .onReceive(fuelPriceTimer) { _ in
                     withAnimation {
@@ -207,6 +221,25 @@ struct ContentView: View {
         }
         .onAppear {
             modifiableUserData.wrappedValue.reconcileXP()
+            
+            let components = Calendar.current.dateComponents([.day], from: modifiableUserData.wrappedValue.lastCalculationsForPreviousWeekFinancesDoneTime, to: Date())
+            if components.day! >= 1 {
+                var nextDay = Calendar.current.date(byAdding: .day, value: 1, to: modifiableUserData.wrappedValue.lastCalculationsForPreviousWeekFinancesDoneTime)!
+                while nextDay < Date() {
+                    nextDay = Calendar.current.date(byAdding: .day, value: 1, to: modifiableUserData.wrappedValue.lastCalculationsForPreviousWeekFinancesDoneTime)!
+                    modifiableUserData.wrappedValue.amountSpentOnFuelInTheLastWeek.remove(at: 0)
+                    modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek.remove(at: 0)
+                    modifiableUserData.wrappedValue.amountSpentOnHubsAccquisitionInTheLastWeek.remove(at: 0)
+                    modifiableUserData.wrappedValue.amountOfMoneyMadeFromDeparturesInTheLastWeek.remove(at: 0)
+                    
+                    modifiableUserData.wrappedValue.amountSpentOnFuelInTheLastWeek.append(0)
+                    modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek.append(0)
+                    modifiableUserData.wrappedValue.amountSpentOnHubsAccquisitionInTheLastWeek.append(0)
+                    modifiableUserData.wrappedValue.amountOfMoneyMadeFromDeparturesInTheLastWeek.append(0)
+                    modifiableUserData.wrappedValue.lastCalculationsForPreviousWeekFinancesDoneTime = nextDay
+                }
+                modifiableUserData.wrappedValue.lastCalculationsForPreviousWeekFinancesDoneTime = Date()
+            }
         }
         .onChange(of: modifiableUserData.wrappedValue.appNotSetup) {
             if !modifiableUserData.wrappedValue.appNotSetup {

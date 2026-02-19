@@ -82,6 +82,7 @@ extension ShopView {
                                 modifiableUserData.wrappedValue.maintainanceCrew += 3
                                 modifiableUserData.wrappedValue.pilots += plane.pilots
                                 modifiableUserData.wrappedValue.flightAttendents += plane.flightAttendents
+                                modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek[-1] = modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek[-1] + plane.purchasePrice
                                 dismiss()
                             } label: {
                                 Text("Purchase for $\(plane.purchasePrice.withCommas)")

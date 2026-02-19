@@ -39,6 +39,7 @@ extension UserUpgradeView {
                         withAnimation {
                             showAirportPickerView = false
                         }
+                        modifiableUserData.wrappedValue.amountSpentOnHubsAccquisitionInTheLastWeek[-1] = modifiableUserData.wrappedValue.amountSpentOnHubsAccquisitionInTheLastWeek[-1] + 10000000
                     } label: {
                         VStack {
                             Text("New hub airport")
