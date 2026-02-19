@@ -82,7 +82,7 @@ struct ShowDepartureDonePopupView: View {
             }
         }
         .padding()
-        .frame(maxWidth: 400)
+        .frame(maxWidth: 500)
         .background(.black.opacity(0.75))
         .clipShape(RoundedRectangle(cornerRadius: 10.0))
     }
