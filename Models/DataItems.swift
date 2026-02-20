@@ -538,6 +538,19 @@ struct RouteInformation: Codable, Identifiable, Equatable {
     var timeOfLastPassengerDrop: Date? = nil
 }
 
+// Table information for finances
+struct TableItemInformation: Codable, Identifiable {
+    var id: UUID = UUID()
+    var day: String
+    var amountSpentOnFuel: Double
+    var amountSpentOnPlanes: Double
+    var amountSpentOnOtherStuff: Double
+    var amountMadeThatDay: Double
+    var ebitdaForThatDay: Double {
+        return amountMadeThatDay - amountSpentOnFuel - amountSpentOnPlanes - amountSpentOnOtherStuff
+    }
+}
+
 /// SwiftData class
 /// name --> CEO name, airlineName --> name of the airline, airlineIataCode --> Airline IATA code, that will be used at the start of all
 /// flights under that airline, planes [FleetItem] --> Contains a list of the planes
@@ -590,6 +603,7 @@ class UserData {
     var amountSpentOnPlanesInTheLastWeek: [Double] = [0, 0, 0, 0, 0, 0, 0]
     var amountSpentOnHubsAccquisitionInTheLastWeek: [Double] = [0, 0, 0, 0, 0, 0, 0]
     var amountOfMoneyMadeFromDeparturesInTheLastWeek: [Double] = [0, 0, 0, 0, 0, 0, 0]
+    var amountSpentOnOtherExpenses: [Double] = [0, 0, 0, 0, 0, 0, 0]
     var hubsAcquired: [Airport] = []
     var daysPassedSinceStartOfFinancialWeek: Int = 0
     var campaignEnd: Date? = nil
@@ -626,6 +640,26 @@ class UserData {
         let averageFuelConsumptionOfAllPlanes = totalFuelConsumptionOfAllPlanes / Double(planes.count)
         
         return averageFuelConsumptionOfAllPlanes * totalDistanceOfPlanesTravelled
+    }
+    
+    var tableInformationForFinances: [TableItemInformation] {
+        let calender: Calendar = Calendar.current
+        var listToOutput: [TableItemInformation] = []
+        var thatDate: Date = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEE"
+        var dayOfWeek: String = dateFormatter.string(from: thatDate)
+        
+        dayOfWeek = dayOfWeek + " (Today)"
+        
+        for (i, _) in amountSpentOnOtherExpenses.enumerated() {
+            listToOutput.append(TableItemInformation(day: dayOfWeek, amountSpentOnFuel: amountSpentOnFuelInTheLastWeek[i], amountSpentOnPlanes: amountSpentOnPlanesInTheLastWeek[i], amountSpentOnOtherStuff: amountSpentOnOtherExpenses[i] + amountSpentOnHubsAccquisitionInTheLastWeek[i], amountMadeThatDay: amountOfMoneyMadeFromDeparturesInTheLastWeek[i]))
+            
+            thatDate = calender.date(byAdding: .day, value: -1, to: thatDate) ?? Date()
+            dayOfWeek = dateFormatter.string(from: thatDate)
+        }
+        
+        return listToOutput
     }
     
     init(name: String, airlineName: String, airlineIataCode: String, planes: [FleetItem], xp: Int, xpPoints: Int = 0, levels: Int, airlineReputation: Double, reliabilityIndex: Double, fuelDiscountMultiplier: Double, lastFuelPrice: Double, pilots: Int, flightAttendents: Int, maintainanceCrew: Int, currentlyHoldingFuel: Int, maxFuelHoldable: Int, weeklyPilotSalary: Int, weeklyFlightAttendentSalary: Int, weeklyFlightMaintainanceCrewSalary: Int, pilotHappiness: Double, flightAttendentHappiness: Double, maintainanceCrewHappiness: Double, campaignRunning: Bool, campaignEffectiveness: Double? = nil, deliveryHubs: [Airport], accountBalance: Double) {

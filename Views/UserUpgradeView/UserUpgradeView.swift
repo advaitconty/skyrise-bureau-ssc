@@ -123,54 +123,133 @@ struct UserUpgradeView: View {
                         //                        }  targetEnvironment(macCatalyst)
                     }
                     HStack {
-                        Button {
-                            withAnimation(.smooth, completionCriteria: .removed) {
-                                screen = 1
-                            } completion: {
-                                print("Screen changed")
+                        if screen == 1 {
+                            Button {
+                                withAnimation(.smooth, completionCriteria: .removed) {
+                                    screen = 1
+                                } completion: {
+                                    print("Screen changed")
+                                }
+                            } label: {
+                                Spacer()
+                                Text("YOUR AIRLINE")
+                                    .fontWidth(.expanded)
+                                    .font(.caption)
+                                Spacer()
                             }
-                        } label: {
-                            Spacer()
-                            Text("SALARY AND HUBS")
-                                .fontWidth(.expanded)
-                                .font(.caption)
-                            Spacer()
-                        }
-                        .adaptiveProminentButtonStyle()
-                        .tint(screen == 1 ? .accentColor : .gray)
-                        
-                        
-                        Button {
-                            withAnimation(.snappy(duration: 0.75), completionCriteria: .removed) {
-                                screen = 2
-                            } completion: {
-                                print("Screen changed")
+                            .adaptiveProminentButtonStyle()
+                        } else {
+                            Button {
+                                withAnimation(.smooth, completionCriteria: .removed) {
+                                    screen = 1
+                                } completion: {
+                                    print("Screen changed")
+                                }
+                            } label: {
+                                Spacer()
+                                Text("YOUR AIRLINE")
+                                    .fontWidth(.expanded)
+                                    .font(.caption)
+                                Spacer()
                             }
-                        } label: {
-                            Spacer()
-                            Text("REPUTATION")
-                                .fontWidth(.expanded)
-                                .font(.caption)
-                            Spacer()
+                            .adaptiveButtonStyle()
                         }
-                        .adaptiveProminentButtonStyle()
-                        .tint(screen == 2 ? .accentColor : .gray)
                         
-                        Button {
-                            withAnimation(.snappy(duration: 0.75), completionCriteria: .removed) {
-                                screen = 3
-                            } completion: {
-                                print("Screen changed")
+                        if screen == 2 {
+                            Button {
+                                withAnimation(.snappy(duration: 0.75), completionCriteria: .removed) {
+                                    screen = 2
+                                } completion: {
+                                    print("Screen changed")
+                                }
+                            } label: {
+                                Spacer()
+                                Text("REPUTATION")
+                                    .fontWidth(.expanded)
+                                    .font(.caption)
+                                Spacer()
                             }
-                        } label: {
-                            Spacer()
-                            Text("UPGRADES")
-                                .fontWidth(.expanded)
-                                .font(.caption)
-                            Spacer()
+                            .adaptiveProminentButtonStyle()
+                        } else {
+                            Button {
+                                withAnimation(.snappy(duration: 0.75), completionCriteria: .removed) {
+                                    screen = 2
+                                } completion: {
+                                    print("Screen changed")
+                                }
+                            } label: {
+                                Spacer()
+                                Text("REPUTATION")
+                                    .fontWidth(.expanded)
+                                    .font(.caption)
+                                Spacer()
+                            }
+                            .adaptiveButtonStyle()
                         }
-                        .adaptiveProminentButtonStyle()
-                        .tint(screen == 3 ? .accentColor : .gray)
+                            
+                        if screen == 3 {
+                            Button {
+                                withAnimation(.snappy(duration: 0.75), completionCriteria: .removed) {
+                                    screen = 3
+                                } completion: {
+                                    print("Screen changed")
+                                }
+                            } label: {
+                                Spacer()
+                                Text("UPGRADES")
+                                    .fontWidth(.expanded)
+                                    .font(.caption)
+                                Spacer()
+                            }
+                            .adaptiveProminentButtonStyle()
+                        } else {
+                            Button {
+                                withAnimation(.snappy(duration: 0.75), completionCriteria: .removed) {
+                                    screen = 3
+                                } completion: {
+                                    print("Screen changed")
+                                }
+                            } label: {
+                                Spacer()
+                                Text("UPGRADES")
+                                    .fontWidth(.expanded)
+                                    .font(.caption)
+                                Spacer()
+                            }
+                            .adaptiveButtonStyle()
+                        }
+                        
+                        if screen == 4 {
+                            Button {
+                                withAnimation(.snappy(duration: 0.75), completionCriteria: .removed) {
+                                    screen = 4
+                                } completion: {
+                                    print("Screen changed")
+                                }
+                            } label: {
+                                Spacer()
+                                Text("FINANCES")
+                                    .fontWidth(.expanded)
+                                    .font(.caption)
+                                Spacer()
+                            }
+                            .adaptiveProminentButtonStyle()
+                        } else {
+                            Button {
+                                withAnimation(.snappy(duration: 0.75), completionCriteria: .removed) {
+                                    screen = 4
+                                } completion: {
+                                    print("Screen changed")
+                                }
+                            } label: {
+                                Spacer()
+                                Text("FINANCES")
+                                    .fontWidth(.expanded)
+                                    .font(.caption)
+                                Spacer()
+                            }
+                            .adaptiveButtonStyle()
+                        }
                     }
                     if screen == 1 {
                         ScrollView {
@@ -197,6 +276,8 @@ struct UserUpgradeView: View {
                     } else if screen == 3 {
                         upgradeView()
                             .transition(.asymmetric(insertion: .slide, removal: .opacity))
+                    } else if screen == 4 {
+                        financesView()
                     }
                 }
                 .padding()
