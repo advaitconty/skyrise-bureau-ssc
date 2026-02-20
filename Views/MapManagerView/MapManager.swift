@@ -24,6 +24,7 @@ struct MapManagerView: View {
     @Environment(\.openWindow) var openWindow
     @State var airportSelector: Bool = false
     @State var openFuelWindow: Bool = false
+    @State var openAIView: Bool = false
     @Namespace var mapScope
     @Namespace var namespace
     @State var mapType: MapStyle = .standard(elevation: .realistic, pointsOfInterest: .all)
@@ -31,7 +32,7 @@ struct MapManagerView: View {
     @State var selectedPlane: FleetItem? = nil
     @Environment(\.colorScheme) var colorScheme
     @Binding var userData: UserData
-    @State var sidebarWidth: Float = 400
+    @State var sidebarWidth: Float = 350
     @State var selectedJet: Int? = nil
     @State var showSidebar: Bool = true
     @State var showAIView: Bool = false
@@ -137,6 +138,7 @@ struct MapManagerView: View {
                                                     maxBusinessPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.business
                                                     maxFirstPassengersServed += jetDepartedSuccessfully.seatingConfigOfJet!.first
                                                     totalMoneyMade += jetDepartedSuccessfully.moneyMade!
+                      
                                                 }
                                                 
                                                 takeoffItems = DepartureDoneSuccessfullyItemsToShow(planesTakenOff: planesTakenOff, economyPassenegersServed: economyPassengersServed, premiumEconomyPassenegersServed: premiumEconomyPassengersServed, businessPassengersServed: businessPassengersServed, firstClassPassengersServed: firstPassengersServed, maxEconomyPassenegersServed: maxEconomyPassengersServed, maxPremiumEconomyPassenegersServed: maxPremiumEconomyPassengersServed, maxBusinessPassengersServed: maxBusinessPassengersServed, maxFirstClassPassengersServed: maxFirstPassengersServed, moneyMade: totalMoneyMade)
@@ -268,6 +270,22 @@ struct MapManagerView: View {
 #if targetEnvironment(macCatalyst)
                                                 openWindow(id: "settings")
 #else
+                                                openAIView = true
+#endif
+                                            } label: {
+                                                HStack {
+                                                    Spacer()
+                                                    Image(systemName: "apple.intelligence")
+                                                    Spacer()
+                                                }
+                                            }
+                                            .adaptiveButtonStyle()
+                                            .hoverEffect()
+                                            
+                                            Button {
+#if targetEnvironment(macCatalyst)
+                                                openWindow(id: "settings")
+#else
                                                 openSettings = true
 #endif
                                             } label: {
@@ -309,7 +327,7 @@ struct MapManagerView: View {
                         .contentShape(Rectangle())
                         .gesture(DragGesture().onChanged { value in
                             let newWidth = CGFloat(self.sidebarWidth) + value.translation.width
-                            self.sidebarWidth = Float(CGFloat(min(500, max(250, newWidth))))
+                            self.sidebarWidth = Float(CGFloat(min(600, max(350, newWidth))))
                         })
                         .onChange(of: reader.size.width) {
                             if sidebarWidth > Float(reader.size.width) - 40 {
@@ -380,6 +398,9 @@ struct MapManagerView: View {
         }
         .fullScreenCover(isPresented: $openShopView) {
             ShopView(modifiableUserData: $userData)
+        }
+        .fullScreenCover(isPresented: $openAIView) {
+            AiView(userData: $userData)
         }
         .onChange(of: userData.levels) {
             withAnimation {

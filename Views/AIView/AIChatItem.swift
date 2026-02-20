@@ -7,12 +7,8 @@
 
 import SwiftUI
 
-enum MesssageMessenger: Codable {
-    case ai, user
-}
-
 extension AiView {
-    func aiChatItem(messageType: MesssageMessenger, messageContent: String) -> some View {
+    func aiChatItem(messageType: MesssageMessenger, messageContent: LocalizedStringKey) -> some View {
         VStack {
             if messageType == .ai {
                 VStack(alignment: .leading, spacing: 0) {
@@ -58,7 +54,7 @@ extension AiView {
                     }
                     .padding()
                 }
-                .background(Color.accentColor.opacity(0.1))
+                .background(Color.accentColor.opacity(0.2))
                 .clipShape(RoundedRectangle(cornerRadius: 12.5))
             }
         }

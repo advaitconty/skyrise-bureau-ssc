@@ -13,15 +13,33 @@ struct AiView: View {
     @State var AIState: AIAvailabilityInformation? = nil
     @State var itemEnteredInTextBox: String = ""
     @State var showSendButton: Bool = false
+    @State var conversationHistory: [ChatMessage] = []
+    @State var sessionManager = AISessionManager()
+    @State var randomThinkingQuote: String = ""
+    @State var timer = Timer.publish(every: 1.5, on: .main, in: .common).autoconnect()
+    @Environment(\.dismiss) var dismiss
+    
     var body: some View {
         VStack {
             HStack {
                 Text("Fleet Advisor")
                     .font(.largeTitle)
                     .fontWidth(.expanded)
+                    .onReceive(timer) { _ in
+                        print("called")
+                        withAnimation {
+                            randomThinkingQuote = playfulThinkingQuotes.randomElement()!
+                        }
+                    }
+                    .onAppear {
+                        withAnimation {
+                            randomThinkingQuote = playfulThinkingQuotes.randomElement()!
+                        }
+                    }
+                
                 Spacer()
                 Button {
-                    
+                    dismiss()
                 } label: {
                     Image(systemName: "xmark")
                         .font(.title)

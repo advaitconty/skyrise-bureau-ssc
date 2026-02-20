@@ -19,6 +19,9 @@ extension AiView {
                     Spacer()
                         .onAppear {
                             AIState = checkAIAvailabilty()
+                            if AIState?.availability == true {
+                                sessionManager.setup(userData: userData)
+                            }
                         }
                 }
             } else if !AIState!.availability {
