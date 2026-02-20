@@ -161,3 +161,85 @@ struct GetFinancialSummaries: Tool {
         return output
     }
 }
+
+struct LookupAircraft: Tool {
+    let name = "lookup_aircraft"
+    let description = "Looks up an aircraft type from the database by its ID, returning its specifications including range, fuel burn rate, and seating capacity."
+    
+    @Generable
+    struct Arguments {
+        @Guide(description: "The aircraft ID to look up, e.g. 'B737-800NG', 'A320', 'CRJ900'")
+        var aircraftID: String
+    }
+    
+    func call(arguments: Arguments) -> String {
+        guard let aircraft = AircraftDatabase.shared.allAircraft.first(where: { $0.id == arguments.aircraftID }) else {
+            return "No aircraft found with ID '\(arguments.aircraftID)'."
+        }
+        return """
+        Aircraft: \(aircraft.name) (\(aircraft.id))
+        Range: \(aircraft.maxRange) km
+        Fuel burn rate: \(aircraft.fuelBurnRate) units/km
+        Seating Capacity: \(aircraft.maxSeats)
+        """
+    }
+}
+
+struct LookupAirport: Tool {
+    let name = "lookup_airport"
+    let description = "Looks up an airport by its IATA or ICAO code, returning its location, demand, and facilities."
+    
+    @Generable
+    struct Arguments {
+        @Guide(description: "The IATA or ICAO code of the airport, e.g. 'LHR', 'EGLL', 'BLR'")
+        var code: String
+    }
+    
+    func call(arguments: Arguments) -> String {
+        let db = AirportDatabase.shared
+        guard let airport = db.allAirports.first(where: {
+            $0.iata.uppercased() == arguments.code.uppercased() ||
+            $0.icao.uppercased() == arguments.code.uppercased()
+        }) else {
+            return "No airport found with code '\(arguments.code)'."
+        }
+        return """
+        Airport: \(airport.name) (\(airport.iata) / \(airport.icao))
+        City: \(airport.city), \(airport.country)
+        Region: \(airport.region)
+        Runway length: \(airport.runwayLength)m
+        Elevation: \(airport.elevation)m
+        """
+    }
+}
+
+struct CalculateRouteDistance: Tool {
+    let name = "calculate_route_distance"
+    let description = "Calculates the distance in kilometres between two airports by their IATA or ICAO codes."
+    
+    @Generable
+    struct Arguments {
+        @Guide(description: "IATA or ICAO code of the origin airport")
+        var originCode: String
+        @Guide(description: "IATA or ICAO code of the destination airport")
+        var destinationCode: String
+    }
+    
+    func call(arguments: Arguments) -> String {
+        let db = AirportDatabase.shared
+        guard let origin = db.allAirports.first(where: {
+            $0.iata.uppercased() == arguments.originCode.uppercased() ||
+            $0.icao.uppercased() == arguments.originCode.uppercased()
+        }) else {
+            return "No airport found with code '\(arguments.originCode)'."
+        }
+        guard let destination = db.allAirports.first(where: {
+            $0.iata.uppercased() == arguments.destinationCode.uppercased() ||
+            $0.icao.uppercased() == arguments.destinationCode.uppercased()
+        }) else {
+            return "No airport found with code '\(arguments.destinationCode)'."
+        }
+        let distance = db.calculateDistance(from: origin, to: destination)
+        return "Distance from \(origin.iata) to \(destination.iata): \(distance) km"
+    }
+}

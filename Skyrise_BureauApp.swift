@@ -34,7 +34,6 @@ struct Skyrise_BureauApp: App {
         do {
             sharedModelContainer = try ModelContainer(for: schema, configurations: [config])
         } catch {
-            // If migration fails, wipe and recreate fresh
             let wipedConfig = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
             do {
                 sharedModelContainer = try ModelContainer(for: schema, configurations: [wipedConfig])
