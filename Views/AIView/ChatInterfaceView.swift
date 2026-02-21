@@ -14,27 +14,50 @@ extension AiView {
                 ScrollView {
                     aiChatItem(messageType: .ai, messageContent: "Hello, and welcome to your Fleet Advisor! What would you like help with today")
                     
-                    ForEach(conversationHistory) { message in
+                    ForEach(userData.aiChatHistory) { message in
                         aiChatItem(messageType: message.messageType, messageContent: message.displayedMessage)
+                            .transition(.blurReplace)
                     }
                     
                     Color.clear
                         .id("BOTTOM")
                 }
-                .onChange(of: conversationHistory.count) {
+                .onAppear {
+                    if !userData.aiChatHistory.isEmpty {
+                        withAnimation {
+                            proxy.scrollTo("BOTTOM", anchor: .bottom)
+                        }
+                    }
+                }
+                .onChange(of: userData.aiChatHistory) {
                     withAnimation {
                         proxy.scrollTo("BOTTOM", anchor: .bottom)
+                        if !userData.aiChatHistory.isEmpty {
+                            showClearHistoryButton = true
+                        } else {
+                            showClearHistoryButton = false
+                        }
                     }
                 }
                 
                 .onChange(of: sessionManager.isResponding) {
                     withAnimation {
                         proxy.scrollTo("BOTTOM", anchor: .bottom)
+                        if sessionManager.isResponding == false {
+                            showClearHistoryButton = true
+                        } else {
+                            showClearHistoryButton = false
+                        }
+                    }
+                }
+                .onChange(of: sessionManager.isResponding) {
+                    withAnimation {
+                        showThinkingDialogue = sessionManager.isResponding
                     }
                 }
             }
             VStack {
-                if sessionManager.isResponding {
+                if showThinkingDialogue {
                     HStack {
                         ProgressView()
                         Image(systemName: "apple.intelligence")
@@ -49,8 +72,9 @@ extension AiView {
                     .foregroundStyle(.white)
                     .padding()
                     .glassEffect()
-//                    .background(Color.accentColor.opacity(0.2))
-//                    .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                    .transition(.blurReplace)
+                    //                    .background(Color.accentColor.opacity(0.2))
+                    //                    .clipShape(RoundedRectangle(cornerRadius: 10.0))
                 }
                 HStack {
                     TextField("What would you like advise on?", text: $itemEnteredInTextBox)

@@ -13,10 +13,12 @@ struct AiView: View {
     @State var AIState: AIAvailabilityInformation? = nil
     @State var itemEnteredInTextBox: String = ""
     @State var showSendButton: Bool = false
-    @State var conversationHistory: [ChatMessage] = []
     @State var sessionManager = AISessionManager()
     @State var randomThinkingQuote: String = ""
-    @State var timer = Timer.publish(every: 1.5, on: .main, in: .common).autoconnect()
+    @State var timer = Timer.publish(every: 3.0, on: .main, in: .common).autoconnect()
+    @State var showClearHistoryButton: Bool = false
+    @State var showClearHistoryAlert: Bool = false
+    @State var showThinkingDialogue: Bool = false
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -38,6 +40,28 @@ struct AiView: View {
                     }
                 
                 Spacer()
+                if showClearHistoryButton {
+                    Button {
+                        showClearHistoryAlert = true
+                    } label: {
+                        Image(systemName: "trash")
+                            .font(.title)
+                    }
+                    .adaptiveButtonStyle()
+                    .transition(.blurReplace)
+                    .alert("Are you sure?", isPresented: $showClearHistoryAlert) {
+                        Button("OK", role: .destructive) {
+                            withAnimation {
+                                userData.aiChatHistory.removeAll()
+                            }
+                        }
+                        
+                        Button("Cancel", role: .cancel) { }
+                    } message: {
+                        Text("All your chat history with your Fleet Advisor will be deleted.")
+                    }
+                }
+                
                 Button {
                     dismiss()
                 } label: {

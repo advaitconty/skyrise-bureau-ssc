@@ -87,8 +87,11 @@ struct _OfflineMapRenderer: View {
                 
                 // Controls
                 VStack {
-                    HStack { Spacer(); controls }
                     Spacer()
+                    HStack {
+                        Spacer()
+                        controls
+                    }
                 }
                 .padding(16)
             }

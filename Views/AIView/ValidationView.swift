@@ -19,9 +19,6 @@ extension AiView {
                     Spacer()
                         .onAppear {
                             AIState = checkAIAvailabilty()
-                            if AIState?.availability == true {
-                                sessionManager.setup(userData: userData)
-                            }
                         }
                 }
             } else if !AIState!.availability {
@@ -41,12 +38,20 @@ extension AiView {
                 }
             } else {
                 chatInterfaceView()
+                    .onAppear {
+                        sessionManager.setup(userData: userData)
+                        withAnimation {
+                            if !userData.aiChatHistory.isEmpty {
+                                showClearHistoryButton = true
+                            }
+                        }
+                    }
             }
         }
     }
 }
-    
-    
-    #Preview {
-        AiView(userData: .constant(testUserDataEndgame))
-    }
+
+
+#Preview {
+    AiView(userData: .constant(testUserDataEndgame))
+}

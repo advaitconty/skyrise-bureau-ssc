@@ -13,7 +13,7 @@ enum MesssageMessenger: Codable {
     case ai, user
 }
 
-struct ChatMessage: Codable, Identifiable {
+struct ChatMessage: Codable, Identifiable, Equatable {
     var id: UUID = UUID()
     var messageType: MesssageMessenger
     var text: String

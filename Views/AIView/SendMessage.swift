@@ -12,22 +12,24 @@ extension AiView {
         let text = itemEnteredInTextBox.trimmingCharacters(in: .whitespaces)
         guard !text.isEmpty, !sessionManager.isResponding else { return }
         
-        itemEnteredInTextBox = ""
-        showSendButton = false
-        
-        conversationHistory.append(ChatMessage(messageType: .user, text: text))
-        
-        conversationHistory.append(ChatMessage(messageType: .ai, text: ""))
-        let aiIndex = conversationHistory.count - 1
+        withAnimation {
+            itemEnteredInTextBox = ""
+            showSendButton = false
+            
+            userData.aiChatHistory.append(ChatMessage(messageType: .user, text: text))
+            
+            userData.aiChatHistory.append(ChatMessage(messageType: .ai, text: ""))
+        }
+        let aiIndex = userData.aiChatHistory.count - 1
         
         do {
             try await sessionManager.sendStreaming(text) { partial in
                 if String(partial) != "null" {
-                    conversationHistory[aiIndex].text = partial
+                    userData.aiChatHistory[aiIndex].text = partial
                 }
             }
         } catch {
-            conversationHistory[aiIndex].text = "Something went wrong. Please try again."
+            userData.aiChatHistory[aiIndex].text = "Something went wrong. Please try again."
         }
     }
 }

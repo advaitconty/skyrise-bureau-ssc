@@ -591,6 +591,7 @@ class UserData {
     var campaignRunning: Bool = false
     var campaignEffectiveness: Double?
     var routeInformation: [RouteInformation] = []
+    var aiChatHistory: [ChatMessage] = []
     
     // Percentage airline improves during campaign. After campaign, airline improves reputation by 1% of their improvement during the campaign
     // airline also looses reputation when their maintainance or happiness drops below 0.7

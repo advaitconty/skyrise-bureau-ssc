@@ -145,9 +145,6 @@ extension MapManagerView {
                 
                 if !userData.planes[selectedJet!].isAirborne && !userData.planes[selectedJet!].inMaintainance {
                     HStack {
-                        Text("\(userData.planes[selectedJet!].assignedRoute == nil ? "Assign" : "Change") destination airport")
-                            .fontWidth(.expanded)
-                        Spacer()
                         if #available(iOS 26.0, *) {
                             Button {
                                 if userData.planes[selectedJet!].assignedRoute == nil {
@@ -155,8 +152,11 @@ extension MapManagerView {
                                 }
                                 airportSelector = true
                             } label: {
-                                Text("Change")
+                                Spacer()
+                                Image(systemName: "mappin")
+                                Text(userData.planes[selectedJet!].assignedRoute == nil ? "Assign flight plan" : "Edit flight plan")
                                     .fontWidth(.condensed)
+                                Spacer()
                             }
                             .buttonStyle(.glassProminent)
                             .hoverEffect()
@@ -165,8 +165,11 @@ extension MapManagerView {
                             Button {
                                 airportSelector = true
                             } label: {
-                                Text("Arrival")
+                                Spacer()
+                                Image(systemName: "mappin")
+                                Text(userData.planes[selectedJet!].assignedRoute == nil ? "Assign flight plan" : "Edit flight plan")
                                     .fontWidth(.condensed)
+                                Spacer()
                             }
                             .buttonStyle(.borderedProminent)
                             .hoverEffect()
