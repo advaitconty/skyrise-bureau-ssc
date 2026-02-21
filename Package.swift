@@ -8,16 +8,15 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "Skyrise Bureau SSC",
+    name: "Skyrise Bureau",
     platforms: [
         .iOS("26.0")
     ],
     products: [
         .iOSApplication(
-            name: "Skyrise Bureau SSC",
+            name: "Skyrise Bureau",
             targets: ["AppModule"],
             bundleIdentifier: "com.advaitconty.ssc.2026.skyrise-bureau",
-            teamIdentifier: "MK2VQ82S9T",
             displayVersion: "1.0",
             bundleVersion: "1",
             appIcon: .asset("AppIcon"),

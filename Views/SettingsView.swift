@@ -269,7 +269,7 @@ struct SettingsView: View {
                         .hoverEffect()
                     }
                 }
-                Text("Made with 💚 by advaitconty")
+                Text("Made with 💚 by Advait Contractor (advaitconty)")
                     .fontWidth(.expanded)
                 
                 
