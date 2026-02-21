@@ -15,6 +15,8 @@ struct ShopView: View {
     @Environment(\.modelContext) var modelContext
     @State var sliderWidth: CGFloat = 150
     @State var airportToDeliverPlaneTo: Airport? = nil
+    @State var aircraftCreditInformation: Credit? = nil
+    @Environment(\.openURL) var openURL
     
     let maxSliderWidth: CGFloat = 300
     

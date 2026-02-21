@@ -9,11 +9,60 @@ import SwiftUI
 
 extension ShopView {
     func aircraftImage(_ plane: Aircraft) -> some View {
-        HStack {
+        ZStack(alignment: .bottomTrailing) {
             Image(plane.modelCode)
                 .resizable()
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            Button {
+                aircraftCreditInformation = credits.first(where: { $0.imageItem == plane.modelCode })!
+            } label: {
+                Image(systemName: "info.circle")
+            }
+            .adaptiveButtonStyle()
+            .popover(item: $aircraftCreditInformation) { creditInfo in
+                VStack(alignment: .leading) {
+                    Text("Shot by \(creditInfo.creatorName) \(creditInfo.creditSource == .fireentity ? "(@fireentity on GitHub)" : "")")
+                        .fontWidth(.expanded)
+                    Text("Description: \(creditInfo.attributedFor)")
+                        .fontWidth(.condensed)
+                    Divider()
+                    Text("Available under the \(creditInfo.creditSource != .pixabay ? "Creative Commons (CC BY-SA 2.0)" : "Pixaby License")")
+                        .fontWidth(.condensed)
+                    Text("Images have been compressed and cropped for use in this game.")
+                        .fontWidth(.condensed)
+                    
+                    HStack {
+                        if creditInfo.creditSource == .wikimedia || creditInfo.creditSource == .flickr {
+                            Button {
+                                if let url = URL(string: "https://creativecommons.org/licenses/by-sa/2.0/deed.en") {
+                                    openURL(url)
+                                }
+                            } label: {
+                                Text("Creative Commons CC BY-SA 2.0 License")
+                                    .fontWidth(.condensed)
+                            }
+                            .adaptiveButtonStyle()
+                            .hoverEffect()
+                        }
+                        
+                        if creditInfo.creditSource != .personal {
+                            Button {
+                                openURL(creditInfo.urlLinkToOriginal)
+                            } label: {
+                                Text(creditInfo.creditSource != .fireentity ? "Original image" : "Image creator's GitHub")
+                                    .fontWidth(.condensed)
+                            }
+                            .adaptiveButtonStyle()
+                            .hoverEffect()
+                        } else {
+                            Text("Shot and edited by Advait Contractor (advaitconty)!")
+                                .fontWidth(.condensed)
+                        }
+                    }
+                }
+                .padding()
+            }
         }
     }
     
