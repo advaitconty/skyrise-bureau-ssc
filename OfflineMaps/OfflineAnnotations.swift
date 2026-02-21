@@ -9,7 +9,7 @@ import CoreLocation
 
 enum OfflineAnnotationKind {
     case airport(iata: String, icao: String, name: String, city: String, country: String, isHub: Bool)
-    case aircraft(registration: String, isAirborne: Bool)
+    case aircraft(registration: String, isAirborne: Bool, heading: Double?)
 }
 
 struct OfflineAnnotation: Identifiable {

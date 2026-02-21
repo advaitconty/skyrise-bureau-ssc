@@ -85,14 +85,29 @@ extension _OfflineMapRenderer {
                     )
                 }
 
-            case .aircraft(let reg, let airborne):
+            case .aircraft(let reg, let airborne, let heading):
                 let color: Color = airborne ? aircraftColor : .white.opacity(0.5)
-                ctx.draw(
-                    Text(airborne ? "✈" : "■")
-                        .font(.system(size: airborne ? 14 : 8))
-                        .foregroundColor(color),
-                    at: pt
-                )
+                if airborne, let heading {
+                    // Rotate the ✈ to point toward the destination
+                    // ✈ glyph points right (90°) by default, so subtract 90° to align with north-up
+                    let angle = Angle.degrees(heading - 90)
+                    var rotatedCtx = ctx
+                    rotatedCtx.translateBy(x: pt.x, y: pt.y)
+                    rotatedCtx.rotate(by: angle)
+                    rotatedCtx.draw(
+                        Text("✈")
+                            .font(.system(size: 14))
+                            .foregroundColor(color),
+                        at: .zero
+                    )
+                } else {
+                    ctx.draw(
+                        Text(airborne ? "✈" : "■")
+                            .font(.system(size: airborne ? 14 : 8))
+                            .foregroundColor(color),
+                        at: pt
+                    )
+                }
                 if isSelected || (p.zoom > 3.5 && airborne) {
                     ctx.draw(
                         Text(reg).font(.system(size: 8, weight: .medium, design: .monospaced))

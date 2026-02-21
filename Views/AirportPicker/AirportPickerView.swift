@@ -100,17 +100,17 @@ struct AirportPickerView: View {
                             .padding()
                         }
                         Spacer()
-                            .onChange(of: airportSelected) { oldValue, newValue in
-                                withAnimation {
-                                    mapCameraPosition = .region(
-                                        center: CLLocationCoordinate2D(
-                                            latitude: newValue.latitude,
-                                            longitude: newValue.longitude
-                                        ),
-                                        zoom: 4.0
-                                    )
-                                }
-                            }
+//                            .onChange(of: airportSelected) { oldValue, newValue in
+//                                withAnimation {
+//                                    mapCameraPosition = .region(
+//                                        center: CLLocationCoordinate2D(
+//                                            latitude: newValue.latitude,
+//                                            longitude: newValue.longitude
+//                                        ),
+//                                        zoom: 4.0
+//                                    )
+//                                }
+//                            }
                     }
                 }
             }

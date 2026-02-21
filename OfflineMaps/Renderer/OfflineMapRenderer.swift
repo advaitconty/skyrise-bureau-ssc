@@ -20,6 +20,7 @@ struct _OfflineMapRenderer: View {
     @State var proj = Projection(centerLat: 25, centerLon: 15, zoom: 2.2, size: .zero)
     @State var selectedAnnotation: OfflineAnnotation? = nil
     @GestureState var liveDrag: CGSize = .zero
+    @State var trackpadScroll: CGSize = .zero
     
     var body: some View {
         GeometryReader { geo in
@@ -29,21 +30,36 @@ struct _OfflineMapRenderer: View {
                 Canvas { ctx, size in
                     var p = proj
                     p.size = size
-                    if liveDrag != .zero {
-                        p.pan(by: CGSize(width: -liveDrag.width, height: -liveDrag.height))
+                    let totalDrag = CGSize(
+                        width:  liveDrag.width  + trackpadScroll.width,
+                        height: liveDrag.height + trackpadScroll.height
+                    )
+                    if totalDrag != .zero {
+                        p.pan(by: totalDrag)
                     }
                     drawGrid(ctx: ctx, p: p)
                     drawLand(ctx: ctx, p: p)
                     drawRoutes(ctx: ctx, p: p)
                     drawAnnotations(ctx: ctx, p: p)
                 }
+                .overlay {
+                    TrackpadScrollView { delta in
+                        trackpadScroll.width  += delta.width
+                        trackpadScroll.height += delta.height
+                    } onEnd: {
+                        proj.size = geo.size
+                        proj.pan(by: trackpadScroll)
+                        trackpadScroll = .zero
+                        syncPosition()
+                    }
+                }
                 .gesture(
                     DragGesture(minimumDistance: 2)
                         .updating($liveDrag) { v, s, _ in s = v.translation }
                         .onEnded { v in
                             proj.size = geo.size
-                            proj.pan(by: CGSize(width: -v.translation.width,
-                                                height: -v.translation.height))
+                            proj.pan(by: CGSize(width: v.translation.width,
+                                                height: v.translation.height))
                             syncPosition()
                         }
                 )
@@ -64,14 +80,22 @@ struct _OfflineMapRenderer: View {
                     proj.centerLon = position.longitude
                     proj.zoom      = position.zoom
                 }
-                .onChange(of: geo.size) { proj.size = $0 }
-                .onChange(of: position) {
-                    withAnimation(.spring(duration: 0.4)) {
-                        proj.centerLat = position.latitude
-                        proj.centerLon = position.longitude
-                        proj.zoom      = position.zoom
+                .onChange(of: geo.size) { oldSize, newSize in
+                    if proj.size != newSize {
+                        proj.size = newSize
                     }
                 }
+//                .onChange(of: position) { oldPos, newPos in
+//                    if abs(proj.centerLat - newPos.latitude) > 0.0001
+//                        || abs(proj.centerLon - newPos.longitude) > 0.0001
+//                        || abs(proj.zoom - newPos.zoom) > 0.0001 {
+//                        withAnimation(.spring(duration: 0.4)) {
+//                            proj.centerLat = newPos.latitude
+//                            proj.centerLon = newPos.longitude
+//                            proj.zoom      = newPos.zoom
+//                        }
+//                    }
+//                }
                 
                 // Callout
                 if let ann = selectedAnnotation {

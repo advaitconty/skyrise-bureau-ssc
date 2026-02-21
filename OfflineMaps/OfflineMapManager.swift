@@ -32,10 +32,7 @@ extension OfflineMap {
     
     var body: some View {
         _OfflineMapRenderer(
-            flyTo:         position,
-            onPositionChanged: { newPos in
-                position = newPos
-            },
+            position:      $position,
             annotations:   content.annotations,
             routes:        content.routes,
             oceanColor:    oceanColor,

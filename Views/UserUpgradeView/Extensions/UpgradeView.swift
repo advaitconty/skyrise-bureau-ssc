@@ -75,14 +75,14 @@ extension UserUpgradeView {
                     VStack {
                         Text("+5%")
                             .fontWidth(.condensed)
-                        Text("$\(((modifiableUserData.wrappedValue.baseReputation - 0.55) / 5 * 5000000000).withCommas) and \(((modifiableUserData.wrappedValue.baseReputation - 0.55) / 5 * 500).withCommas) XP Point\(((Int(modifiableUserData.wrappedValue.baseReputation - 0.55) / 5 * 500)).plu())")
+                        Text("$\(((modifiableUserData.wrappedValue.baseReputation - 0.55) / 5 * 5000000000) .withCommas) and \(((modifiableUserData.wrappedValue.baseReputation - 0.55) / 5 * 500).withCommas) XP Point\(((Int(modifiableUserData.wrappedValue.baseReputation - 0.55) / 5 * 500)).plu())")
                             .fontWidth(.compressed)
                     }
                     .padding()
                 }
                 .disabled(
-                    (modifiableUserData.wrappedValue.maxFuelHoldable - 4000000) * 10 > Int(modifiableUserData.wrappedValue.accountBalance) ||
-                    modifiableUserData.wrappedValue.xpPoints < (modifiableUserData.wrappedValue.maxFuelHoldable - 4000000)/1000000
+                    Int((modifiableUserData.wrappedValue.baseReputation - 0.55) / 5 * 5000000000) > Int(modifiableUserData.wrappedValue.accountBalance) ||
+                    modifiableUserData.wrappedValue.xpPoints < Int(modifiableUserData.wrappedValue.baseReputation - 0.55) / 5 * 500
                 )
                 .adaptiveButtonStyle()
                 .hoverEffect()

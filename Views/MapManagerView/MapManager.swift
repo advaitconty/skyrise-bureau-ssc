@@ -57,16 +57,7 @@ struct MapManagerView: View {
                             annotations: AirportDatabase.shared.allAirports.map { airport in
                                 airport.asOfflineAnnotation(hubIATAs: userData.hubsAcquired.map(\.iata))
                             } + userData.planes.map { plane in
-                                OfflineAnnotation(
-                                    id: plane.id.uuidString,
-                                    coordinate: plane.isAirborne
-                                        ? plane.planeLocationInFlight
-                                        : CLLocationCoordinate2D(
-                                            latitude: plane.currentAirportLocation?.latitude ?? 0,
-                                            longitude: plane.currentAirportLocation?.longitude ?? 0
-                                        ),
-                                    kind: .aircraft(registration: plane.registration, isAirborne: plane.isAirborne)
-                                )
+                                plane.asOfflineAnnotation()
                             },
                             routes: userData.planes.compactMap { plane -> OfflineRoute? in
                                 guard let route = plane.assignedRoute else { return nil }

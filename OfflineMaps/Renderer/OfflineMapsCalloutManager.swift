@@ -43,7 +43,7 @@ extension _OfflineMapRenderer {
                         .clipShape(Capsule())
                 }
 
-            case .aircraft(let reg, let airborne):
+            case .aircraft(let reg, let airborne, _):
                 Text(reg)
                     .font(.system(size: 13, weight: .bold, design: .monospaced))
                     .foregroundColor(airborne ? aircraftColor : .white.opacity(0.6))

@@ -28,7 +28,7 @@ import SwiftUI
                 OfflineAnnotation(
                     id: "plane-1",
                     coordinate: .init(latitude: 35.0, longitude: 30.0),
-                    kind: .aircraft(registration: "VT-SKR", isAirborne: true)
+                    kind: .aircraft(registration: "VT-SKR", isAirborne: true, heading: 120)
                 ),
             ],
             routes: [
