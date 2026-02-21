@@ -38,7 +38,7 @@ extension UserUpgradeView {
                     .font(.headline)
                     .fontWidth(.expanded)
                 ) { row in
-                    Text(row.amountSpentOnPlanes.withCommas)
+                    Text("$\(row.amountSpentOnPlanes.withCommas)")
                         .font(.body)
                         .fontWidth(.condensed)
                 }
@@ -46,22 +46,28 @@ extension UserUpgradeView {
                     .font(.headline)
                     .fontWidth(.expanded)
                 ) { row in
-                    Text(row.amountSpentOnOtherStuff.withCommas)                        .font(.body)
+                    Text("$\(row.amountSpentOnOtherStuff.withCommas)")
                         .fontWidth(.condensed)
                 }
                 TableColumn(Text("Income")
                     .font(.headline)
                     .fontWidth(.expanded)
                 ) { row in
-                    Text(row.amountMadeThatDay.withCommas)                        .font(.body)
+                    Text("$\(row.amountMadeThatDay.withCommas)")
                         .fontWidth(.condensed)
                 }
                 TableColumn(Text("EBITDA")
                     .font(.headline)
                     .fontWidth(.expanded)
                 ) { row in
-                    Text(row.ebitdaForThatDay.withCommas)                        .font(.body)
-                        .fontWidth(.condensed)
+                    HStack {
+                        Image(systemName: row.ebitdaForThatDay > 0 ? "arrowtriangle.up" : "arrowtriangle.down")
+                            .foregroundStyle(row.ebitdaForThatDay > 0 ? Color.green : Color.red)
+                        
+                        Text("$\(row.ebitdaForThatDay.withCommas)")
+                            .fontWidth(.condensed)
+                            .foregroundStyle(row.ebitdaForThatDay > 0 ? Color.green : Color.red)
+                    }
                 }
             }
             Spacer()

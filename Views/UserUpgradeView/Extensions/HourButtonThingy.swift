@@ -15,6 +15,7 @@ extension UserUpgradeView {
                 userData.wrappedValue.campaignRunning = true
                 userData.wrappedValue.campaignEffectiveness = Double.random(in: range)
                 userData.wrappedValue.accountBalance = userData.wrappedValue.accountBalance - price
+                userData.wrappedValue.amountSpentOnOtherExpenses[userData.wrappedValue.amountSpentOnOtherExpenses.endIndex - 1] = userData.wrappedValue.amountSpentOnOtherExpenses[userData.wrappedValue.amountSpentOnOtherExpenses.endIndex - 1] - price
                 let secondsInFuture: TimeInterval = TimeInterval(hour * 60 * 60)
                 let currentDate: Date = Date()
                 userData.wrappedValue.campaignEnd = currentDate.addingTimeInterval(secondsInFuture)

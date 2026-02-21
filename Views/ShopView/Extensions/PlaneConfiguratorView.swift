@@ -58,7 +58,7 @@ extension ShopView {
                                 Image(systemName: "exclamationmark.triangle.fill")
                                     .symbolRenderingMode(.multicolor)
                                 
-                                Text("Not all seats are full on this plane. You can fit up to \(-1 * Int(preferedSeatingConfig.seatsUsed) + selectedPlane!.maxSeats) more economy seats on this jet.")
+                                Text("Not all seats are full on this plane. You can fit up to \(-1 * Int(preferedSeatingConfig.seatsUsed) + plane.maxSeats) more economy seats on this jet.")
                                     .fontWidth(.condensed)
                             }
                         }
@@ -69,6 +69,8 @@ extension ShopView {
                                 modifiableUserData.wrappedValue.maintainanceCrew += 3
                                 modifiableUserData.wrappedValue.pilots += plane.pilots
                                 modifiableUserData.wrappedValue.flightAttendents += plane.flightAttendents
+                                modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek[modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek.endIndex - 1] = modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek[modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek.endIndex - 1] + plane.purchasePrice
+                                modifiableUserData.wrappedValue.accountBalance -= plane.purchasePrice
                                 dismiss()
                             } label: {
                                 Text("Purchase for $\(plane.purchasePrice.withCommas)")
@@ -82,7 +84,10 @@ extension ShopView {
                                 modifiableUserData.wrappedValue.maintainanceCrew += 3
                                 modifiableUserData.wrappedValue.pilots += plane.pilots
                                 modifiableUserData.wrappedValue.flightAttendents += plane.flightAttendents
-                                modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek[-1] = modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek[-1] + plane.purchasePrice
+                                let lastIdx = modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek.count - 1
+                                if lastIdx >= 0 {
+                                    modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek[lastIdx] += plane.purchasePrice
+                                }
                                 dismiss()
                             } label: {
                                 Text("Purchase for $\(plane.purchasePrice.withCommas)")

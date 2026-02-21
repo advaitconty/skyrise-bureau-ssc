@@ -287,9 +287,11 @@ extension MapManagerView {
                                 Spacer()
                                 if userData.accountBalance > AircraftDatabase.shared.allAircraft.first(where: { userData.planes[selectedJet!].aircraftID == $0.modelCode })!.maintenanceCostPerHour * (userData.planes[selectedJet!].hoursFlown - userData.planes[selectedJet!].lastHoursOfPlaneDuringMaintainance) {
                                     Button {
+                                        let maintainanceCost: Double = AircraftDatabase.shared.allAircraft.first(where: { userData.planes[selectedJet!].aircraftID == $0.modelCode })!.maintenanceCostPerHour * (userData.planes[selectedJet!].hoursFlown - userData.planes[selectedJet!].lastHoursOfPlaneDuringMaintainance)
                                         withAnimation {
-                                            userData.accountBalance -= AircraftDatabase.shared.allAircraft.first(where: { userData.planes[selectedJet!].aircraftID == $0.modelCode })!.maintenanceCostPerHour * (userData.planes[selectedJet!].hoursFlown - userData.planes[selectedJet!].lastHoursOfPlaneDuringMaintainance)
+                                            userData.accountBalance -= maintainanceCost
                                         }
+                                        userData.amountSpentOnOtherExpenses[userData.amountSpentOnOtherExpenses.endIndex - 1] = userData.amountSpentOnOtherExpenses[userData.amountSpentOnOtherExpenses.endIndex - 1] - maintainanceCost
                                     } label: {
                                         Text("$\((AircraftDatabase.shared.allAircraft.first(where: { userData.planes[selectedJet!].aircraftID == $0.modelCode })!.maintenanceCostPerHour * (userData.planes[selectedJet!].hoursFlown - userData.planes[selectedJet!].lastHoursOfPlaneDuringMaintainance)).withCommas)")
                                     }

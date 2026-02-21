@@ -16,7 +16,7 @@ extension ShopView {
                     }, set: {
                         numberToChange.wrappedValue = Int($0)
                         
-                    }), in: 0...Float(selectedPlane!.maxSeats), step: 1)
+                    }), in: 0...Float(selectedPlane?.maxSeats ?? 0), step: 1)
                 }
                 
                 Image(systemName: icon)
@@ -27,7 +27,7 @@ extension ShopView {
                 HStack {
                     Button {
                         withAnimation {
-                            if selectedPlane!.maxSeats != numberToChange.wrappedValue {
+                            if (selectedPlane?.maxSeats ?? 0) != numberToChange.wrappedValue {
                                 numberToChange.wrappedValue -= 1
                             }
                         }
@@ -41,7 +41,7 @@ extension ShopView {
                     
                     Button {
                         withAnimation {
-                            if selectedPlane!.maxSeats != numberToChange.wrappedValue {
+                            if (selectedPlane?.maxSeats ?? 0) != numberToChange.wrappedValue {
                                 numberToChange.wrappedValue += 1
                             }
                         }
@@ -68,7 +68,7 @@ extension ShopView {
                 seatingConfiguratorItem(numberToChange: $preferedSeatingConfig.first, icon: "crown")
             }
             .onChange(of: preferedSeatingConfig) {
-                if Int(preferedSeatingConfig.seatsUsed) > selectedPlane!.maxSeats {
+                if Int(preferedSeatingConfig.seatsUsed) > (selectedPlane?.maxSeats ?? 0) {
                     withAnimation {
                         showAllSeatsFilled = true
                     }
@@ -78,7 +78,7 @@ extension ShopView {
                     }
                 }
                 
-                if Int(preferedSeatingConfig.seatsUsed) < selectedPlane!.maxSeats {
+                if Int(preferedSeatingConfig.seatsUsed) < (selectedPlane?.maxSeats ?? 0) {
                     withAnimation {
                         showNotAllSeatsFullWarning = true
                     }

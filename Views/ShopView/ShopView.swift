@@ -91,8 +91,8 @@ struct ShopView: View {
                         .padding()
                     }
                 } detail: {
-                    if selectedPlane != nil {
-                        planeConfiguratorView(selectedPlane!)
+                    if let plane = selectedPlane {
+                        planeConfiguratorView(plane)
                             .padding()
                     } else {
                         Text("Select a plane to get more information on it.")
@@ -101,8 +101,8 @@ struct ShopView: View {
                 }
                 .navigationSplitViewStyle(.balanced)
                 .onChange(of: selectedPlane) {
-                    if selectedPlane != nil {
-                        preferedSeatingConfig = selectedPlane!.defaultSeating
+                    if let plane = selectedPlane {
+                        preferedSeatingConfig = plane.defaultSeating
                     }
                 }
             }

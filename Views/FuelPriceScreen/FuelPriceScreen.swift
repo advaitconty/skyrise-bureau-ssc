@@ -102,7 +102,7 @@ struct FuelPriceView: View {
                                 modifiableUserData.wrappedValue.accountBalance = modifiableUserData.wrappedValue.accountBalance - modifiableUserData.wrappedValue.currentFuelPrice/1000 * amountOfFuelUserWantsToPurchase
                             }
                             modifiableUserData.wrappedValue.fuelPurchasedByUserAtLastFuelPrice = modifiableUserData.wrappedValue.fuelPurchasedByUserAtLastFuelPrice + modifiableUserData.wrappedValue.currentFuelPrice/1000 * amountOfFuelUserWantsToPurchase
-                            modifiableUserData.wrappedValue.amountSpentOnFuelInTheLastWeek[-1] = modifiableUserData.wrappedValue.amountSpentOnFuelInTheLastWeek[-1] + modifiableUserData.wrappedValue.currentFuelPrice/1000 * amountOfFuelUserWantsToPurchase
+                            modifiableUserData.wrappedValue.amountSpentOnFuelInTheLastWeek[modifiableUserData.wrappedValue.amountSpentOnFuelInTheLastWeek.endIndex - 1] = modifiableUserData.wrappedValue.amountSpentOnFuelInTheLastWeek[modifiableUserData.wrappedValue.amountSpentOnFuelInTheLastWeek.endIndex - 1] + modifiableUserData.wrappedValue.currentFuelPrice/1000 * amountOfFuelUserWantsToPurchase
                         } label: {
                             Spacer()
                             Text("Execute fuel trade")
