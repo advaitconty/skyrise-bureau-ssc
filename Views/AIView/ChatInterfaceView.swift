@@ -108,6 +108,7 @@ extension AiView {
                         }
                         .adaptiveButtonStyle()
                         .transition(.blurReplace)
+                        .hoverEffect()
                     }
                 }
             }

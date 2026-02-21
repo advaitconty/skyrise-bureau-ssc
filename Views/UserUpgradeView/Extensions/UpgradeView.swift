@@ -49,6 +49,7 @@ extension UserUpgradeView {
                         > modifiableUserData.wrappedValue.xpPoints
                 )
                 .adaptiveButtonStyle()
+                .hoverEffect()
             }
             
             // MARK: Repuation boost
@@ -84,6 +85,7 @@ extension UserUpgradeView {
                     modifiableUserData.wrappedValue.xpPoints < (modifiableUserData.wrappedValue.maxFuelHoldable - 4000000)/1000000
                 )
                 .adaptiveButtonStyle()
+                .hoverEffect()
             }
             
             Spacer()

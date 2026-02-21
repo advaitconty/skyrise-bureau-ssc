@@ -49,6 +49,7 @@ extension UserUpgradeView {
                         Spacer()
                     }
                     .adaptiveProminentButtonStyle()
+                    .hoverEffect()
                     .tint(.green)
                     
                     Button {
@@ -71,6 +72,7 @@ extension UserUpgradeView {
                         Spacer()
                     }
                     .adaptiveProminentButtonStyle()
+                    .hoverEffect()
                     .tint(.red)
                 }
             }
@@ -115,6 +117,7 @@ extension UserUpgradeView {
                         Spacer()
                     }
                     .adaptiveProminentButtonStyle()
+                    .hoverEffect()
                     .tint(.green)
                     
                     Button {
@@ -135,6 +138,7 @@ extension UserUpgradeView {
                         Spacer()
                     }
                     .adaptiveProminentButtonStyle()
+                    .hoverEffect()
                     .tint(.red)
                 }
             }
@@ -179,6 +183,7 @@ extension UserUpgradeView {
                         Spacer()
                     }
                     .adaptiveProminentButtonStyle()
+                    .hoverEffect()
                     .tint(.green)
                     
                     Button {
@@ -199,6 +204,7 @@ extension UserUpgradeView {
                         Spacer()
                     }
                     .adaptiveProminentButtonStyle()
+                    .hoverEffect()
                     .tint(.red)
                 }
             }

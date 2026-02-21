@@ -12,7 +12,7 @@ import CoreLocation
 struct OfflineMap: View {
     @Binding var position: OfflineMapPosition
     var content: OfflineMapContentGroup
-
+    
     init(position: Binding<OfflineMapPosition>,
          @OfflineMapBuilder content: () -> OfflineMapContentGroup) {
         self._position = position
@@ -29,10 +29,13 @@ extension OfflineMap {
     private var hubColor:      Color { Color(red: 0.25, green: 0.85, blue: 0.55) }
     private var airportColor:  Color { Color(red: 0.9,  green: 0.75, blue: 0.3) }
     private var aircraftColor: Color { Color(red: 0.4,  green: 0.7,  blue: 1.0) }
-
+    
     var body: some View {
         _OfflineMapRenderer(
-            position:      $position,
+            flyTo:         position,
+            onPositionChanged: { newPos in
+                position = newPos
+            },
             annotations:   content.annotations,
             routes:        content.routes,
             oceanColor:    oceanColor,

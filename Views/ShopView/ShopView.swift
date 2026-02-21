@@ -55,6 +55,7 @@ struct ShopView: View {
                             Image(systemName: "xmark")
                         }
                         .adaptiveButtonStyle()
+                        .hoverEffect()
 //                    }  targetEnvironment(macCatalyst)
                 }
                 .padding([.top, .leading, .trailing])

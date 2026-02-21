@@ -63,6 +63,7 @@ struct FuelPriceView: View {
                             Image(systemName: "xmark")
                         }
                         .adaptiveButtonStyle()
+                        .hoverEffect()
 //                    }   targetEnvironment(macCatalyst)
                 }
                 HStack {
@@ -110,6 +111,7 @@ struct FuelPriceView: View {
                         }
                         .disabled(buttonDisabledStatus)
                         .adaptiveProminentButtonStyle()
+                        .hoverEffect()
                         
                         
                         /// Current fuel capacity

@@ -120,6 +120,7 @@ struct UserUpgradeView: View {
                             Image(systemName: "xmark")
                         }
                         .adaptiveButtonStyle()
+                        .hoverEffect()
                         //                        }  targetEnvironment(macCatalyst)
                     }
                     HStack {
@@ -138,6 +139,7 @@ struct UserUpgradeView: View {
                                 Spacer()
                             }
                             .adaptiveProminentButtonStyle()
+                            .hoverEffect()
                         } else {
                             Button {
                                 withAnimation(.smooth, completionCriteria: .removed) {
@@ -153,6 +155,7 @@ struct UserUpgradeView: View {
                                 Spacer()
                             }
                             .adaptiveButtonStyle()
+                            .hoverEffect()
                         }
                         
                         if screen == 2 {
@@ -170,6 +173,7 @@ struct UserUpgradeView: View {
                                 Spacer()
                             }
                             .adaptiveProminentButtonStyle()
+                            .hoverEffect()
                         } else {
                             Button {
                                 withAnimation(.snappy(duration: 0.75), completionCriteria: .removed) {
@@ -185,6 +189,7 @@ struct UserUpgradeView: View {
                                 Spacer()
                             }
                             .adaptiveButtonStyle()
+                            .hoverEffect()
                         }
                             
                         if screen == 3 {
@@ -202,6 +207,7 @@ struct UserUpgradeView: View {
                                 Spacer()
                             }
                             .adaptiveProminentButtonStyle()
+                            .hoverEffect()
                         } else {
                             Button {
                                 withAnimation(.snappy(duration: 0.75), completionCriteria: .removed) {
@@ -217,6 +223,7 @@ struct UserUpgradeView: View {
                                 Spacer()
                             }
                             .adaptiveButtonStyle()
+                            .hoverEffect()
                         }
                         
                         if screen == 4 {
@@ -234,6 +241,7 @@ struct UserUpgradeView: View {
                                 Spacer()
                             }
                             .adaptiveProminentButtonStyle()
+                            .hoverEffect()
                         } else {
                             Button {
                                 withAnimation(.snappy(duration: 0.75), completionCriteria: .removed) {
@@ -249,6 +257,7 @@ struct UserUpgradeView: View {
                                 Spacer()
                             }
                             .adaptiveButtonStyle()
+                            .hoverEffect()
                         }
                     }
                     if screen == 1 {

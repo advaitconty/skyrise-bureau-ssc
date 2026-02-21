@@ -79,6 +79,7 @@ extension AirportPickerView {
                             .clipShape(RoundedRectangle(cornerRadius: 10.0))
                         }
                         .buttonStyle(.plain)
+                        .hoverEffect()
                     }
                 }
             }

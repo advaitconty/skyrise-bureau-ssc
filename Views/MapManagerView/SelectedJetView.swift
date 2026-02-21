@@ -99,6 +99,7 @@ extension MapManagerView {
                                             .fontWidth(.condensed)
                                     }
                                     .adaptiveButtonStyle()
+//                                    .hoverEffect()
                                     .disabled(AircraftDatabase.shared.allAircraft.first(where: { $0.id == userData.planes[selectedJet!].aircraftID })!.maintenanceCostPerHour * userData.planes[selectedJet!].lastHoursOfPlaneDuringMaintainance > userData.accountBalance)
                                 }
                             }
@@ -277,6 +278,7 @@ extension MapManagerView {
                                         .fontWidth(.condensed)
                                 }
                                 .adaptiveProminentButtonStyle()
+//                                .hoverEffect()
                             }
                         } else if userData.planes[selectedJet!].condition <= 0.15 {
                             HStack {
@@ -291,6 +293,7 @@ extension MapManagerView {
                                     } label: {
                                         Text("$\((AircraftDatabase.shared.allAircraft.first(where: { userData.planes[selectedJet!].aircraftID == $0.modelCode })!.maintenanceCostPerHour * (userData.planes[selectedJet!].hoursFlown - userData.planes[selectedJet!].lastHoursOfPlaneDuringMaintainance)).withCommas)")
                                     }
+//                                    .hoverEffect()
                                 }
                             }
                         }

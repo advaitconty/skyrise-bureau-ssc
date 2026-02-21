@@ -167,6 +167,7 @@ struct SettingsView: View {
                             }
                             .buttonStyle(.glassProminent)
                             .matchedGeometryEffect(id: "notif:arrival", in: notifNamespace)
+                            .hoverEffect()
                         } else {
                             Button {
                                 withAnimation {
@@ -177,6 +178,7 @@ struct SettingsView: View {
                             }
                             .buttonStyle(.glass)
                             .matchedGeometryEffect(id: "notif:arrival", in: notifNamespace)
+                            .hoverEffect()
                         }
                         
                         if modifiableUserData.wrappedValue.allowedNotificationTypes.contains(.maintainanceEnd) {
@@ -190,6 +192,7 @@ struct SettingsView: View {
                             }
                             .buttonStyle(.glassProminent)
                             .matchedGeometryEffect(id: "notif:maintainance", in: notifNamespace)
+                            .hoverEffect()
                         } else {
                             Button {
                                 withAnimation {
@@ -201,6 +204,7 @@ struct SettingsView: View {
                             }
                             .buttonStyle(.glass)
                             .matchedGeometryEffect(id: "notif:maintainance", in: notifNamespace)
+                            .hoverEffect()
                         }
                         
                         if modifiableUserData.wrappedValue.allowedNotificationTypes.contains(.campaignEnd) {
@@ -214,6 +218,7 @@ struct SettingsView: View {
                             }
                             .buttonStyle(.glassProminent)
                             .matchedGeometryEffect(id: "notif:campaign", in: notifNamespace)
+                            .hoverEffect()
                         } else {
                             Button {
                                 withAnimation {
@@ -225,6 +230,7 @@ struct SettingsView: View {
                             }
                             .buttonStyle(.glass)
                             .matchedGeometryEffect(id: "notif:campaign", in: notifNamespace)
+                            .hoverEffect()
                         }
                     }
                 }
@@ -260,32 +266,34 @@ struct SettingsView: View {
                                 .fontWidth(.condensed)
                         }
                         .adaptiveProminentButtonStyle()
-                    }
-                    
-                    if showReleaseNotes {
-                        VStack(alignment: .leading) {
-                            Text("What's new in the Swift Student Challenge Edition:")
-                                .font(.subheadline)
-                                .fontWidth(.expanded)
-                            Text("- Game speed is 500x faster")
-                                .fontWidth(.condensed)
-                            
-                            
-                            Text("- Apple Maps is removed in favour of an canvas rendering the offline map")
-                                .fontWidth(.condensed)
-                            
-                            
-                            Text("- Fuel price refreshes are every 30s instead of 1 hour")
-                                .fontWidth(.condensed)
-                        }
-                        .padding()
-                        .background(.gray.opacity(0.2))
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                        .transition(.blurReplace)
+                        .hoverEffect()
                     }
                 }
                 Text("Made with 💚 by advaitconty")
                     .fontWidth(.expanded)
+                
+                
+                if showReleaseNotes {
+                    VStack(alignment: .leading) {
+                        Text("What's new in the Swift Student Challenge Edition:")
+                            .font(.subheadline)
+                            .fontWidth(.expanded)
+                        Text("- Game speed is 500x faster")
+                            .fontWidth(.condensed)
+                        
+                        
+                        Text("- Apple Maps is removed in favour of an canvas rendering the offline map")
+                            .fontWidth(.condensed)
+                        
+                        
+                        Text("- Fuel price refreshes are every 30s instead of 1 hour")
+                            .fontWidth(.condensed)
+                    }
+                    .padding()
+                    .background(.gray.opacity(0.2))
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .transition(.blurReplace)
+                }
             }
             
             Spacer()

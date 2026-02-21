@@ -35,5 +35,6 @@ extension UserUpgradeView {
         }
         .disabled(userData.wrappedValue.accountBalance < price)
         .adaptiveButtonStyle()
+        .hoverEffect()
     }
 }

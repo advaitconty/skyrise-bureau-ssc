@@ -61,6 +61,7 @@ extension UserUpgradeView {
                     }
                     .buttonStyle(.plain)
                     .disabled(modifiableUserData.wrappedValue.accountBalance < 10000000)
+                    .hoverEffect()
                 }
             }
         }

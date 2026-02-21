@@ -25,6 +25,7 @@ extension ShopView {
                                     .fontWidth(.expanded)
                             }
                             .buttonStyle(.borderedProminent)
+                            .hoverEffect()
                             .transition(.blurReplace)
                         } else {
                             Button {
@@ -36,6 +37,7 @@ extension ShopView {
                                     .fontWidth(.condensed)
                             }
                             .buttonStyle(.bordered)
+                            .hoverEffect()
                             .transition(.blurReplace)
                         }
                     }

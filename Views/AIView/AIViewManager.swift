@@ -60,6 +60,7 @@ struct AiView: View {
                     } message: {
                         Text("All your chat history with your Fleet Advisor will be deleted.")
                     }
+                    .hoverEffect()
                 }
                 
                 Button {
@@ -69,6 +70,7 @@ struct AiView: View {
                         .font(.title)
                 }
                 .adaptiveButtonStyle()
+                .hoverEffect()
             }
             HStack {
                 Image(systemName: "exclamationmark.triangle.fill")

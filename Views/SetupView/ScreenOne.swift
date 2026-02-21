@@ -130,6 +130,7 @@ extension SetupView {
                                 }
                             }
                             .buttonStyle(.borderedProminent)
+                            .hoverEffect()
                         }
                     }
                     .transition(.blurReplace)
