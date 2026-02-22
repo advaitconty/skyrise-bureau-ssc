@@ -17,6 +17,7 @@ let package = Package(
             name: "Skyrise Bureau",
             targets: ["AppModule"],
             bundleIdentifier: "com.advaitconty.ssc.2026.skyrise-bureau",
+            teamIdentifier: "MK2VQ82S9T",
             displayVersion: "1.0",
             bundleVersion: "1",
             appIcon: .asset("AppIcon"),

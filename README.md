@@ -9,7 +9,7 @@ Open up the app in Xcode, and run it!
 It has been optimised for macOS (running through Mac Catalyst), however it has not been confirmed to run for iPhones, iPads or Vision Pros
 
 ## Downloading
-The app is designed for Mac Catalyst, and is available in the Releases tab (as a pre-realease, so you'll have to open it manually)
+Please follow the installation instructions in INSTALLATION.md for installation
 
 ## Credits
 Images mostly by @fireentity and me!
