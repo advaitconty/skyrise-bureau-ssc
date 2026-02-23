@@ -193,11 +193,14 @@ struct ContentView: View {
                         modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek.remove(at: 0)
                         modifiableUserData.wrappedValue.amountSpentOnHubsAccquisitionInTheLastWeek.remove(at: 0)
                         modifiableUserData.wrappedValue.amountOfMoneyMadeFromDeparturesInTheLastWeek.remove(at: 0)
+                        modifiableUserData.wrappedValue.amountSpentOnOtherExpenses.remove(at: 0)
                         
                         modifiableUserData.wrappedValue.amountSpentOnFuelInTheLastWeek.append(0)
                         modifiableUserData.wrappedValue.amountSpentOnPlanesInTheLastWeek.append(0)
                         modifiableUserData.wrappedValue.amountSpentOnHubsAccquisitionInTheLastWeek.append(0)
                         modifiableUserData.wrappedValue.amountOfMoneyMadeFromDeparturesInTheLastWeek.append(0)
+                        modifiableUserData.wrappedValue.amountSpentOnOtherExpenses.append(0)
+                        
                         modifiableUserData.wrappedValue.lastCalculationsForPreviousWeekFinancesDoneTime = Date()
                     }
                 }
