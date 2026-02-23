@@ -21,6 +21,8 @@ extension UserUpgradeView {
                     Text("Day")
                         .font(.headline)
                         .fontWidth(.expanded)
+                        .foregroundStyle(Color.white)
+                        .bold()
                 ) { row in
                     Text(row.day)
                         .fontWidth(.expanded)
@@ -29,6 +31,8 @@ extension UserUpgradeView {
                     Text("Fuel Expenses")
                         .font(.headline)
                         .fontWidth(.expanded)
+                        .foregroundStyle(Color.white)
+                        .bold()
                 ) { row in
                     Text("$\(row.amountSpentOnFuel.withCommas)")
                         .font(.body)
@@ -37,6 +41,8 @@ extension UserUpgradeView {
                 TableColumn(Text("Plane Purchases")
                     .font(.headline)
                     .fontWidth(.expanded)
+                    .foregroundStyle(Color.white)
+                    .bold()
                 ) { row in
                     Text("$\(row.amountSpentOnPlanes.withCommas)")
                         .font(.body)
@@ -45,6 +51,8 @@ extension UserUpgradeView {
                 TableColumn(Text("Other Expenses")
                     .font(.headline)
                     .fontWidth(.expanded)
+                    .foregroundStyle(Color.white)
+                    .bold()
                 ) { row in
                     Text("$\(row.amountSpentOnOtherStuff.withCommas)")
                         .fontWidth(.condensed)
@@ -52,6 +60,8 @@ extension UserUpgradeView {
                 TableColumn(Text("Income")
                     .font(.headline)
                     .fontWidth(.expanded)
+                    .foregroundStyle(Color.white)
+                    .bold()
                 ) { row in
                     Text("$\(row.amountMadeThatDay.withCommas)")
                         .fontWidth(.condensed)
@@ -59,6 +69,8 @@ extension UserUpgradeView {
                 TableColumn(Text("EBITDA")
                     .font(.headline)
                     .fontWidth(.expanded)
+                    .foregroundStyle(Color.white)
+                    .bold()
                 ) { row in
                     HStack {
                         Image(systemName: row.ebitdaForThatDay > 0 ? "arrowtriangle.up" : "arrowtriangle.down")

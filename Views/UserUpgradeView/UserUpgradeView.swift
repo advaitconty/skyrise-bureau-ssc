@@ -296,6 +296,7 @@ struct UserUpgradeView: View {
                             .transition(.asymmetric(insertion: .slide, removal: .opacity))
                     } else if screen == 4 {
                         financesView()
+                            .transition(.asymmetric(insertion: .slide, removal: .opacity))
                     }
                 }
                 .padding()

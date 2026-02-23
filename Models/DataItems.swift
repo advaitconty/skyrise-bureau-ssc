@@ -649,16 +649,17 @@ class UserData {
         var thatDate: Date = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEE"
+        thatDate = calender.date(byAdding: .day, value: -6, to: Date()) ?? Date()
         var dayOfWeek: String = dateFormatter.string(from: thatDate)
-        
-        dayOfWeek = dayOfWeek + " (Today)"
-        
+                
         for (i, _) in amountSpentOnOtherExpenses.enumerated() {
             listToOutput.append(TableItemInformation(day: dayOfWeek, amountSpentOnFuel: amountSpentOnFuelInTheLastWeek[i], amountSpentOnPlanes: amountSpentOnPlanesInTheLastWeek[i], amountSpentOnOtherStuff: amountSpentOnOtherExpenses[i] + amountSpentOnHubsAccquisitionInTheLastWeek[i], amountMadeThatDay: amountOfMoneyMadeFromDeparturesInTheLastWeek[i]))
             
-            thatDate = calender.date(byAdding: .day, value: -1, to: thatDate) ?? Date()
+            thatDate = calender.date(byAdding: .day, value: 1, to: thatDate) ?? Date()
             dayOfWeek = dateFormatter.string(from: thatDate)
         }
+        
+        listToOutput[listToOutput.endIndex - 1].day = listToOutput[listToOutput.endIndex - 1].day + " (Today)"
         
         return listToOutput
     }
