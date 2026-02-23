@@ -14,12 +14,14 @@ extension ShopView {
                 .resizable()
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+                .accessibilityLabel("\(plane.name) aircraft photo")
             Button {
                 aircraftCreditInformation = credits.first(where: { $0.imageItem == plane.modelCode })!
             } label: {
                 Image(systemName: "info.circle")
             }
             .adaptiveButtonStyle()
+            .accessibilityLabel("Photo credit information")
             .popover(item: $aircraftCreditInformation) { creditInfo in
                 VStack(alignment: .leading) {
                     Text("Shot by \(creditInfo.creatorName) \(creditInfo.creditSource == .fireentity ? "(@fireentity on GitHub)" : "")")

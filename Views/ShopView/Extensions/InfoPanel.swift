@@ -74,6 +74,8 @@ extension ShopView {
             .padding()
             .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Normal seating: \(plane.defaultSeating.economy) economy, \(plane.defaultSeating.premiumEconomy) premium economy, \(plane.defaultSeating.business) business, \(plane.defaultSeating.first) first class")
         }
     }
 

@@ -79,6 +79,7 @@ extension MapManagerView {
                 .resizable()
                 .scaledToFit()
                 .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                .accessibilityLabel("\(userData.planes[selectedJet!].aircraftname) aircraft image")
             
             
             VStack {
@@ -99,6 +100,8 @@ extension MapManagerView {
                                             .fontWidth(.condensed)
                                     }
                                     .adaptiveButtonStyle()
+                                    .accessibilityLabel("Repair aircraft")
+                                    .accessibilityHint("Send aircraft for maintenance")
 //                                    .hoverEffect()
                                     .disabled(AircraftDatabase.shared.allAircraft.first(where: { $0.id == userData.planes[selectedJet!].aircraftID })!.maintenanceCostPerHour * userData.planes[selectedJet!].lastHoursOfPlaneDuringMaintainance > userData.accountBalance)
                                 }
@@ -186,12 +189,16 @@ extension MapManagerView {
                             Spacer()
                         }
                         itemToChange(symbol: "carseat.right", priceToChange: $userData.planes[selectedJet!].assignedPricing.economy)
+                            .accessibilityLabel("Economy class price")
                         
                         itemToChange(symbol: "star", priceToChange: $userData.planes[selectedJet!].assignedPricing.premiumEconomy)
+                            .accessibilityLabel("Premium economy class price")
                         
                         itemToChange(symbol: "briefcase", priceToChange: $userData.planes[selectedJet!].assignedPricing.business)
+                            .accessibilityLabel("Business class price")
                         
                         itemToChange(symbol: "crown", priceToChange: $userData.planes[selectedJet!].assignedPricing.first)
+                            .accessibilityLabel("First class price")
                         
                         if #available(iOS 26.0, *) {
                             Button {

@@ -81,16 +81,18 @@ struct MapManagerView: View {
                                              Text("\nmanaged by \(userData.name)")
                                                 .fontWidth(.condensed))
                                             .containerCornerOffset(.leading, sizeToFit: true)
-                                        } else {
-                                            (Text(userData.airlineName)
-                                                .fontWidth(.expanded)
-                                                .font(.title)
-                                             +
-                                             Text("\nmanaged by \(userData.name)")
-                                                .fontWidth(.condensed))
-                                        }
-                                        Spacer()
-                                    }
+                        } else {
+                            (Text(userData.airlineName)
+                                .fontWidth(.expanded)
+                                .font(.title)
+                             +
+                             Text("\nmanaged by \(userData.name)")
+                                .fontWidth(.condensed))
+                        }
+                        Spacer()
+                    }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("\(userData.airlineName), managed by \(userData.name)")
                                     
                                     ScrollView {
                                         if amountOfNotDepartedPlanes(userData) > 0 {
@@ -146,6 +148,7 @@ struct MapManagerView: View {
                                             }
                                             .adaptiveProminentButtonStyle()
                                             .hoverEffect()
+                                            .accessibilityLabel("Depart all \(amountOfNotDepartedPlanes(userData)) flights")
                                         }
                                         
                                         ForEach(userData.planes, id: \.id) { plane in
@@ -175,6 +178,9 @@ struct MapManagerView: View {
                                                     .contentTransition(.numericText(countsDown: true))
                                             }
                                         }
+                                        .accessibilityElement(children: .combine)
+                                        .accessibilityLabel("Experience: \(userData.xp) XP, Level \(userData.currentLevel), \(userData.xpRequiredForNextXPLevel) XP to next level")
+                                        .accessibilityValue("\(Int(userData.progressToNextXPLevel * 100)) percent")
                                         
                                         ProgressView(value: Float(userData.currentlyHoldingFuel/userData.maxFuelHoldable)) {
                                             HStack {
@@ -187,6 +193,8 @@ struct MapManagerView: View {
                                                     .contentTransition(.numericText(countsDown: true))
                                             }
                                         }
+                                        .accessibilityElement(children: .combine)
+                                        .accessibilityLabel("Fuel capacity: \(userData.currentlyHoldingFuel.withCommas) kilograms out of \(userData.maxFuelHoldable.withCommas) kilograms")
                                         
                                         ProgressView(value: userData.airlineReputation) {
                                             HStack {
@@ -199,11 +207,15 @@ struct MapManagerView: View {
                                                     .contentTransition(.numericText(countsDown: true))
                                             }
                                         }
+                                        .accessibilityElement(children: .combine)
+                                        .accessibilityLabel("Airline reputation: \((userData.airlineReputation * 100).withCommas) percent known")
+                                        .accessibilityValue("\(Int(userData.airlineReputation * 100)) percent")
                                         
                                         HStack {
                                             Text("Balance: $\(userData.accountBalance.withCommas)")
                                                 .fontWidth(.condensed)
                                                 .contentTransition(.numericText(countsDown: false))
+                                                .accessibilityLabel("Account balance: \(userData.accountBalance.withCommas) dollars")
                                             Spacer()
                                         }
                                         
@@ -223,6 +235,7 @@ struct MapManagerView: View {
                                             }
                                             .adaptiveButtonStyle()
                                             .hoverEffect()
+                                            .accessibilityLabel("Purchase fuel")
                                             
                                             Button {
                                                 print("Open")
@@ -240,6 +253,7 @@ struct MapManagerView: View {
                                             }
                                             .adaptiveButtonStyle()
                                             .hoverEffect()
+                                            .accessibilityLabel("Airline management and upgrades")
                                             
                                             Button {
 #if targetEnvironment(macCatalyst)
@@ -256,6 +270,7 @@ struct MapManagerView: View {
                                             }
                                             .adaptiveButtonStyle()
                                             .hoverEffect()
+                                            .accessibilityLabel("Jet Set Emporium shop")
                                             
                                             Button {
 #if targetEnvironment(macCatalyst)
@@ -272,6 +287,7 @@ struct MapManagerView: View {
                                             }
                                             .adaptiveButtonStyle()
                                             .hoverEffect()
+                                            .accessibilityLabel("Fleet Advisor AI assistant")
                                             
                                             Button {
 #if targetEnvironment(macCatalyst)
@@ -288,6 +304,7 @@ struct MapManagerView: View {
                                             }
                                             .adaptiveButtonStyle()
                                             .hoverEffect()
+                                            .accessibilityLabel("Settings")
                                             
                                         }
                                     }
@@ -316,6 +333,8 @@ struct MapManagerView: View {
                         .frame(width: 10)
                         .foregroundStyle(.clear)
                         .contentShape(Rectangle())
+                        .accessibilityLabel("Resize sidebar")
+                        .accessibilityHint("Drag to resize the sidebar width")
                         .gesture(DragGesture().onChanged { value in
                             let newWidth = CGFloat(self.sidebarWidth) + value.translation.width
                             self.sidebarWidth = Float(CGFloat(min(600, max(350, newWidth))))

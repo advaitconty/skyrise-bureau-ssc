@@ -65,6 +65,8 @@ extension UserUpgradeView {
         .frame(width: 200, height: 250)
         .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 10.0))
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("\(plane.aircraftname.wrappedValue), \(plane.aircraftID.wrappedValue), condition \(Int(plane.condition.wrappedValue * 100)) percent")
     }
     
     func planeStatsViewForUpgrades() -> some View {

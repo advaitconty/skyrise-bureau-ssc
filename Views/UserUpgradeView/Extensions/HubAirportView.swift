@@ -20,6 +20,8 @@ extension UserUpgradeView {
         .frame(width: 200, height: 150)
         .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 10.0))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Hub airport: \(airport.name), \(airport.iata)")
     }
     
     func hubAirportsView() -> some View {
@@ -62,6 +64,8 @@ extension UserUpgradeView {
                     .buttonStyle(.plain)
                     .disabled(modifiableUserData.wrappedValue.accountBalance < 10000000)
                     .hoverEffect()
+                    .accessibilityLabel("Purchase new hub airport for 10 million dollars")
+                    .accessibilityHint(modifiableUserData.wrappedValue.accountBalance < 10000000 ? "Not enough funds" : "Double tap to select a hub airport")
                 }
             }
         }

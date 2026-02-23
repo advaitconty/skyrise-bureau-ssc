@@ -52,8 +52,9 @@ struct ShowDepartureDonePopupView: View {
         .padding(5)
         .background(colorScheme == .dark ? .black.opacity(0.1) : .black.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 4.0))
+        .accessibilityElement(children: .combine)
     }
-
+    
     var body: some View {
         ZStack(alignment: .top) {
             VStack {
@@ -85,73 +86,78 @@ struct ShowDepartureDonePopupView: View {
         .frame(maxWidth: 500)
         .background(.black.opacity(0.75))
         .clipShape(RoundedRectangle(cornerRadius: 10.0))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Successfully departed \(departureDoneSuccessfullyItemsToShow.noOfPlanesTakenOff) flights. Economy: \(departureDoneSuccessfullyItemsToShow.economyPassenegersServed) of \(departureDoneSuccessfullyItemsToShow.maxEconomyPassenegersServed), Premium economy: \(departureDoneSuccessfullyItemsToShow.premiumEconomyPassenegersServed) of \(departureDoneSuccessfullyItemsToShow.maxPremiumEconomyPassenegersServed), Business: \(departureDoneSuccessfullyItemsToShow.businessPassengersServed) of \(departureDoneSuccessfullyItemsToShow.maxBusinessPassengersServed)")
+        .accessibilityAddTraits(.isStaticText)
     }
+    
 }
 
-#Preview {
-    let madrid = Airport(
-        name: "Adolfo Suárez Madrid-Barajas Airport",
-        city: "Madrid",
-        country: "Spain",
-        iata: "MAD",
-        icao: "LEMD",
-        region: .europe,
-        latitude: 40.4719,
-        longitude: -3.5626,
-        runwayLength: 4179,
-        elevation: 610,
-        demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
-        facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
-    )
-    
-    let london = Airport(
-        name: "London Heathrow Airport",
-        city: "London",
-        country: "United Kingdom",
-        iata: "LHR",
-        icao: "EGLL",
-        region: .europe,
-        latitude: 51.4700,
-        longitude: -0.4543,
-        runwayLength: 3902,
-        elevation: 25,
-        demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 8.8, businessTravelRatio: 0.80, tourismBoost: 0.85),
-        facilities: AirportFacilities(terminalCapacity: 225000, cargoCapacity: 3800, gatesAvailable: 115, slotEfficiency: 0.93)
-    )
-    
-    let plane1 = FleetItem(
-        aircraftID: "IL96-400M",
-        aircraftname: "Suka Blyat",
-        registration: "VT-SBL",
-        hoursFlown: 3,
-        assignedRoute: Route(originAirport: madrid, arrivalAirport: london),
-        seatingLayout: SeatingConfig(economy: 258, premiumEconomy: 54, business: 28, first: 6),
-        kilometersTravelledSinceLastMaintainence: 3200,
-        currentAirportLocation: london
-    )
-    
-    let plane2 = FleetItem(
-        aircraftID: "B777-300ER",
-        aircraftname: "Sky Cruiser",
-        registration: "N27901",
-        hoursFlown: 5,
-        assignedRoute: Route(originAirport: london, arrivalAirport: madrid),
-        seatingLayout: SeatingConfig(economy: 300, premiumEconomy: 60, business: 40, first: 8),
-        kilometersTravelledSinceLastMaintainence: 2800,
-        currentAirportLocation: madrid
-    )
-    
-    let testData = DepartureDoneSuccessfullyItemsToShow(
-        planesTakenOff: [plane1, plane2],
-        economyPassenegersServed: 558,
-        premiumEconomyPassenegersServed: 114,
-        businessPassengersServed: 68,
-        firstClassPassengersServed: 14,
-        maxEconomyPassenegersServed: 600,
-        maxPremiumEconomyPassenegersServed: 120,
-        maxBusinessPassengersServed: 75,
-        maxFirstClassPassengersServed: 16, moneyMade: 1000000
-    )
-    
-    ShowDepartureDonePopupView(showDeparturePopupView: .constant(true), departureDoneSuccessfullyItemsToShow: testData)
-}
+
+    #Preview {
+        let madrid = Airport(
+            name: "Adolfo Suárez Madrid-Barajas Airport",
+            city: "Madrid",
+            country: "Spain",
+            iata: "MAD",
+            icao: "LEMD",
+            region: .europe,
+            latitude: 40.4719,
+            longitude: -3.5626,
+            runwayLength: 4179,
+            elevation: 610,
+            demand: AirportDemand(passengerDemand: 8.8, cargoDemand: 7.8, businessTravelRatio: 0.65, tourismBoost: 0.88),
+            facilities: AirportFacilities(terminalCapacity: 165000, cargoCapacity: 3000, gatesAvailable: 90, slotEfficiency: 0.88)
+        )
+        
+        let london = Airport(
+            name: "London Heathrow Airport",
+            city: "London",
+            country: "United Kingdom",
+            iata: "LHR",
+            icao: "EGLL",
+            region: .europe,
+            latitude: 51.4700,
+            longitude: -0.4543,
+            runwayLength: 3902,
+            elevation: 25,
+            demand: AirportDemand(passengerDemand: 10.0, cargoDemand: 8.8, businessTravelRatio: 0.80, tourismBoost: 0.85),
+            facilities: AirportFacilities(terminalCapacity: 225000, cargoCapacity: 3800, gatesAvailable: 115, slotEfficiency: 0.93)
+        )
+        
+        let plane1 = FleetItem(
+            aircraftID: "IL96-400M",
+            aircraftname: "Suka Blyat",
+            registration: "VT-SBL",
+            hoursFlown: 3,
+            assignedRoute: Route(originAirport: madrid, arrivalAirport: london),
+            seatingLayout: SeatingConfig(economy: 258, premiumEconomy: 54, business: 28, first: 6),
+            kilometersTravelledSinceLastMaintainence: 3200,
+            currentAirportLocation: london
+        )
+        
+        let plane2 = FleetItem(
+            aircraftID: "B777-300ER",
+            aircraftname: "Sky Cruiser",
+            registration: "N27901",
+            hoursFlown: 5,
+            assignedRoute: Route(originAirport: london, arrivalAirport: madrid),
+            seatingLayout: SeatingConfig(economy: 300, premiumEconomy: 60, business: 40, first: 8),
+            kilometersTravelledSinceLastMaintainence: 2800,
+            currentAirportLocation: madrid
+        )
+        
+        let testData = DepartureDoneSuccessfullyItemsToShow(
+            planesTakenOff: [plane1, plane2],
+            economyPassenegersServed: 558,
+            premiumEconomyPassenegersServed: 114,
+            businessPassengersServed: 68,
+            firstClassPassengersServed: 14,
+            maxEconomyPassenegersServed: 600,
+            maxPremiumEconomyPassenegersServed: 120,
+            maxBusinessPassengersServed: 75,
+            maxFirstClassPassengersServed: 16, moneyMade: 1000000
+        )
+        
+        ShowDepartureDonePopupView(showDeparturePopupView: .constant(true), departureDoneSuccessfullyItemsToShow: testData)
+    }

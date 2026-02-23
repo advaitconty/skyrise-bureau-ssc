@@ -17,6 +17,7 @@ extension ShopView {
         .padding(5)
         .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 4.0))
+        .accessibilityElement(children: .combine)
     }
     
     func littleSmallBoxThingyForMainView(icon: String, item: String) -> some View {
@@ -28,5 +29,6 @@ extension ShopView {
         .padding(7)
         .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 4.0))
+        .accessibilityElement(children: .combine)
     }
 }

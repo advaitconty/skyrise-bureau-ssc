@@ -38,5 +38,7 @@ extension ShopView {
                 littleSmallBoxThingy(icon: "carseat.right.fill", item: "\(plane.maxSeats)")
             }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(plane.name), price \(plane.purchasePrice.withCommas) dollars, range \(plane.maxRange) kilometers, cruise speed \(plane.cruiseSpeed) kilometers per hour, \(plane.maxSeats) seats")
     }
 }

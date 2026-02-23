@@ -69,6 +69,7 @@ struct AirportPickerView: View {
                                 }
                                 .buttonStyle(.glass)
                                 .hoverEffect()
+                                .accessibilityLabel("Next, proceed with airport selection")
                             }
                             .padding()
                             .glassEffect()
@@ -92,6 +93,7 @@ struct AirportPickerView: View {
                                 }
                                 .buttonStyle(.bordered)
                                 .hoverEffect()
+                                .accessibilityLabel("Next, proceed with airport selection")
                                 
                             }
                             .padding()

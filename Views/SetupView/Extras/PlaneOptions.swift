@@ -55,6 +55,11 @@ extension SetupView {
                     fleetChoice = option
                 }
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(name) starter pack. \(focus). Fleet: \(jet1Full) and \(jet2Full). Starting capital: \(startingCapital)")
+            .accessibilityValue(fleetChoice == option ? "Selected" : "Not selected")
+            .accessibilityHint("Double tap to select this starter pack")
+            .accessibilityAddTraits(fleetChoice == option ? .isSelected : [])
     }
 
 }

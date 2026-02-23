@@ -25,7 +25,7 @@ extension UserUpgradeView {
                         HStack {
                             Image(systemName: "chart.line.uptrend.xyaxis")
                                 .font(.callout)
-                            Text("Temporary Marketing Campagin (10-25% increase)")
+                            Text("Temporary Marketing Campaign (10-25% increase)")
                                 .fontWidth(.expanded)
                                 .font(.callout)
                             Spacer()

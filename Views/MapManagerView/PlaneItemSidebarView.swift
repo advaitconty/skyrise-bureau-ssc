@@ -65,5 +65,23 @@ extension MapManagerView {
         .padding()
         .background(.ultraThickMaterial)
         .clipShape(RoundedRectangle(cornerRadius: 10.0))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel({
+            var label = "\(plane.aircraftname), \(plane.aircraftID), registration \(plane.registration)"
+            if let route = plane.assignedRoute {
+                if plane.isAirborne {
+                    label += ". Flying from \(route.originAirport.iata) to \(route.arrivalAirport.iata)"
+                } else {
+                    label += ". On ground at \(plane.currentAirportLocation?.iata ?? "unknown"). Assigned \(route.originAirport.iata) to \(route.arrivalAirport.iata)"
+                }
+            } else {
+                label += ". No assigned route. At \(plane.currentAirportLocation?.iata ?? "unknown")"
+            }
+            if plane.inMaintainance {
+                label += ". Under maintenance"
+            }
+            return label
+        }())
+        .accessibilityHint("Double tap to view plane details")
     }
 }

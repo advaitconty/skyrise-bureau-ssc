@@ -27,6 +27,8 @@ extension ShopView {
                             .buttonStyle(.borderedProminent)
                             .hoverEffect()
                             .transition(.blurReplace)
+                            .accessibilityLabel("Deliver to \(airport.wrappedValue.name)")
+                            .accessibilityAddTraits(.isSelected)
                         } else {
                             Button {
                                 withAnimation {
@@ -39,6 +41,8 @@ extension ShopView {
                             .buttonStyle(.bordered)
                             .hoverEffect()
                             .transition(.blurReplace)
+                            .accessibilityLabel("Deliver to \(airport.wrappedValue.name)")
+                            .accessibilityHint("Double tap to select this delivery airport")
                         }
                     }
                 }

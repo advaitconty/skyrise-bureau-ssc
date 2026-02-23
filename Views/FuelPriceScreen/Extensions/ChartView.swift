@@ -21,6 +21,7 @@ extension FuelPriceView {
                 LineMark(x: .value("Fuel", price.hour), y: .value("Fuel Price", price.fuelPrice))
                     .interpolationMethod(.monotone)
             }
+            .accessibilityLabel("Fuel price chart over last 10 minutes")
             HStack {
                 if let maxItem = lastFewFuelPriceItem.max(by: { a, b in
                     a.fuelPrice < b.fuelPrice

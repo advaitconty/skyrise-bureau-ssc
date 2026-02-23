@@ -58,6 +58,7 @@ struct ShopView: View {
                         }
                         .adaptiveButtonStyle()
                         .hoverEffect()
+                        .accessibilityLabel("Close shop")
 //                    }  targetEnvironment(macCatalyst)
                 }
                 .padding([.top, .leading, .trailing])

@@ -44,6 +44,7 @@ extension SetupView {
                                 .fontWidth(.expanded)
                             TextField("Lufthansa", text: $userData.airlineName)
                                 .monospaced()
+                                .accessibilityLabel("Airline name")
                         }
                         .padding()
                         .glassEffect()
@@ -53,6 +54,7 @@ extension SetupView {
                                 .fontWidth(.expanded)
                             TextField("Jens Ritter", text: $userData.name)
                                 .monospaced()
+                                .accessibilityLabel("Airline CEO name")
                         }
                         .padding()
                         .glassEffect()
@@ -62,6 +64,7 @@ extension SetupView {
                                 .fontWidth(.expanded)
                             TextField("(e.g. SQ, BA, LH)", text: $userData.airlineIataCode)
                                 .monospaced()
+                                .accessibilityLabel("Airline IATA code, 2 characters")
                                 .onChange(of: userData.airlineIataCode) { oldValue, newValue in
                                     if newValue.count > 2 {
                                         userData.airlineIataCode = String(newValue.prefix(2))
@@ -98,6 +101,7 @@ extension SetupView {
                             TextField("Lufthansa", text: $userData.airlineName)
                                 .textFieldStyle(.roundedBorder)
                                 .monospaced()
+                                .accessibilityLabel("Airline name")
                         }
                         HStack {
                             Text("Airline CEO:")
@@ -105,6 +109,7 @@ extension SetupView {
                             TextField("Jens Ritter", text: $userData.name)
                                 .textFieldStyle(.roundedBorder)
                                 .monospaced()
+                                .accessibilityLabel("Airline CEO name")
                         }
                         HStack {
                             Text("IATA Code:")
@@ -112,6 +117,7 @@ extension SetupView {
                             TextField("(e.g. SQ, BA, LH)", text: $userData.airlineIataCode)
                                 .textFieldStyle(.roundedBorder)
                                 .monospaced()
+                                .accessibilityLabel("Airline IATA code, 2 characters")
                                 .onChange(of: userData.airlineIataCode) { oldValue, newValue in
                                     if newValue.count > 2 {
                                         userData.airlineIataCode = String(newValue.prefix(2))

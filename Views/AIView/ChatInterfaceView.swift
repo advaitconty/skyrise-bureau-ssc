@@ -109,6 +109,7 @@ extension AiView {
                         .adaptiveButtonStyle()
                         .transition(.blurReplace)
                         .hoverEffect()
+                        .accessibilityLabel("Send message")
                     }
                 }
             }

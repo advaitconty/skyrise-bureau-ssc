@@ -64,6 +64,7 @@ struct FuelPriceView: View {
                         }
                         .adaptiveButtonStyle()
                         .hoverEffect()
+                        .accessibilityLabel("Close fuel purchase screen")
 //                    }   targetEnvironment(macCatalyst)
                 }
                 HStack {
@@ -112,6 +113,8 @@ struct FuelPriceView: View {
                         .disabled(buttonDisabledStatus)
                         .adaptiveProminentButtonStyle()
                         .hoverEffect()
+                        .accessibilityLabel("Execute fuel trade for \(Int(modifiableUserData.wrappedValue.currentFuelPrice/1000 * amountOfFuelUserWantsToPurchase)) dollars")
+                        .accessibilityHint(buttonDisabledStatus ? "Trade cannot be completed" : "Double tap to purchase fuel")
                         
                         
                         /// Current fuel capacity
@@ -130,6 +133,8 @@ struct FuelPriceView: View {
                                 }
                             }
                         }
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("Current fuel hold: \(modifiableUserData.wrappedValue.currentlyHoldingFuel.withCommas) kilograms out of \(modifiableUserData.wrappedValue.maxFuelHoldable.withCommas) kilograms")
                     }
                     .padding()
                     .frame(width: reader.size.width / 2)

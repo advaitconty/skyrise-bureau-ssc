@@ -78,11 +78,13 @@ struct UserUpgradeView: View {
                                 HStack {
                                     Image(systemName: "pencil.line")
                                         .font(.title)
+                                        .accessibilityHidden(true)
                                     TextField(modifiableUserData.wrappedValue.airlineName, text: modifiableUserData.airlineName)
                                         .textFieldStyle(.plain)
                                         .font(.largeTitle)
                                         .fontWidth(.expanded)
                                         .fixedSize()
+                                        .accessibilityLabel("Airline name")
                                 }
                                 Spacer()
                             }
@@ -92,9 +94,13 @@ struct UserUpgradeView: View {
                                     .fontWidth(.expanded)
                                 HStack {
                                     Image(systemName: "pencil.line")
+                                        .accessibilityHidden(true)
                                     TextField(modifiableUserData.wrappedValue.name, text: modifiableUserData.name)
                                         .textFieldStyle(.plain)
                                         .font(.caption2)
+                                        .fontWidth(.expanded)
+                                        .fixedSize()
+                                        .accessibilityLabel("CEO name")
                                         .fontWidth(.expanded)
                                         .fixedSize()
                                 }
@@ -105,14 +111,17 @@ struct UserUpgradeView: View {
                                     .font(.caption2)
                                     .fontWidth(.expanded)
                                     .contentTransition(.numericText(countsDown: true))
+                                    .accessibilityLabel("Active reserves: \(modifiableUserData.wrappedValue.accountBalance.withCommas) dollars")
                                 Spacer()
                             }
                         }
                         Text("\(modifiableUserData.wrappedValue.xpPoints)")
                             .fontWidth(.expanded)
                             .font(.largeTitle)
+                            .accessibilityLabel("\(modifiableUserData.wrappedValue.xpPoints) available XP points")
                         Text("AVAILABLE\nXP POINTS")
                             .fontWidth(.expanded)
+                            .accessibilityHidden(true)
                         //                        if !checkForMacCatalyst() {
                         Button {
                             dismiss()
@@ -121,7 +130,7 @@ struct UserUpgradeView: View {
                         }
                         .adaptiveButtonStyle()
                         .hoverEffect()
-                        //                        }  targetEnvironment(macCatalyst)
+                        .accessibilityLabel("Close airline management")
                     }
                     HStack {
                         if screen == 1 {

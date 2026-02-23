@@ -51,6 +51,7 @@ extension UserUpgradeView {
                     .adaptiveProminentButtonStyle()
                     .hoverEffect()
                     .tint(.green)
+                    .accessibilityLabel("Increase pilot salary by 50 dollars")
                     
                     Button {
                         var adder: Double
@@ -74,6 +75,7 @@ extension UserUpgradeView {
                     .adaptiveProminentButtonStyle()
                     .hoverEffect()
                     .tint(.red)
+                    .accessibilityLabel("Decrease pilot salary by 50 dollars")
                 }
             }
             .padding()
@@ -119,6 +121,7 @@ extension UserUpgradeView {
                     .adaptiveProminentButtonStyle()
                     .hoverEffect()
                     .tint(.green)
+                    .accessibilityLabel("Increase attendant salary by 50 dollars")
                     
                     Button {
                         var adder: Double = 0
@@ -140,6 +143,7 @@ extension UserUpgradeView {
                     .adaptiveProminentButtonStyle()
                     .hoverEffect()
                     .tint(.red)
+                    .accessibilityLabel("Decrease attendant salary by 50 dollars")
                 }
             }
             .padding()
@@ -185,6 +189,7 @@ extension UserUpgradeView {
                     .adaptiveProminentButtonStyle()
                     .hoverEffect()
                     .tint(.green)
+                    .accessibilityLabel("Increase maintenance crew salary by 50 dollars")
                     
                     Button {
                         var adder: Double = 0
@@ -206,6 +211,7 @@ extension UserUpgradeView {
                     .adaptiveProminentButtonStyle()
                     .hoverEffect()
                     .tint(.red)
+                    .accessibilityLabel("Decrease maintenance crew salary by 50 dollars")
                 }
             }
             .padding()

@@ -37,5 +37,7 @@ extension UserUpgradeView {
         .disabled(userData.wrappedValue.accountBalance < price)
         .adaptiveButtonStyle()
         .hoverEffect()
+        .accessibilityLabel("\(hour) hour marketing campaign for \(price.withCommas) dollars")
+        .accessibilityHint(userData.wrappedValue.accountBalance < price ? "Not enough funds" : "Double tap to start campaign")
     }
 }

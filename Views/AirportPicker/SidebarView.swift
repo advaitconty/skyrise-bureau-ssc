@@ -46,6 +46,9 @@ extension AirportPickerView {
                             .clipShape(RoundedRectangle(cornerRadius: 10.0))
                         }
                         .buttonStyle(.plain)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("\(airport.name), \(airport.iata), \(airport.region.rawValue), runway \(airport.runwayLength.withCommas) meters, elevation \(airport.elevation) meters")
+                        .accessibilityAddTraits(.isSelected)
                     } else {
                         Button {
                             withAnimation {
@@ -80,6 +83,9 @@ extension AirportPickerView {
                         }
                         .buttonStyle(.plain)
                         .hoverEffect()
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("\(airport.name), \(airport.iata), \(airport.region.rawValue), runway \(airport.runwayLength.withCommas) meters, elevation \(airport.elevation) meters")
+                        .accessibilityHint("Double tap to select this airport")
                     }
                 }
             }
@@ -87,9 +93,11 @@ extension AirportPickerView {
                 Image(systemName: "location.magnifyingglass")
                 TextField("Search for airports...", text: $searchTerm)
                     .fontWidth(.condensed)
+                    .accessibilityLabel("Search airports")
             }
             .padding()
             .glassEffect()
+            .accessibilityElement(children: .contain)
         }
         .padding()
         .frame(width: CGFloat(300), height: height - 30)

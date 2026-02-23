@@ -35,5 +35,7 @@ extension FuelPriceView {
         .padding(14)
         .background(colorScheme == .dark ? .white.opacity(0.1) : .black.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 10.0))
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Transaction price: \(Int(modifiableUserData.wrappedValue.currentFuelPrice/1000 * amountOfFuelUserWantsToPurchase)) dollars. Remaining balance: \((modifiableUserData.wrappedValue.accountBalance - modifiableUserData.wrappedValue.currentFuelPrice/1000 * amountOfFuelUserWantsToPurchase).withCommas) dollars")
     }
 }

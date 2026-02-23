@@ -34,8 +34,10 @@ struct SettingsView: View {
                         Image(systemName: "xmark")
                     }
                     .adaptiveButtonStyle()
+                    .accessibilityLabel("Close settings")
 //                }  targetEnvironment(macCatalyst)
             }
+            .accessibilityElement(children: .contain)
             Spacer()
             // MARK: Notification settings stuff
 //            VStack {
@@ -168,6 +170,9 @@ struct SettingsView: View {
                             .buttonStyle(.glassProminent)
                             .matchedGeometryEffect(id: "notif:arrival", in: notifNamespace)
                             .hoverEffect()
+                            .accessibilityLabel("Aircraft Arrival notifications")
+                            .accessibilityValue("Enabled")
+                            .accessibilityHint("Double tap to disable")
                         } else {
                             Button {
                                 withAnimation {
@@ -179,6 +184,9 @@ struct SettingsView: View {
                             .buttonStyle(.glass)
                             .matchedGeometryEffect(id: "notif:arrival", in: notifNamespace)
                             .hoverEffect()
+                            .accessibilityLabel("Aircraft Arrival notifications")
+                            .accessibilityValue("Disabled")
+                            .accessibilityHint("Double tap to enable")
                         }
                         
                         if modifiableUserData.wrappedValue.allowedNotificationTypes.contains(.maintainanceEnd) {
@@ -193,6 +201,9 @@ struct SettingsView: View {
                             .buttonStyle(.glassProminent)
                             .matchedGeometryEffect(id: "notif:maintainance", in: notifNamespace)
                             .hoverEffect()
+                            .accessibilityLabel("Aircraft Maintenance Completion notifications")
+                            .accessibilityValue("Enabled")
+                            .accessibilityHint("Double tap to disable")
                         } else {
                             Button {
                                 withAnimation {
@@ -205,6 +216,9 @@ struct SettingsView: View {
                             .buttonStyle(.glass)
                             .matchedGeometryEffect(id: "notif:maintainance", in: notifNamespace)
                             .hoverEffect()
+                            .accessibilityLabel("Aircraft Maintenance Completion notifications")
+                            .accessibilityValue("Disabled")
+                            .accessibilityHint("Double tap to enable")
                         }
                         
                         if modifiableUserData.wrappedValue.allowedNotificationTypes.contains(.campaignEnd) {
@@ -219,6 +233,9 @@ struct SettingsView: View {
                             .buttonStyle(.glassProminent)
                             .matchedGeometryEffect(id: "notif:campaign", in: notifNamespace)
                             .hoverEffect()
+                            .accessibilityLabel("Marketing Campaign End notifications")
+                            .accessibilityValue("Enabled")
+                            .accessibilityHint("Double tap to disable")
                         } else {
                             Button {
                                 withAnimation {
@@ -231,6 +248,9 @@ struct SettingsView: View {
                             .buttonStyle(.glass)
                             .matchedGeometryEffect(id: "notif:campaign", in: notifNamespace)
                             .hoverEffect()
+                            .accessibilityLabel("Marketing Campaign End notifications")
+                            .accessibilityValue("Disabled")
+                            .accessibilityHint("Double tap to enable")
                         }
                     }
                 }
@@ -248,6 +268,7 @@ struct SettingsView: View {
                         .scaledToFit()
                         .frame(width: 150, height: 150)
                         .padding()
+                        .accessibilityLabel("Skyrise Bureau app icon")
                     VStack(alignment: .leading) {
                         Text("Skyrise Bureau")
                             .font(.title)
@@ -267,6 +288,9 @@ struct SettingsView: View {
                         }
                         .adaptiveProminentButtonStyle()
                         .hoverEffect()
+                        .accessibilityLabel("Release notes")
+                        .accessibilityValue(showReleaseNotes ? "Shown" : "Hidden")
+                        .accessibilityHint("Double tap to \(showReleaseNotes ? "hide" : "show") release notes")
                     }
                 }
                 Text("Made with 💚 by Advait Contractor (advaitconty)")

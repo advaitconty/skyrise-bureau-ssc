@@ -214,6 +214,8 @@ struct ContentView: View {
                 }
         }
         .statusBarHidden()
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Skyrise Bureau main view")
         .alert("Welcome to Skyrise Bureau!", isPresented: $testerWarning) {
             Button("OK", role: .cancel) { }
         } message: {

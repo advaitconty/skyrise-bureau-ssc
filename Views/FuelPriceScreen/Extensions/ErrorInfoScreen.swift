@@ -26,6 +26,8 @@ extension FuelPriceView {
                     .padding(14)
                     .background(colorScheme == .dark ? .red.opacity(0.1) : .red.opacity(0.1))
                     .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Error: You are trading for more fuel than your cash and holding capacity allow. Please decrease the amount.")
             } else if notEnoughBalance {
                 VStack {
                     HStack {
@@ -42,6 +44,8 @@ extension FuelPriceView {
                 .padding(14)
                 .background(colorScheme == .dark ? .red.opacity(0.1) : .red.opacity(0.1))
                 .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Error: Insufficient funds for this fuel trade. Please decrease the amount.")
             } else if exceedMax {
                 VStack {
                     HStack {
@@ -58,6 +62,8 @@ extension FuelPriceView {
                 .padding(14)
                 .background(colorScheme == .dark ? .red.opacity(0.1) : .red.opacity(0.1))
                 .clipShape(RoundedRectangle(cornerRadius: 10.0))
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Error: Fuel order exceeds your holding capacity. Please decrease the amount.")
             }
         }
     }

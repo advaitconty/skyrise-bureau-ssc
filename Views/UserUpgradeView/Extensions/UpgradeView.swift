@@ -50,6 +50,7 @@ extension UserUpgradeView {
                 )
                 .adaptiveButtonStyle()
                 .hoverEffect()
+                .accessibilityLabel("Upgrade fuel tank capacity by 1 million kilograms")
             }
             
             // MARK: Repuation boost
@@ -86,6 +87,7 @@ extension UserUpgradeView {
                 )
                 .adaptiveButtonStyle()
                 .hoverEffect()
+                .accessibilityLabel("Permanently boost reputation by 5 percent")
             }
             
             Spacer()

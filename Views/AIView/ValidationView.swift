@@ -36,6 +36,8 @@ extension AiView {
                         .fontWidth(.condensed)
                     Spacer()
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Fleet Advisor is unavailable. \(AIState?.reasonForNotWorking ?? "Apple Intelligence is reporting an error.")")
             } else {
                 chatInterfaceView()
                     .onAppear {

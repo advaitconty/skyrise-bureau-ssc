@@ -31,6 +31,8 @@ extension AiView {
                 .foregroundStyle(.white)
                 .background(Color.accentColor)
                 .clipShape(RoundedRectangle(cornerRadius: 12.5))
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("Fleet Advisor says")
             } else {
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {
@@ -56,6 +58,8 @@ extension AiView {
                 }
                 .background(Color.accentColor.opacity(0.2))
                 .clipShape(RoundedRectangle(cornerRadius: 12.5))
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("You said")
             }
         }
     }

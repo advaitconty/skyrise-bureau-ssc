@@ -20,6 +20,7 @@ extension ShopView {
                 }
                 
                 Image(systemName: icon)
+                    .accessibilityHidden(true)
                 Text("\(numberToChange.wrappedValue)")
                     .fontWidth(.condensed)
                     .contentTransition(.numericText(countsDown: true))
@@ -38,6 +39,7 @@ extension ShopView {
                     .tint(.red)
                     .hoverEffect()
                     .adaptiveProminentButtonStyle()
+                    .accessibilityLabel("Decrease seat count")
                     
                     Button {
                         withAnimation {
@@ -52,6 +54,7 @@ extension ShopView {
                     .tint(.green)
                     .hoverEffect()
                     .adaptiveProminentButtonStyle()
+                    .accessibilityLabel("Increase seat count")
                 }
             }
     }

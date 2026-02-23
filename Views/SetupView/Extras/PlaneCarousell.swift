@@ -16,6 +16,7 @@ extension SetupView {
                     .scaledToFit()
                     .clipShape(RoundedRectangle(cornerRadius: 10.0))
                     .transition(.asymmetric(insertion: .slide, removal: .scale))
+                    .accessibilityLabel("\(jet1) aircraft preview")
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
                             withAnimation {
@@ -29,6 +30,7 @@ extension SetupView {
                     .scaledToFit()
                     .clipShape(RoundedRectangle(cornerRadius: 10.0))
                     .transition(.asymmetric(insertion: .slide, removal: .scale))
+                    .accessibilityLabel("\(jet2) aircraft preview")
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 7.0) {
                             withAnimation {

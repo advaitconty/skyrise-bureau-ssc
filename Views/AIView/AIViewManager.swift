@@ -61,6 +61,8 @@ struct AiView: View {
                         Text("All your chat history with your Fleet Advisor will be deleted.")
                     }
                     .hoverEffect()
+                    .accessibilityLabel("Clear chat history")
+                    .accessibilityHint("Double tap to delete all chat history")
                 }
                 
                 Button {
@@ -71,6 +73,7 @@ struct AiView: View {
                 }
                 .adaptiveButtonStyle()
                 .hoverEffect()
+                .accessibilityLabel("Close Fleet Advisor")
             }
             HStack {
                 Image(systemName: "exclamationmark.triangle.fill")
@@ -79,6 +82,8 @@ struct AiView: View {
                     .fontWidth(.condensed)
                 Spacer()
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("Warning: Powered by Apple Intelligence. Advice may not always be accurate.")
             validationPlusChatInterfaceView()
         }
         .padding()
