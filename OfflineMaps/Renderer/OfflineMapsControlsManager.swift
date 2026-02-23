@@ -18,13 +18,14 @@ extension _OfflineMapRenderer {
                 .padding()
                 .glassEffect()
             
-            controlButton("plus")    { proj.zoom = min(7,   proj.zoom + 0.5); syncPosition() }
-            controlButton("minus")   { proj.zoom = max(1.5, proj.zoom - 0.5); syncPosition() }
+            controlButton("plus")    { proj.zoom = min(7,   proj.zoom + 0.5); proj.clamp(); syncPosition() }
+            controlButton("minus")   { proj.zoom = max(1.5, proj.zoom - 0.5); proj.clamp(); syncPosition() }
             controlButton("arrow.counterclockwise") {
                 withAnimation(.spring(duration: 0.4)) {
                     proj.centerLat = position.latitude
                     proj.centerLon = position.longitude
                     proj.zoom      = position.zoom
+                    proj.clamp()
                     selectedAnnotation = nil
                 }
             }

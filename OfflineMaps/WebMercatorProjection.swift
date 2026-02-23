@@ -43,7 +43,46 @@ struct Projection {
             x: size.width  / 2 - offset.width,
             y: size.height / 2 - offset.height
         ))
-        centerLat = max(-80, min(80, c.latitude))
+        centerLat = c.latitude
         centerLon = c.longitude
+        clamp()
+    }
+
+    mutating func clamp() {
+        guard size.width > 0, size.height > 0 else {
+            centerLat = max(-80, min(80, centerLat))
+            centerLon = max(-180, min(180, centerLon))
+            return
+        }
+
+        let buffer: Double = 750
+
+        let halfW = max(0, (size.width  / 2) - buffer) / scale
+        let halfH = max(0, (size.height / 2) - buffer) / scale
+
+        let mxMin = mx(-180)
+        let mxMax = mx( 180)
+        let lonRange = mxMax - mxMin
+
+        if halfW * 2 >= lonRange {
+            centerLon = 0
+        } else {
+            let cxMin = mxMin + halfW
+            let cxMax = mxMax - halfW
+            let cx = max(cxMin, min(cxMax, mx(centerLon)))
+            centerLon = cx * 360 - 180
+        }
+
+        let myTop    = my( 80)
+        let myBottom = my(-80)
+
+        if halfH * 2 >= (myBottom - myTop) {
+            centerLat = 0
+        } else {
+            let cyMin = myTop    + halfH
+            let cyMax = myBottom - halfH
+            let cy = max(cyMin, min(cyMax, my(centerLat)))
+            centerLat = atan(sinh(.pi * (1 - 2 * cy))) * 180 / .pi
+        }
     }
 }

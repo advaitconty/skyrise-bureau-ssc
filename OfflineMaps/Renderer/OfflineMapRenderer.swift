@@ -30,6 +30,7 @@ struct _OfflineMapRenderer: View {
                 Canvas { ctx, size in
                     var p = proj
                     p.size = size
+                    p.clamp()
                     let totalDrag = CGSize(
                         width:  liveDrag.width  + trackpadScroll.width,
                         height: liveDrag.height + trackpadScroll.height
@@ -67,6 +68,7 @@ struct _OfflineMapRenderer: View {
                     MagnificationGesture()
                         .onChanged { v in
                             proj.zoom = max(1.5, min(7, proj.zoom + Double(log2(Float(v))) * 0.5))
+                            proj.clamp()
                             syncPosition()
                         }
                 )
@@ -79,6 +81,7 @@ struct _OfflineMapRenderer: View {
                     proj.centerLat = position.latitude
                     proj.centerLon = position.longitude
                     proj.zoom      = position.zoom
+                    proj.clamp()
                 }
                 .onChange(of: geo.size) { oldSize, newSize in
                     if proj.size != newSize {
